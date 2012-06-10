@@ -1,0 +1,26 @@
+'sudo apt-get install libzbar0 python-zbarpygtk libzbar* python-opencv python-pygame' gets you version 0.8.
+
+But the zbar version that comes with ubuntu 10.04 is 0.8. QR is supported from 0.10 on.
+
+So, download the 0.10 source and compile that. 
+That needs python-gtk2, so 'sudo apt-get install python-gtk2*' first
+
+But then, how do you get the python bindings? 
+This can be done by using configuring the 0.10 build with the --with-python option:
+/zbar-0.10$ ./configure --with-python
+make
+make check
+sudo make install
+
+That installed zbar in site-packages, while all other packages were in dist-packages.
+So, the files in site-packages starting with 'zbar' were moved to dist-packages.
+Then, finally, import zbar; zbar.version() returned (0, 10)
+
+----
+Idea: use Festival to do spoken (TTS) announcements
+According to: http://ubuntuforums.org/showthread.php?t=751169
+Install Festival: "sudo apt-get install festival festlex-cmu festlex-poslex festlex-oald libestools1.2 unzip mbrola"
+Dutch voices were found here:
+http://tcts.fpms.ac.be/synthesis/euler/
+
+Installing them though was not documented well enough.
