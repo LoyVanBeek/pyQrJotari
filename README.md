@@ -1,4 +1,5 @@
 pyQrJotari
 ==========
 
-Python port of the C#-written Jotari-QRcode program for Linux
+Python port of the C#-written Jotari-QRcode program for Linux.
+It is intended to run cross-platform.
