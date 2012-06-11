@@ -1,0 +1,10 @@
+- schedule:
+    age: klein
+    path: data/prog_klein.csv
+- schedule: 
+    age: groot
+    path: data/prog_groot.csv
+
+- image:
+    activity: jota
+    path: images/jota.png

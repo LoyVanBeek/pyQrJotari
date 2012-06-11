@@ -35,7 +35,7 @@ class ZBarInterface(object):
 		self.thread = threading.Thread(target=self.run)
 		self.thread.start()
 		
-	def stop(self):
+	def force_stop(self):
 		try:
 			self.process.terminate()
 		except OSError:
@@ -45,7 +45,14 @@ class ZBarInterface(object):
 		try:
 			self.thread.join()
 		except:
-			print "Joining thread failed"
+			#print "Joining thread failed"
+			exit()
+	
+	def wait_stop(self):
+		try:
+			self.thread.join()
+		except:
+			#print "Joining thread failed"
 			exit()
 		
 	def run(self):
@@ -59,14 +66,16 @@ class ZBarInterface(object):
 				out = self.process.stdout.readline()
 				if "QR-Code:" in out:
 					out = out.strip("QR-Code:")
-					print out
+					#print out
 					if self.callback:
 						self.callback(out)
 			except:
-				self.stop()
+				print "Trying to read did not work"
+				self.wait_stop()
+				break
 		else:
-			#print "ZBar exited with exitcode {0}".format(self.process.returncode)
-			self.stop()
+			print "ZBar exited with exitcode {0}".format(self.process.returncode)
+			self.wait_stop()
 
 def dummy_callback(data):
 	print "CB: ",data.capitalize()
@@ -75,12 +84,15 @@ def main2():
 	zbar = ZBarInterface(callback=dummy_callback)
 	zbar.start()
 	
+	'''
 	while True:
 		try:
 			pass
 		except KeyboardInterrupt:
 			break
 	zbar.stop()
+	'''
+	zbar.wait_stop()
 
 if __name__ == "__main__":
 	main2()
