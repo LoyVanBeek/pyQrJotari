@@ -24,8 +24,8 @@ class JotariQrBackend(object):
 			current_activities = age_sched[time]
 			group_activity = current_activities[group]
 			
-			print age, group, group_activity, time, None
-			#self.onScannedCB(age, group, activity, time, None) #age, group, activity, time, image
+			#print age, group, group_activity, time, None
+			self.onScannedCB(age, group, group_activity, time, None) #age, group, activity, time, image
 		except KeyError, ke:
 			print ke
 			self.wait_stop()
