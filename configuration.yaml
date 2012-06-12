@@ -8,3 +8,5 @@
 - image:
     activity: jota
     path: images/jota.png
+
+- timeformat: "%d/%m/%y %H:%M"
