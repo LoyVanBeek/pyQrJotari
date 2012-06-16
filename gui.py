@@ -38,7 +38,7 @@ class QrJotariGui(object):
         self.activity_firstText = tk.StringVar()
         self.activity_firstLabel = tk.Label(self.currentActivityFrame, textvariable=self.activity_firstText)
         self.activity_firstLabel.pack(side=tk.LEFT)
-        self.activity_firstImage = tk.PhotoImage("/home/loy/Development/pyQrJotari/images/tenten opzetten.GIF")
+        self.activity_firstImage = tk.PhotoImage(file="/home/loy/Development/pyQrJotari/images/tenten opzetten.GIF")
         self.activity_firstImLbl = tk.Label(self.currentActivityFrame, image=self.activity_firstImage)
         self.activity_firstImLbl.pack(side=tk.RIGHT)
         
