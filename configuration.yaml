@@ -5,8 +5,17 @@
     age: groot
     path: data/prog_groot.csv
 
-- image:
-    activity: jota
-    path: images/jota.png
+- activity:
+    name: jota
+    image: images/jota.gif
+    sound: sounds/jota.mp3
+- activity:
+    name: joti
+    image: images/joti.jpg
+    sound: sounds/joti.mp3
+- activity:
+    name: radio
+    image: images/radio.png
+    sound: sounds/radio.mp3
 
 - timeformat: "%d/%m/%y %H:%M"

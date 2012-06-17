@@ -3,6 +3,7 @@ import tkFont
 import yaml
 import pyQRjotari
 import CsvInterface
+from PIL import Image, ImageTk
 
 #GUI:
 '''
@@ -19,8 +20,9 @@ import CsvInterface
 
 class QrJotariGui(object):
 
-    def __init__(self, master, activity2img_map):
-        self.act2img = dict([(act, tk.PhotoImage(file=path, height=200)) for act, path in activity2img_map.iteritems()])
+    def __init__(self, master, activities):
+        self.act2img = self.load_images(activities)#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
+        print self.act2img
 
         frame = tk.Frame(master)
         frame.grid(sticky=tk.N+tk.S+tk.E+tk.W)
@@ -60,24 +62,52 @@ class QrJotariGui(object):
         self.activity_firstText.set("Avondspel")
         self.activity_secondText.set("Slapen")
     
+    @staticmethod
+    def load_images(activities):
+        map = dict()#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
+        for name, props in activities.iteritems():
+            im = Image.open(props['image'])
+            im = im.resize((300,300))
+            try:
+                #pi = tk.PhotoImage(file=props['image'])
+                pi = ImageTk.PhotoImage(im)
+                map[name] = pi
+            except:
+                pass
+        return map
+
     def update(self, age, group, group_activity, current_time, image):
+        print "START update"
+        print age, group, group_activity, current_time, image
+
         self.groupText.set("Groep "+str(group))
-        self.activity_firstText.set(group_activity)
-        self.activity_firstImLbl.configure(image=self.act2img['jota'])
+        self.activity_firstText.set(str(group_activity))
+
+        #import pdb; pdb.set_trace()
+        if self.act2img.has_key(group_activity):
+            img = self.act2img[group_activity]
+            print img
+            self.activity_firstImLbl.configure(image=img)
+        else: 
+            print "No image defined for %s"%group_activity
+        print "END update"
 
 def main(config):
     timeformat = [item['timeformat'] for item in config if item.has_key("timeformat")][0] #load timeformat markup
     schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
     schedules = dict([ (sched["age"], CsvInterface.Schedule(sched["path"], timeformat)) for sched in schedules])
+    activities = dict([(item['activity']['name'], item['activity']) for item in config if item.has_key("activity")])
+
+    print activities
     
     def update(*args):
         print args
         
     root = tk.Tk()
     
-    root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
-                                       root.winfo_screenheight()))
-    app = QrJotariGui(root, {"jota":"/home/loy/Development/pyQrJotari/images/jota.gif"})
+    # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
+    #                                    root.winfo_screenheight()))
+    app = QrJotariGui(root, activities)
     
     backend = pyQRjotari.JotariQrBackend(schedules, app.update)
     backend.start()
