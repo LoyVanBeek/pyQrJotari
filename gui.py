@@ -24,43 +24,49 @@ class QrJotariGui(object):
         self.act2img = self.load_images(activities)#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
         print self.act2img
 
-        frame = tk.Frame(master)
-        frame.grid(sticky=tk.N+tk.S+tk.E+tk.W)
+        frame = tk.Frame(master, background='white')
+        frame.pack(fill=tk.BOTH, expand=1)
 
         self.customFont = tkFont.Font(family="Helvetica", size=50)
         
-        self.dateframe = tk.Frame(frame)
+        self.dateframe = tk.Frame(frame, background='white')
         #Build the datecontrol frame
         self.dateframe.grid(row=1)#pack())
         
         self.groupText = tk.StringVar()
-        self.groupLabel = tk.Label(frame, textvariable=self.groupText, font=self.customFont)
+        self.groupLabel = tk.Label(frame, textvariable=self.groupText, font=self.customFont, background='white')
         self.groupLabel.grid(row=2)#pack()#tk.TOP
                 
-        self.goto_firstLabel = tk.Label(frame, text="gaat naar", font=self.customFont)
+        self.goto_firstLabel = tk.Label(frame, text="gaat naar", font=self.customFont, background='white')
         self.goto_firstLabel.grid(row=3)#pack(side=tk.LEFT)
         
-        self.currentActivityFrame = tk.Frame(frame)
+        self.currentActivityFrame = tk.Frame(frame, background='white', width=600)
         
         self.activity_firstText = tk.StringVar()
-        self.activity_firstLabel = tk.Label(self.currentActivityFrame, textvariable=self.activity_firstText, font=self.customFont)
-        self.activity_firstLabel.pack(side=tk.LEFT)
+        self.activity_firstLabel = tk.Label(self.currentActivityFrame, textvariable=self.activity_firstText, font=self.customFont, background='white')
+        self.activity_firstLabel.pack(side=tk.LEFT,
+            padx=20, pady=20)
+
         self.activity_firstImage = tk.PhotoImage(file="/home/loy/Development/pyQrJotari/images/tenten opzetten.GIF", height=200)
-        self.activity_firstImLbl = tk.Label(self.currentActivityFrame, image=self.activity_firstImage)
-        self.activity_firstImLbl.pack(side=tk.RIGHT)
+        self.activity_firstImLbl = tk.Label(self.currentActivityFrame, 
+            image=self.activity_firstImage, 
+            background='white')
+        self.activity_firstImLbl.pack(side=tk.RIGHT,
+            padx=20, pady=20)
         
         self.currentActivityFrame.grid(row=4,sticky=tk.N+tk.S+tk.E+tk.W)#pack()
         
-        self.goto_secondLabel = tk.Label(frame, text="daarna", font=self.customFont)
+        self.goto_secondLabel = tk.Label(frame, text="daarna", font=self.customFont, background='white')
         self.goto_secondLabel.grid(row=5)#pack()
         
         self.activity_secondText = tk.StringVar()
-        self.activity_secondLabel = tk.Label(frame, textvariable=self.activity_secondText, font=self.customFont)
+        self.activity_secondLabel = tk.Label(frame, textvariable=self.activity_secondText, font=self.customFont, background='white')
         self.activity_secondLabel.grid(row=6)#pack()
         
         self.groupText.set("Groep 1")
         self.activity_firstText.set("Avondspel")
         self.activity_secondText.set("Slapen")
+        self.activity_firstImLbl.configure(image=self.act2img['opening'])
     
     @staticmethod
     def load_images(activities):
@@ -79,6 +85,8 @@ class QrJotariGui(object):
     def update(self, age, group, group_activity, current_time, image):
         print "START update"
         print age, group, group_activity, current_time, image
+
+        self.activity_firstImLbl.bell()
 
         self.groupText.set("Groep "+str(group))
         self.activity_firstText.set(str(group_activity))
@@ -105,8 +113,9 @@ def main(config):
         
     root = tk.Tk()
     
-    # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
-    #                                    root.winfo_screenheight()))
+    root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
+                                       root.winfo_screenheight()))
+    root.configure(background='white')
     app = QrJotariGui(root, activities)
     
     backend = pyQRjotari.JotariQrBackend(schedules, app.update)
