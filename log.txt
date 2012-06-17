@@ -1,5 +1,4 @@
-'sudo apt-get install libzbar0 python-zbarpygtk libzbar* python-opencv python-pygame python-zbar' gets you version 0.8 on ubuntu 10.04. 
-On ubuntu 12.04, it gets you version 0.10
+'sudo apt-get install libzbar0 python-tk python-yaml python-zbarpygtk libzbar* python-opencv python-pygame python-zbar python-imaging python-imaging-tk zbar-tools' gets you zbar version 0.8 on ubuntu 10.04 and zbar 0.10 on ubuntu 12.04. 
 
 But the zbar version that comes with ubuntu 10.04 is 0.8. QR is supported from 0.10 on.
 

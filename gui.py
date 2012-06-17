@@ -24,6 +24,8 @@ class QrJotariGui(object):
         self.act2img = self.load_images(activities)#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
         print self.act2img
 
+        master.title("JOTARI QR-codescanner")
+
         frame = tk.Frame(master, background='white')
         frame.pack(fill=tk.BOTH, expand=1)
 
