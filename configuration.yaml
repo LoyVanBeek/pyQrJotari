@@ -17,5 +17,73 @@
     name: radio
     image: images/radio.png
     sound: sounds/radio.mp3
+- activity:
+    name: avondeten
+    image: images/avondeten.png
+    sound: sounds/avondeten.mp3
+- activity:
+    name: avondspel
+    image: images/avondspel.png
+    sound: sounds/avondspel.mp3
+- activity:
+    name: bos
+    image: images/bos.png
+    sound: sounds/bos.mp3
+- activity:
+    name: 'gezamenlijk spel'
+    image: 'images/gezamenlijk spel.jpg'
+    sound: 'sounds/gezamenlijk spel.mp3'
+- activity:
+    name: hunt
+    image: images/hunt.jpg
+    sound: sounds/hunt.mp3
+- activity:
+    name: lunch
+    image: images/lunch.jpg
+    sound: sounds/lunch.mp3
+- activity:
+    name: ontbijt
+    image: images/ontbijt.jpg
+    sound: sounds/ontbijt.mp3
+- activity:
+    name: opening
+    image: images/opening.jpg
+    sound: sounds/opening.mp3
+- activity:
+    name:  'opstaan en spullen opruimen'
+    image: 'images/opstaan en spullen opruimen.jpg'
+    sound: 'sounds/opstaan en spullen opruimen.mp3'
+- activity:
+    name: slapen
+    image: images/slapen.jpg
+    sound: sounds/slapen.mp3
+- activity:
+    name: sluiting
+    image: images/sluiting.jpg
+    sound: sounds/sluiting.mp3
+- activity:
+    name: 'tenten opzetten'
+    image: 'images/tenten opzetten.GIF'
+    sound: 'sounds/tenten opzetten.mp3'
+- activity:
+    name: tocht van daar naar hier
+    image: 'images/tocht van daar naar hier.gif'
+    sound: 'sounds/tocht van daar naar hier.mp3'
+- activity:
+    name: tocht van hier naar daar
+    image: 'images/tocht van hier naar daar.gif'
+    sound: 'sounds/tocht van hier naar daar.mp3'
+- activity:
+    name: tv
+    image: images/tv.gif
+    sound: sounds/tv.mp3
+- activity:
+    name: veld
+    image: images/veld.gif
+    sound: sounds/veld.mp3
+- activity:
+    name:  'wassen, plassen en naar bed'
+    image: 'images/wassen, plassen en naar bed.jpeg'
+    sound: 'sounds/wassen, plassen en naar bed.mp3'
 
 - timeformat: "%d/%m/%y %H:%M"
