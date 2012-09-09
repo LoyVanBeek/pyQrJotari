@@ -61,12 +61,17 @@ class ZBarInterface(object):
                 universal_newlines=True,
                 shell=False)
         
+        f = file("/home/loy/Development/pyQrJotari/data/counts/cards.txt")
+        
         while self.process.poll() == None:
             try:
                 out = self.process.stdout.readline()
                 if "QR-Code:" in out:
-                    out = out.strip("QR-Code:")
-                    #print out
+                    # out = out.strip("QR-Code:")
+                    # f.write(out+'\n')
+                    # f.flush()
+                    #TODO: For debugging:
+                    print out
                     if self.callback:
                         self.callback(out)
             except:

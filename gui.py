@@ -99,7 +99,7 @@ class QrJotariGui(object):
             print img
             self.activity_firstImLbl.configure(image=img)
         else: 
-            print "No image defined for %s"%group_activity
+            print "No image defined for %s" % group_activity
         print "END update"
 
 def main(config):
@@ -126,10 +126,10 @@ def main(config):
     root.mainloop()
     print "Mainloop ended"
     backend.force_stop()
-	
+    
 if __name__ == "__main__":
-	confpath = "configuration.yaml"
-	conffile = open(confpath)
-	config = yaml.load(conffile)
-		
-	main(config)
+    confpath = "configuration.yaml"
+    conffile = open(confpath)
+    config = yaml.load(conffile)
+        
+    main(config)
