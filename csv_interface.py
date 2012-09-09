@@ -9,6 +9,43 @@
 
 import csv, time, pprint
 
+class Schedule(object):
+    """When passed a time into __get_item__, it returns a list of program names, one for each group number."""
+    def __init__(self, filename, format="%d-%m-%Y %H:%M"):
+        self.format = format
+
+        f = open(filename)
+        arr = csv_to_array(csv.reader(f))
+        arr = fill_blanks(arr, start_yx=(4,3), end_yx=(32,10))
+
+        self.programtables = dict()
+        self.programtables[  (time.strptime("20-10-2012 09:30", "%d-%m-%Y %H:%M"), 
+                            time.strptime("21-10-2012 00:00", "%d-%m-%Y %H:%M"))
+                         ] = crop(arr, (2,2), (3,9))[0] #saturday, klein
+
+        self._database = crop(arr, (4,0), (32,9)) #All these 2-tuples are linked to the csv-file. 
+
+    def query(self,
+                querytime, 
+                groupnumber):
+        #programtables is a dict mapping a (start, end)-tuple to an array of programnames
+        row = find_row_for_time(self._database, querytime, self.format)
+        programnames = find_key_by_time(self.programtables, querytime, self.format)
+        
+        for cellno, cell in enumerate(row[2:]): #Skip date and time cells
+            if isinstance(cell, list):
+                if groupnumber in cell:
+                    #pass
+                    
+                    #print (rowno, cellno)
+                    #TODO lookup top row activities
+                    activity = programnames[cellno]
+                    return activity
+            elif isinstance(cell, str): #The cell is a string, so all groups have that activity now.
+                #print (rowno, cellno), cell
+                return cell
+
+
 def csv_to_array(reader):
     lines = [line for line in reader]
 
@@ -105,7 +142,6 @@ def query(  arr,
             #print (rowno, cellno), cell
             return cell
 
-
 if __name__ == "__main__":
     path = "data/planning_2012_edit_klein_commonPrograms_fixed.csv"
 
@@ -131,18 +167,8 @@ if __name__ == "__main__":
     # for index, row in enumerate(arr):
     #     print index, ":", row#pprint.pprint(row)
 
-    print "#"*20
-    print "1: ",query(arr, 
-                time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"),
-                5,
-                programnames)
-
-    print "2: ", query(arr, 
-                time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M"),
-                5,
-                programnames)
-
-    print "3: ", query(arr, 
-                time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M"),
-                5,
-                programnames)
+    s = Schedule(path)
+    print "1: ", s.query(time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M"), 5)
+    print "2: ", s.query(time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M"), 5)
+    print "3: ", s.query(time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"), 5)
+    print "4: ", s.query(time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M"), 5)
