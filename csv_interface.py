@@ -160,56 +160,77 @@ class Schedule(object):
             if fragment.has_key(querytime):
                 return fragment[querytime]
 
-if __name__ == "__main__":
-    path = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
-
-    saturday_prognames = ((2,2),(3,9)) #3C t/m 3I
-    saturday_data_area = ((4,0), (32,9)) #5A t/m 33I
-
-    sunday_prognames = ((43,2), (44,7))
-    sunday_data_area = ((34,0), (53,7))
-
-    zat = ScheduleFragment(path, 
-            programnamecells_area=saturday_prognames, 
-            datacells_area=saturday_data_area)
-    zon = ScheduleFragment(path, 
-            programnamecells_area=sunday_prognames, 
-            datacells_area=sunday_data_area)
-
-    s = Schedule(zat, zon)
-
-    t1 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
-    t2 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
-    t3 = datetime.datetime(*time.strptime("21-10-2012 08:15", "%d-%m-%Y %H:%M")[:6])
-    t4 = datetime.datetime(*time.strptime("21-10-2012 12:35", "%d-%m-%Y %H:%M")[:6])
-    t5 = datetime.datetime(*time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]) #Monday after!
-
-    print "1: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]), 5)
-    print "2: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M")[:6]), 5)
-    print "3: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M")[:6]), 5)
-    print "4: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M")[:6]), 5)
-
-    print "ZATERDAG:"
-    for groupnumber, activity in zat[t1].iteritems():
-        print groupnumber, activity
-
-    #print zon.query(t4, 5)
-
-    print "ZONDAG:"
-    for groupnumber, activity in zon[t4].iteritems():
-        print groupnumber, activity
-
+def check_program(interval=10):
     start = datetime.datetime(*time.strptime("20-10-2012 09:31", "%d-%m-%Y %H:%M")[:6])
     end   = datetime.datetime(*time.strptime("21-10-2012 15:30", "%d-%m-%Y %H:%M")[:6])
-    curr  = start+datetime.timedelta(minutes=1)
+    curr  = start+datetime.timedelta(minutes=interval)
     
-
     while start <= curr < end:
         if s.has_key(curr):
             if None in s[curr].values():
                 print "Groups {0} have no activity at {1}".format([k for k, v in s[curr].iteritems() if v == None], curr)
         else:
             print "No program defined at {0}".format(curr)
-        curr += datetime.timedelta(minutes=10)
+        curr += datetime.timedelta(minutes=interval)
+
+if __name__ == "__main__":
+    path_klein = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
+    path_groot = "data/planning_2012_groot_1.csv"
+
+    saturday_prognames_klein = ((2,2),(3,9)) #3C t/m 3I
+    saturday_data_area_klein = ((4,0), (32,9)) #5A t/m 33I
+
+    sunday_prognames_klein = ((43,2), (44,7))
+    sunday_data_area_klein = ((34,0), (53,7))
+
+    saturday_prognames_groot_dag    = ((8,2), (9,7)) #9C t/m 9H
+    saturday_data_area_groot_dag    = ((3,0), (23,7)) #4A t/m 23H
+
+    saturday_prognames_groot_avond  = ((23,2), (24,7)) #24C tm 24H
+    saturday_data_area_groot_avond  = ((24,0), (35,7)) #25A tm 35H
+
+    #TODO: Fix for groot
+    sunday_prognames_groot          = ((42,2), (43,6)) #43C tm 43G
+    sunday_data_area_groot          = ((37,0), (56,6)) #38A tm 57G
+
+
+    zat_klein = ScheduleFragment(path_klein, 
+            programnamecells_area=saturday_prognames_klein, 
+            datacells_area=saturday_data_area_klein)
+    zon_klein = ScheduleFragment(path_klein, 
+            programnamecells_area=sunday_prognames_klein, 
+            datacells_area=sunday_data_area_klein)
+
+    zat_groot_dag   = ScheduleFragment(path_groot, saturday_prognames_groot_dag, saturday_data_area_groot_dag, groupcount=24)
+    zat_groot_avond = ScheduleFragment(path_groot, saturday_prognames_groot_avond, saturday_data_area_groot_avond, groupcount=24)
+    zon_groot       = ScheduleFragment(path_groot, sunday_prognames_groot, sunday_data_area_groot, groupcount=24)
+
+
+    s = Schedule(zat_klein, zon_klein)
+
+    t1 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
+    t2 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
+    t3 = datetime.datetime(*time.strptime("21-10-2012 08:15", "%d-%m-%Y %H:%M")[:6])
+    t4 = datetime.datetime(*time.strptime("21-10-2012 12:35", "%d-%m-%Y %H:%M")[:6])
+    t5 = datetime.datetime(*time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]) #Monday after!
+    t6 = datetime.datetime(*time.strptime("21-10-2012 08:35", "%d-%m-%Y %H:%M")[:6])
+    t7 = datetime.datetime(*time.strptime("21-10-2012 13:35", "%d-%m-%Y %H:%M")[:6])
+
+    print "1: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]), 5)
+    print "2: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M")[:6]), 5)
+    print "3: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M")[:6]), 5)
+    print "4: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M")[:6]), 5)
+
+    print "ZATERDAG:"
+    for groupnumber, activity in zat_klein[t1].iteritems():
+        print groupnumber, activity
+
+    #print zon_klein.query(t4, 5)
+
+    print "ZONDAG:"
+    for groupnumber, activity in zon_klein[t4].iteritems():
+        print groupnumber, activity
+
+    #check_program(10)
 
 
