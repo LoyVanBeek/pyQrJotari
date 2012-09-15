@@ -6,7 +6,7 @@
 #   which automatically fills in group numbers.
 #Times must be complete, date and time.
 
-import csv, time, pprint
+import csv, time, datetime, pprint
 
 class RowNotFoundException(Exception):
     pass
@@ -52,17 +52,17 @@ class ScheduleFragment(object):
                 #print (rowno, cellno), cell
                 return cell
 
-    def has_key(self, time):
+    def has_key(self, querytime):
         try:
-            return bool(self.find_row_for_time(self._database, time, self.format))
+            return bool(self.find_row_for_time(self._database, querytime, self.format))
         except RowNotFoundException:
             return False
 
-    def __getitem__(self, time):
+    def __getitem__(self, querytime):
         try:
-            return dict([(groupnr, self.query(time, groupnr)) for groupnr in xrange(1, self.groupcount+1)])
+            return dict([(groupnr, self.query(querytime, groupnr)) for groupnr in xrange(1, self.groupcount+1)])
         except:
-            raise KeyError(time)
+            raise KeyError(querytime)
 
     @staticmethod
     def csv_to_array(reader):
@@ -128,8 +128,8 @@ class ScheduleFragment(object):
             starttime_cell = row[0]
             endtime_cell = row[1]
 
-            starttime = time.strptime(starttime_cell, format)
-            endtime = time.strptime(endtime_cell, format)
+            starttime = datetime.datetime(*time.strptime(starttime_cell, format)[:6])
+            endtime = datetime.datetime(*time.strptime(endtime_cell, format)[:6])
             
             if starttime < querytime < endtime:
                 return row
@@ -152,13 +152,13 @@ class Schedule(object):
     def __init__(self, *fragments):
         self.fragments = fragments
 
-    def has_key(self, time):
-        return any([fragment.has_key(time) for fragment in self.fragments])
+    def has_key(self, querytime):
+        return any([fragment.has_key(querytime) for fragment in self.fragments])
 
-    def __getitem__(self, time):
+    def __getitem__(self, querytime):
         for fragment in self.fragments:
-            if fragment.has_key(time):
-                return fragment[time]
+            if fragment.has_key(querytime):
+                return fragment[querytime]
 
 if __name__ == "__main__":
     path = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
@@ -176,16 +176,18 @@ if __name__ == "__main__":
             programnamecells_area=sunday_prognames, 
             datacells_area=sunday_data_area)
 
-    t1 = time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")
-    t2 = time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")
-    t3 = time.strptime("21-10-2012 08:15", "%d-%m-%Y %H:%M")
-    t4 = time.strptime("21-10-2012 12:35", "%d-%m-%Y %H:%M")
-    t5 = time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M") #Monday after!
+    s = Schedule(zat, zon)
 
-    print "1: ", zat.query(time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M"), 5)
-    print "2: ", zat.query(time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M"), 5)
-    print "3: ", zat.query(time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"), 5)
-    print "4: ", zat.query(time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M"), 5)
+    t1 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
+    t2 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
+    t3 = datetime.datetime(*time.strptime("21-10-2012 08:15", "%d-%m-%Y %H:%M")[:6])
+    t4 = datetime.datetime(*time.strptime("21-10-2012 12:35", "%d-%m-%Y %H:%M")[:6])
+    t5 = datetime.datetime(*time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]) #Monday after!
+
+    print "1: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]), 5)
+    print "2: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M")[:6]), 5)
+    print "3: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M")[:6]), 5)
+    print "4: ", zat.query(datetime.datetime(*time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M")[:6]), 5)
 
     print "ZATERDAG:"
     for groupnumber, activity in zat[t1].iteritems():
@@ -196,4 +198,18 @@ if __name__ == "__main__":
     print "ZONDAG:"
     for groupnumber, activity in zon[t4].iteritems():
         print groupnumber, activity
+
+    start = datetime.datetime(*time.strptime("20-10-2012 09:31", "%d-%m-%Y %H:%M")[:6])
+    end   = datetime.datetime(*time.strptime("21-10-2012 15:30", "%d-%m-%Y %H:%M")[:6])
+    curr  = start+datetime.timedelta(minutes=1)
+    
+
+    while start <= curr < end:
+        if s.has_key(curr):
+            if None in s[curr].values():
+                print "Groups {0} have no activity at {1}".format([k for k, v in s[curr].iteritems() if v == None], curr)
+        else:
+            print "No program defined at {0}".format(curr)
+        curr += datetime.timedelta(minutes=10)
+
 
