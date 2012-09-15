@@ -28,9 +28,7 @@ class ScheduleFragment(object):
         arr = ScheduleFragment.fill_blanks(arr, start_yx=datacells_area[0], end_yx=datacells_area[1])
 
         self.programtables = dict()
-        self.programtables[  (time.strptime("20-10-2012 09:30", "%d-%m-%Y %H:%M"), 
-                            time.strptime("21-10-2012 00:00", "%d-%m-%Y %H:%M"))
-                         ] = ScheduleFragment.crop(arr, 
+        self.programtables = ScheduleFragment.crop(arr, 
                             programnamecells_area[0], 
                             programnamecells_area[1])[0] #saturday, klein
 
@@ -39,7 +37,7 @@ class ScheduleFragment(object):
     def query(self, querytime, groupnumber):
         #programtables is a dict mapping a (start, end)-tuple to an array of programnames
         row = self.find_row_for_time(self._database, querytime, self.format)
-        programnames = self.find_key_by_time(self.programtables, querytime, self.format)
+        programnames = self.programtables
         
         for cellno, cell in enumerate(row[2:]): #Skip date and time cells
             if isinstance(cell, list):
@@ -163,13 +161,13 @@ class Schedule(object):
                 return fragment[time]
 
 if __name__ == "__main__":
-    path = "data/planning_2012_edit_klein_commonPrograms_fixed.csv"
+    path = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
 
     saturday_prognames = ((2,2),(3,9)) #3C t/m 3I
     saturday_data_area = ((4,0), (32,9)) #5A t/m 33I
 
-    sunday_prognames = ((45,2), (46,9))
-    sunday_data_area = ((36,0), (55,9))
+    sunday_prognames = ((43,2), (44,7))
+    sunday_data_area = ((34,0), (53,7))
 
     zat = ScheduleFragment(path, 
             programnamecells_area=saturday_prognames, 
@@ -189,6 +187,13 @@ if __name__ == "__main__":
     print "3: ", zat.query(time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"), 5)
     print "4: ", zat.query(time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M"), 5)
 
+    print "ZATERDAG:"
     for groupnumber, activity in zat[t1].iteritems():
+        print groupnumber, activity
+
+    #print zon.query(t4, 5)
+
+    print "ZONDAG:"
+    for groupnumber, activity in zon[t4].iteritems():
         print groupnumber, activity
 
