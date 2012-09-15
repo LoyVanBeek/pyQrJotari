@@ -8,6 +8,9 @@
 
 import csv, time, pprint
 
+class RowNotFoundException(Exception):
+    pass
+
 class Schedule(object):
     """When passed a time into __get_item__, it returns a list of program names, one for each group number."""
     def __init__(self, filename, format="%d-%m-%Y %H:%M", groupcount=28):
@@ -43,8 +46,17 @@ class Schedule(object):
                 #print (rowno, cellno), cell
                 return cell
 
+    def has_key(self, time):
+        try:
+            return bool(self.find_row_for_time(self._database, time, self.format))
+        except RowNotFoundException:
+            return False
+    
     def __getitem__(self, time):
-        return dict([(groupnr, self.query(time, groupnr)) for groupnr in xrange(1, self.groupcount+1)])
+        try:
+            return dict([(groupnr, self.query(time, groupnr)) for groupnr in xrange(1, self.groupcount+1)])
+        except:
+            raise KeyError(time)
 
     @staticmethod
     def csv_to_array(reader):
@@ -113,6 +125,7 @@ class Schedule(object):
             
             if starttime < querytime < endtime:
                 return row
+        raise RowNotFoundException("No row found for querytime {0}".format(querytime))
 
     @staticmethod
     def find_key_by_time(dic, querytime, format="%d-%m-%Y %H:%M"):
@@ -159,5 +172,6 @@ if __name__ == "__main__":
     print "4: ", s.query(time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M"), 5)
 
     t1 = time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")
+    t5 = time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M")
     for groupnumber, activity in s[t1].iteritems():
         print groupnumber, activity
