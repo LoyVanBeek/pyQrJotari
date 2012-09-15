@@ -26,7 +26,6 @@ class ScheduleFragment(object):
         f = open(filename)
         arr = ScheduleFragment.csv_to_array(csv.reader(f))
         arr = ScheduleFragment.fill_blanks(arr, start_yx=datacells_area[0], end_yx=datacells_area[1])
-        #arr = ScheduleFragment.fill_blanks(arr, start_yx=(4,3), end_yx=(32,10))
 
         self.programtables = dict()
         self.programtables[  (time.strptime("20-10-2012 09:30", "%d-%m-%Y %H:%M"), 
@@ -34,13 +33,9 @@ class ScheduleFragment(object):
                          ] = ScheduleFragment.crop(arr, 
                             programnamecells_area[0], 
                             programnamecells_area[1])[0] #saturday, klein
-        # self.programtables[  (time.strptime("20-10-2012 09:30", "%d-%m-%Y %H:%M"), 
-        #                     time.strptime("21-10-2012 00:00", "%d-%m-%Y %H:%M"))
-        #                  ] = ScheduleFragment.crop(arr, (2,2),(3,9))[0] #saturday, klein
 
-        self._database = ScheduleFragment.crop(arr, 
-                                               datacells_area[0], datacells_area[1]) #All these 2-tuples are linked to the csv-file. 
-        # self._database = ScheduleFragment.crop(arr, (4,0), (32,9)) #All these 2-tuples are linked to the csv-file. 
+        self._database = ScheduleFragment.crop(arr, datacells_area[0], datacells_area[1]) #All these 2-tuples are linked to the csv-file. 
+ 
     def query(self, querytime, groupnumber):
         #programtables is a dict mapping a (start, end)-tuple to an array of programnames
         row = self.find_row_for_time(self._database, querytime, self.format)
@@ -154,45 +149,46 @@ class ScheduleFragment(object):
             if starttime < querytime < endtime:
                 return value
 
-def query(  arr, 
-            querytime, 
-            groupnumber,
-            programtables,
-            format="%d-%m-%Y %H:%M"):
-    #programtables is a dict mapping a (start, end)-tuple to an array of programnames
-    row = find_row_for_time(arr, querytime, format)
-    programnames = find_key_by_time(programtables, querytime, format)
-    
-    for cellno, cell in enumerate(row[2:]): #Skip date and time cells
-        if isinstance(cell, list):
-            if groupnumber in cell:
-                #pass
-                
-                #print (rowno, cellno)
-                #TODO lookup top row activities
-                activity = programnames[cellno]
-                return activity
-        elif isinstance(cell, str): #The cell is a string, so all groups have that activity now.
-            #print (rowno, cellno), cell
-            return cell
+class Schedule(object):
+    """Hosts a set of ScheduleFragments to become one large, complete Schedule"""
+    def __init__(self, *fragments):
+        self.fragments = fragments
 
+    def has_key(self, time):
+        return any([fragment.has_key(time) for fragment in self.fragments])
+
+    def __getitem__(self, time):
+        for fragment in self.fragments:
+            if fragment.has_key(time):
+                return fragment[time]
 
 if __name__ == "__main__":
     path = "data/planning_2012_edit_klein_commonPrograms_fixed.csv"
 
-    ZO_prognames = ((2,2),(3,9)) #3C t/m 3I
-    ZO_data_area = ((4,0), (32,9)) #5A t/m 33I
+    saturday_prognames = ((2,2),(3,9)) #3C t/m 3I
+    saturday_data_area = ((4,0), (32,9)) #5A t/m 33I
 
+    sunday_prognames = ((45,2), (46,9))
+    sunday_data_area = ((36,0), (55,9))
 
-    s = ScheduleFragment(path, 
-            programnamecells_area=ZO_prognames, 
-            datacells_area=ZO_data_area)
-    print "1: ", s.query(time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M"), 5)
-    print "2: ", s.query(time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M"), 5)
-    print "3: ", s.query(time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"), 5)
-    print "4: ", s.query(time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M"), 5)
+    zat = ScheduleFragment(path, 
+            programnamecells_area=saturday_prognames, 
+            datacells_area=saturday_data_area)
+    zon = ScheduleFragment(path, 
+            programnamecells_area=sunday_prognames, 
+            datacells_area=sunday_data_area)
 
     t1 = time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")
-    t5 = time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M")
-    for groupnumber, activity in s[t1].iteritems():
+    t2 = time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")
+    t3 = time.strptime("21-10-2012 08:15", "%d-%m-%Y %H:%M")
+    t4 = time.strptime("21-10-2012 12:35", "%d-%m-%Y %H:%M")
+    t5 = time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M") #Monday after!
+
+    print "1: ", zat.query(time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M"), 5)
+    print "2: ", zat.query(time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M"), 5)
+    print "3: ", zat.query(time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"), 5)
+    print "4: ", zat.query(time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M"), 5)
+
+    for groupnumber, activity in zat[t1].iteritems():
         print groupnumber, activity
+
