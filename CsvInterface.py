@@ -17,6 +17,7 @@ class Schedule(object):
 			self._database += [d]
 	
 	def __getitem__(self, time):
+		"""Query the schedule: if given a time, __getitem__ returns a list of group activity names, which is indexed by group number"""
 		selection = [row for row in self._database if row['Start'] <= time and row['Eind'] > time]
 		return selection[0]
 

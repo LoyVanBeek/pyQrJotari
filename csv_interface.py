@@ -6,13 +6,13 @@
 #   which automatically fills in group numbers.
 #Times must be complete, date and time.
 
-
 import csv, time, pprint
 
 class Schedule(object):
     """When passed a time into __get_item__, it returns a list of program names, one for each group number."""
-    def __init__(self, filename, format="%d-%m-%Y %H:%M"):
+    def __init__(self, filename, format="%d-%m-%Y %H:%M", groupcount=28):
         self.format = format
+        self.groupcount = groupcount
 
         f = open(filename)
         arr = csv_to_array(csv.reader(f))
@@ -45,6 +45,8 @@ class Schedule(object):
                 #print (rowno, cellno), cell
                 return cell
 
+    def __getitem__(self, time):
+        return [self.query(time, groupnr) for groupnr in xrange(1, self.groupcount+1)]
 
 def csv_to_array(reader):
     lines = [line for line in reader]
@@ -141,6 +143,7 @@ def query(  arr,
         elif isinstance(cell, str): #The cell is a string, so all groups have that activity now.
             #print (rowno, cellno), cell
             return cell
+
 
 if __name__ == "__main__":
     path = "data/planning_2012_edit_klein_commonPrograms_fixed.csv"
