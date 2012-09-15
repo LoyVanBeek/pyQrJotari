@@ -16,9 +16,8 @@ class ScheduleFragment(object):
     When passed a time into __getitem__, it returns a list of program names, one for each group number."""
     def __init__(self, 
         filename, 
-        programnamecells_area=((2,2),(3,9)),
-        datacells_area=((4,0), (32,9)),
-        fill_area=((4,3), (32,10)), #The area of cells to be filled in from above for completion
+        programnamecells_area,
+        datacells_area,
         format="%d-%m-%Y %H:%M", 
         groupcount=28):
         self.format = format
@@ -26,7 +25,7 @@ class ScheduleFragment(object):
 
         f = open(filename)
         arr = ScheduleFragment.csv_to_array(csv.reader(f))
-        arr = ScheduleFragment.fill_blanks(arr, start_yx=fill_area[0], end_yx=fill_area[1])
+        arr = ScheduleFragment.fill_blanks(arr, start_yx=datacells_area[0], end_yx=datacells_area[1])
         #arr = ScheduleFragment.fill_blanks(arr, start_yx=(4,3), end_yx=(32,10))
 
         self.programtables = dict()
@@ -181,12 +180,13 @@ def query(  arr,
 if __name__ == "__main__":
     path = "data/planning_2012_edit_klein_commonPrograms_fixed.csv"
 
-    zaterdag_ochtend_programmanamen_area = ((2,2),(3,9)) #3C t/m 3I
-    zaterdag_ochtend_total_area = ((4,2), (32,9)) #5D (moet dat niet 5C zijn?) t/m 33J (moet dat niet 32I zijn?)
+    ZO_prognames = ((2,2),(3,9)) #3C t/m 3I
     ZO_data_area = ((4,0), (32,9)) #5A t/m 33I
 
 
-    s = ScheduleFragment(path, zaterdag_ochtend_programmanamen_area, ZO_data_area, zaterdag_ochtend_total_area)
+    s = ScheduleFragment(path, 
+            programnamecells_area=ZO_prognames, 
+            datacells_area=ZO_data_area)
     print "1: ", s.query(time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M"), 5)
     print "2: ", s.query(time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M"), 5)
     print "3: ", s.query(time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"), 5)
