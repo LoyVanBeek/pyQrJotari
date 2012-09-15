@@ -11,23 +11,37 @@ import csv, time, pprint
 class RowNotFoundException(Exception):
     pass
 
-class Schedule(object):
-    """When passed a time into __get_item__, it returns a list of program names, one for each group number."""
-    def __init__(self, filename, format="%d-%m-%Y %H:%M", groupcount=28):
+class ScheduleFragment(object):
+    """ A fragment of a schedule. Each fragment has assigned its own dictionary of programnames.
+    When passed a time into __getitem__, it returns a list of program names, one for each group number."""
+    def __init__(self, 
+        filename, 
+        programnamecells_area=((2,2),(3,9)),
+        datacells_area=((4,0), (32,9)),
+        fill_area=((4,3), (32,10)), #The area of cells to be filled in from above for completion
+        format="%d-%m-%Y %H:%M", 
+        groupcount=28):
         self.format = format
         self.groupcount = groupcount
 
         f = open(filename)
-        arr = Schedule.csv_to_array(csv.reader(f))
-        arr = Schedule.fill_blanks(arr, start_yx=(4,3), end_yx=(32,10))
+        arr = ScheduleFragment.csv_to_array(csv.reader(f))
+        arr = ScheduleFragment.fill_blanks(arr, start_yx=fill_area[0], end_yx=fill_area[1])
+        #arr = ScheduleFragment.fill_blanks(arr, start_yx=(4,3), end_yx=(32,10))
 
         self.programtables = dict()
         self.programtables[  (time.strptime("20-10-2012 09:30", "%d-%m-%Y %H:%M"), 
                             time.strptime("21-10-2012 00:00", "%d-%m-%Y %H:%M"))
-                         ] = Schedule.crop(arr, (2,2), (3,9))[0] #saturday, klein
+                         ] = ScheduleFragment.crop(arr, 
+                            programnamecells_area[0], 
+                            programnamecells_area[1])[0] #saturday, klein
+        # self.programtables[  (time.strptime("20-10-2012 09:30", "%d-%m-%Y %H:%M"), 
+        #                     time.strptime("21-10-2012 00:00", "%d-%m-%Y %H:%M"))
+        #                  ] = ScheduleFragment.crop(arr, (2,2),(3,9))[0] #saturday, klein
 
-        self._database = Schedule.crop(arr, (4,0), (32,9)) #All these 2-tuples are linked to the csv-file. 
-
+        self._database = ScheduleFragment.crop(arr, 
+                                               datacells_area[0], datacells_area[1]) #All these 2-tuples are linked to the csv-file. 
+        # self._database = ScheduleFragment.crop(arr, (4,0), (32,9)) #All these 2-tuples are linked to the csv-file. 
     def query(self, querytime, groupnumber):
         #programtables is a dict mapping a (start, end)-tuple to an array of programnames
         row = self.find_row_for_time(self._database, querytime, self.format)
@@ -51,7 +65,7 @@ class Schedule(object):
             return bool(self.find_row_for_time(self._database, time, self.format))
         except RowNotFoundException:
             return False
-    
+
     def __getitem__(self, time):
         try:
             return dict([(groupnr, self.query(time, groupnr)) for groupnr in xrange(1, self.groupcount+1)])
@@ -77,7 +91,7 @@ class Schedule(object):
     @staticmethod
     def find_above(array, row, col):
         if not array[row-1][col]:
-            Schedule.find_above(array, row-1, col)
+            ScheduleFragment.find_above(array, row-1, col)
         else:
             return array[row-1][col]
 
@@ -90,7 +104,7 @@ class Schedule(object):
                         try:
                             if not cell:
                                 #Cell is empty, so get value from ABOVE
-                                backup = Schedule.find_above(array, rowno, cellno)
+                                backup = ScheduleFragment.find_above(array, rowno, cellno)
                                 #TODO: store backup
                                 array[rowno][cellno] = backup
                         except ValueError:
@@ -100,6 +114,8 @@ class Schedule(object):
 
     @staticmethod
     def crop(array, start_yx, end_yx):
+        """The cell as indicated by start_yx will move to [0][0] in the array.
+        Everything outside the range, limited by end_yx will not be in the resulting array. """
         orig_width = len(array[0])
         assert all([len(row) == orig_width for row in array])
         orig_height = len(array)
@@ -165,7 +181,12 @@ def query(  arr,
 if __name__ == "__main__":
     path = "data/planning_2012_edit_klein_commonPrograms_fixed.csv"
 
-    s = Schedule(path)
+    zaterdag_ochtend_programmanamen_area = ((2,2),(3,9)) #3C t/m 3I
+    zaterdag_ochtend_total_area = ((4,2), (32,9)) #5D (moet dat niet 5C zijn?) t/m 33J (moet dat niet 32I zijn?)
+    ZO_data_area = ((4,0), (32,9)) #5A t/m 33I
+
+
+    s = ScheduleFragment(path, zaterdag_ochtend_programmanamen_area, ZO_data_area, zaterdag_ochtend_total_area)
     print "1: ", s.query(time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M"), 5)
     print "2: ", s.query(time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M"), 5)
     print "3: ", s.query(time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M"), 5)
