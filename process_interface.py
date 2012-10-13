@@ -67,7 +67,7 @@ class ZBarInterface(object):
             try:
                 out = self.process.stdout.readline()
                 if "QR-Code:" in out:
-                    # out = out.strip("QR-Code:")
+                    out = out.strip("QR-Code:")
                     # f.write(out+'\n')
                     # f.flush()
                     #TODO: For debugging:

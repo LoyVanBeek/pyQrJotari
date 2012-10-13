@@ -179,7 +179,7 @@ if __name__ == "__main__":
     path_groot = "data/planning_2012_groot_1.csv"
 
     saturday_prognames_klein = ((2,2),(3,9)) #3C t/m 3I
-    saturday_data_area_klein = ((4,0), (32,9)) #5A t/m 33I
+    saturday_data_area_klein = ((3,0), (32,9)) #5A t/m 33I
 
     sunday_prognames_klein = ((43,2), (44,7))
     sunday_data_area_klein = ((34,0), (53,7))
@@ -219,6 +219,7 @@ if __name__ == "__main__":
     klein = Schedule(zat_klein, zon_klein)
     groot = Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
 
+    t0 = datetime.datetime(*time.strptime("20-10-2012 09:40", "%d-%m-%Y %H:%M")[:6])
     t1 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
     t2 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
     t3 = datetime.datetime(*time.strptime("21-10-2012 08:15", "%d-%m-%Y %H:%M")[:6])
@@ -232,15 +233,18 @@ if __name__ == "__main__":
     # print "3: ", klein[datetime.datetime(*time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M")[:6])][5]
     # print "4: ", klein[datetime.datetime(*time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M")[:6])][5]
 
-    # print "ZATERDAG:"
-    # for groupnumber, activity in klein[t1].iteritems():
-    #     print "klein"+str(groupnumber), activity
+    print "ZATERDAG:"
+    for groupnumber, activity in klein[t0].iteritems():
+        print "klein"+str(groupnumber), activity
 
-    # #print zon_klein.query(t4, 5)
+    for groupnumber, activity in klein[t1].iteritems():
+        print "klein"+str(groupnumber), activity
 
-    # print "ZONDAG:"
-    # for groupnumber, activity in klein[t4].iteritems():
-    #     print "klein"+str(groupnumber), activity
+    #print zon_klein.query(t4, 5)
+
+    print "ZONDAG:"
+    for groupnumber, activity in klein[t4].iteritems():
+        print "klein"+str(groupnumber), activity
 
     print "Groot"
 
