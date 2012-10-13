@@ -162,7 +162,7 @@ def generate_cell(code):
     #                         {0}
     #                     </div>""".format(code)
 
-    return """\t\t\t\t\t<div style='border: solid 1px; text-align: center; width: 200px; height: 240px; margin: 5px; vertical-align:bottom'>
+    return """\t\t\t\t\t<div style='border: solid 1px; text-align: center; width: 200px; height: 240px; margin: 5px; vertical-align:bottom; padding: 10px'>
     \t\t\t\t\t\t<br>
 \t\t\t\t\t\t{0}
 \t\t\t\t\t\t<img src="http://api.qrserver.com/v1/create-qr-code/?data={0}&#38;size=200x200&#38;prov=goqrme" alt="{0}" title=""/>
@@ -211,7 +211,8 @@ if __name__ == "__main__":
                     [10]*3 + \
                     [12]*3 + \
                     [19]*3 + \
-                    [23]*3
+                    [23]*3 + \
+                    range(1,29)
     # #print klein_array
     # klein_array = [1,2,3,4,5]
     groot_array =   [2] * 3 + \
@@ -237,7 +238,10 @@ if __name__ == "__main__":
                     [1] * 4 + \
                     [4] * 5 + \
                     [8] * 6 + \
-                    [10] * 6
+                    [10] * 6 +\
+                    range(1,25)
+
+    print len(klein_array)+len(groot_array)
 
     with file(filepath, "w+") as f:
         for html in main(klein_array, groot_array):

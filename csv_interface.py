@@ -124,15 +124,16 @@ class ScheduleFragment(object):
     def find_row_for_time(array, querytime, format="%d-%m-%Y %H:%M"):
         for rowno, row in enumerate(array):
             #print row
-
+            #import pdb; pdb.set_trace()
             starttime_cell = row[0]
             endtime_cell = row[1]
-
-            starttime = datetime.datetime(*time.strptime(starttime_cell, format)[:6])
-            endtime = datetime.datetime(*time.strptime(endtime_cell, format)[:6])
-            
-            if starttime < querytime < endtime:
-                return row
+            if starttime_cell and endtime_cell:
+                starttime = datetime.datetime(*time.strptime(starttime_cell, format)[:6])
+                endtime = datetime.datetime(*time.strptime(endtime_cell, format)[:6])
+                
+                if starttime < querytime < endtime:
+                    #import pdb; pdb.set_trace()
+                    return row
         raise RowNotFoundException("No row found for querytime {0}".format(querytime))
 
     @staticmethod
@@ -183,15 +184,15 @@ if __name__ == "__main__":
     sunday_prognames_klein = ((43,2), (44,7))
     sunday_data_area_klein = ((34,0), (53,7))
 
-    saturday_prognames_groot_dag    = ((8,2), (9,7)) #9C t/m 9H
-    saturday_data_area_groot_dag    = ((3,0), (23,7)) #4A t/m 23H
+    saturday_prognames_groot_dag    = ((8,2), (9,8)) #9C t/m 9H
+    saturday_data_area_groot_dag    = ((3,0), (23,8)) #4A t/m 23H
 
-    saturday_prognames_groot_avond  = ((23,2), (24,7)) #24C tm 24H
-    saturday_data_area_groot_avond  = ((24,0), (35,7)) #25A tm 35H
+    saturday_prognames_groot_avond  = ((23,2), (24,8)) #24C tm 24H
+    saturday_data_area_groot_avond  = ((24,0), (35,8)) #25A tm 35H
 
     #TODO: Fix for groot
-    sunday_prognames_groot          = ((42,2), (43,6)) #43C tm 43G
-    sunday_data_area_groot          = ((37,0), (56,6)) #38A tm 57G
+    sunday_prognames_groot          = ((42,2), (43,7)) #43C tm 43G
+    sunday_data_area_groot          = ((37,0), (56,7)) #38A tm 57G
 
 
     zat_klein = ScheduleFragment(path_klein, 
@@ -201,12 +202,22 @@ if __name__ == "__main__":
             programnamecells_area=sunday_prognames_klein, 
             datacells_area=sunday_data_area_klein)
 
-    zat_groot_dag   = ScheduleFragment(path_groot, saturday_prognames_groot_dag, saturday_data_area_groot_dag, groupcount=24)
-    zat_groot_avond = ScheduleFragment(path_groot, saturday_prognames_groot_avond, saturday_data_area_groot_avond, groupcount=24)
-    zon_groot       = ScheduleFragment(path_groot, sunday_prognames_groot, sunday_data_area_groot, groupcount=24)
+    zat_groot_dag   = ScheduleFragment(path_groot, 
+            saturday_prognames_groot_dag, 
+            saturday_data_area_groot_dag, 
+            groupcount=24)
+    zat_groot_avond = ScheduleFragment(path_groot, 
+            saturday_prognames_groot_avond, 
+            saturday_data_area_groot_avond, 
+            groupcount=24)
+    zon_groot       = ScheduleFragment(path_groot, 
+        sunday_prognames_groot, 
+        sunday_data_area_groot, 
+        groupcount=24)
 
 
-    s = Schedule(zat_klein, zon_klein)
+    klein = Schedule(zat_klein, zon_klein)
+    groot = Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
 
     t1 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
     t2 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
@@ -216,21 +227,33 @@ if __name__ == "__main__":
     t6 = datetime.datetime(*time.strptime("21-10-2012 08:35", "%d-%m-%Y %H:%M")[:6])
     t7 = datetime.datetime(*time.strptime("21-10-2012 13:35", "%d-%m-%Y %H:%M")[:6])
 
-    print "1: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]), 5)
-    print "2: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M")[:6]), 5)
-    print "3: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M")[:6]), 5)
-    print "4: ", zat_klein.query(datetime.datetime(*time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M")[:6]), 5)
+    # print "1: ", klein[datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])][5]
+    # print "2: ", klein[datetime.datetime(*time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M")[:6])][5]
+    # print "3: ", klein[datetime.datetime(*time.strptime("20-10-2012 18:35", "%d-%m-%Y %H:%M")[:6])][5]
+    # print "4: ", klein[datetime.datetime(*time.strptime("20-10-2012 23:35", "%d-%m-%Y %H:%M")[:6])][5]
 
-    print "ZATERDAG:"
-    for groupnumber, activity in zat_klein[t1].iteritems():
-        print groupnumber, activity
+    # print "ZATERDAG:"
+    # for groupnumber, activity in klein[t1].iteritems():
+    #     print "klein"+str(groupnumber), activity
 
-    #print zon_klein.query(t4, 5)
+    # #print zon_klein.query(t4, 5)
 
-    print "ZONDAG:"
-    for groupnumber, activity in zon_klein[t4].iteritems():
-        print groupnumber, activity
+    # print "ZONDAG:"
+    # for groupnumber, activity in klein[t4].iteritems():
+    #     print "klein"+str(groupnumber), activity
+
+    print "Groot"
+
+    print "ZATERDAG {0}:".format(t1)
+    for groupnumber, activity in groot[t1].iteritems():
+        print "groot"+str(groupnumber), activity
+
+    print "ZONDAG: {0}".format(t7)
+    for groupnumber, activity in groot[t7].iteritems():
+        print "groot"+str(groupnumber), activity
 
     #check_program(10)
+    #check_program(10)
+
 
 
