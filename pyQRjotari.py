@@ -4,7 +4,7 @@ import csv_interface
 import process_interface
 import time, datetime
 
-dummy_time_str = """20-10-2012 09:40"""
+dummy_time_str = """20-10-2012 12:01"""
 current_time = datetime.datetime(*time.strptime(dummy_time_str, "%d-%m-%Y %H:%M")[:6])
 
 class JotariQrBackend(object):
@@ -24,10 +24,26 @@ class JotariQrBackend(object):
             #import pdb; pdb.set_trace()
             age_sched = self.schedules[age]
             current_activities = age_sched[current_time] #TODO: Set correct/current time!
+            
+            try:
+                #Keep looking through the schedule until a next, different program is found. 
+                next_activities = current_activities
+                time_gap = 1
+                #import ipdb; ipdb.set_trace()
+                while next_activities == current_activities:
+                    next_activities = age_sched[current_time + datetime.timedelta(0,0,minutes=time_gap)] # days, seconds, then other fields.] #TODO: Set correct/current time!
+                    time_gap += 5
+                print "Next program starts in {0} minutes".format(time_gap)
+                next_activity = next_activities[group]
+            except:
+                next_activity = "Onbekend"
+            
             group_activity = current_activities[group]
+            group_activity = group_activity.lower()
+            next_activity  = next_activity.lower()
             
             #print age, group, group_activity, time, None
-            self.onScannedCB(age, group, group_activity, current_time, None) #age, group, activity, time, image
+            self.onScannedCB(age, group, group_activity, current_time, None, next_activity=next_activity,next_start=time_gap) #age, group, activity, time, image
         except KeyError, ke:
             print ke
             print "Haal Loy even, iets is er misgegaan!"

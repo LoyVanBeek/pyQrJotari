@@ -85,14 +85,15 @@ class QrJotariGui(object):
                 pass
         return map
 
-    def update(self, age, group, group_activity, current_time, image):
+    def update(self, age, group, group_activity, current_time, image, next_activity=None, next_start="wat"):
         print "START update"
         print age, group, group_activity, current_time, image
 
         self.activity_firstImLbl.bell()
 
         self.groupText.set("Groep "+str(group))
-        self.activity_firstText.set(str(group_activity))
+        self.activity_firstText.set(str(group_activity.capitalize()))
+        self.activity_secondText.set("{0}, {1} minuten later".format(str(next_activity).capitalize(), next_start))
 
         #import pdb; pdb.set_trace()
         if self.act2img.has_key(group_activity):
