@@ -74,8 +74,8 @@ class ZBarInterface(object):
                     print out
                     if self.callback:
                         self.callback(out)
-            except:
-                print "Trying to read did not work"
+            except Exception, e:
+                print "Trying to read did not work: ", e
                 self.wait_stop()
                 break
         else:

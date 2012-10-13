@@ -1,3 +1,11 @@
+#voetbal 
+#ballon
+#inloopspellen
+#drinken
+#creatief 
+#gps 
+#parcours
+
 - schedule:
     age: klein
     path: data/prog_klein.csv
@@ -5,6 +13,34 @@
     age: groot
     path: data/prog_groot.csv
 
+- activity:
+    name: voetbal
+    image: images/voetbal.jpg
+    sound: sounds/voetbal.mp3
+- activity:
+    name: ballon
+    image: images/ballon.gif
+    sound: sounds/ballon.mp3
+- activity:
+    name: inloopspellen
+    image: images/inloop.jpg
+    sound: sounds/inloopspellen.mp3
+- activity:
+    name: drinken
+    image: images/drinken.jpg
+    sound: sounds/drinken.mp3
+- activity:
+    name: creatief
+    image: images/creative.jpg
+    sound: sounds/creatief.mp3
+- activity:
+    name: gps
+    image: images/gps.png
+    sound: sounds/gps.mp3
+- activity:
+    name: parcours
+    image: images/parcours.jpg
+    sound: sounds/parcours.mp3
 - activity:
     name: jota
     image: images/jota.gif
@@ -30,7 +66,15 @@
     image: images/bos.png
     sound: sounds/bos.mp3
 - activity:
+    name: bosspel
+    image: images/bos.png
+    sound: sounds/bos.mp3
+- activity:
     name: 'gezamenlijk spel'
+    image: 'images/gezamenlijk spel.jpg'
+    sound: 'sounds/gezamenlijk spel.mp3'
+- activity:
+    name: 'gezamenlijk programma'
     image: 'images/gezamenlijk spel.jpg'
     sound: 'sounds/gezamenlijk spel.mp3'
 - activity:
@@ -66,11 +110,15 @@
     image: 'images/tenten opzetten.GIF'
     sound: 'sounds/tenten opzetten.mp3'
 - activity:
-    name: tocht van daar naar hier
+    name: 'images/tocht van daar naar hier'
     image: 'images/tocht van daar naar hier.gif'
     sound: 'sounds/tocht van daar naar hier.mp3'
 - activity:
-    name: tocht van hier naar daar
+    name: "tocht van hier naar daar"
+    image: 'images/tocht van hier naar daar.gif'
+    sound: 'sounds/tocht van hier naar daar.mp3'
+- activity:
+    name: tocht
     image: 'images/tocht van hier naar daar.gif'
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
@@ -86,4 +134,4 @@
     image: 'images/wassen, plassen en naar bed.jpeg'
     sound: 'sounds/wassen, plassen en naar bed.mp3'
 
-- timeformat: "%d/%m/%y %H:%M"
+- timeformat: "%d-%m-%Y %H:%M"
