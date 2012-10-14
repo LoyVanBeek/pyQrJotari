@@ -5,6 +5,9 @@ import yaml
 import pyQRjotari
 import csv_interface
 from PIL import Image, ImageTk
+import logging
+
+logging.basicConfig(filename='qr.log', level=logging.DEBUG)
 
 #GUI:
 '''
@@ -88,6 +91,8 @@ class QrJotariGui(object):
     def update(self, age, group, group_activity, current_time, image, next_activity=None, next_start="wat"):
         print "START update"
         print age, group, group_activity, current_time, image
+
+        logging.info("\t{0}:{1} scanned at {3} for activity '{2}'".format(age, group, group_activity, current_time))
 
         self.activity_firstImLbl.bell()
 
