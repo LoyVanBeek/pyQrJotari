@@ -1,18 +1,13 @@
-#voetbal 
-#ballon
-#inloopspellen
-#drinken
-#creatief 
-#gps 
-#parcours
+#pubquiz
+#lange afstand drinken
 - zbarcommand: "zbarcam /dev/video1"
 
 - schedule:
     age: klein
-    path: data/prog_klein.csv
+    path: data/planning_2012_final_klein.csv
 - schedule: 
     age: groot
-    path: data/prog_groot.csv
+    path: data/planning_2012_final_groot.csv
 
 - activity:
     name: voetbal

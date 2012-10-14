@@ -23,7 +23,7 @@ class QrJotariGui(object):
 
     def __init__(self, master, activities):
         self.act2img = self.load_images(activities)#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
-        print self.act2img
+        #print self.act2img
 
         master.title("JOTARI QR-codescanner")
 
@@ -109,8 +109,9 @@ def main(config):
     schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
     zbarcommand = str([item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0]) #load schedule yaml-objects
     
-    path_klein = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
-    path_groot = "data/planning_2012_groot_1.csv"
+    #import ipdb; ipdb.set_trace()
+    path_klein = [schedule["path"] for schedule in schedules if schedule["age"] == "klein"][0]#"data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
+    path_groot = [schedule["path"] for schedule in schedules if schedule["age"] == "groot"][0]#"data/planning_2012_groot_1.csv"
 
     saturday_prognames_klein = ((2,2),(3,9)) #3C t/m 3I
     saturday_data_area_klein = ((3,0), (32,9)) #5A t/m 33I
@@ -156,7 +157,7 @@ def main(config):
 
     activities = dict([(item['activity']['name'], item['activity']) for item in config if item.has_key("activity")])
 
-    print activities
+    #print activities
     
     def update(*args):
         print args
