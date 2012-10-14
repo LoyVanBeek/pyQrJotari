@@ -8,11 +8,11 @@ dummy_time_str = """21-10-2012 11:01"""
 current_time = datetime.datetime(*time.strptime(dummy_time_str, "%d-%m-%Y %H:%M")[:6])
 
 class JotariQrBackend(object):
-    def __init__(self, schedules, onScannedCB, scannerClass=process_interface.ZBarInterface):
+    def __init__(self, schedules, onScannedCB, scannerClass=process_interface.ZBarInterface, command="zbarcam"):
         self.schedules = schedules
         self.onScannedCB = onScannedCB
         
-        self.scanner = scannerClass(callback=self.lookup) 
+        self.scanner = scannerClass(callback=self.lookup, command=command) 
         
     def lookup(self, code):
         code = code.lower().strip()
@@ -118,7 +118,7 @@ def main(config):
     def update(*args):
         print args
     
-    backend = JotariQrBackend(schedules, update)
+    backend = JotariQrBackend(schedules, update, command="zbarcam /dev/video1")
     backend.start()
     backend.wait_stop()
     

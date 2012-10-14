@@ -56,7 +56,7 @@ class ZBarInterface(object):
             exit()
         
     def run(self):
-        self.process = subprocess.Popen(self.command,
+        self.process = subprocess.Popen(self.command.split(" "),
                 stdout=subprocess.PIPE,
                 universal_newlines=True,
                 shell=False)

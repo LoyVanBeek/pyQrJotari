@@ -5,6 +5,7 @@
 #creatief 
 #gps 
 #parcours
+- zbarcommand: "zbarcam /dev/video1"
 
 - schedule:
     age: klein

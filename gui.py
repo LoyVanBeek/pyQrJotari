@@ -107,6 +107,7 @@ class QrJotariGui(object):
 def main(config):
     timeformat = [item['timeformat'] for item in config if item.has_key("timeformat")][0] #load timeformat markup
     schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
+    zbarcommand = str([item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0]) #load schedule yaml-objects
     
     path_klein = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
     path_groot = "data/planning_2012_groot_1.csv"
@@ -167,7 +168,7 @@ def main(config):
     root.configure(background='white')
     app = QrJotariGui(root, activities)
     
-    backend = pyQRjotari.JotariQrBackend(schedules, app.update)
+    backend = pyQRjotari.JotariQrBackend(schedules, app.update, command=zbarcommand)
     backend.start()
     
     root.mainloop()
