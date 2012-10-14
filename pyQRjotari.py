@@ -4,7 +4,7 @@ import csv_interface
 import process_interface
 import time, datetime
 
-dummy_time_str = """21-10-2012 11:01"""
+dummy_time_str = """20-10-2012 20:01"""
 current_time = datetime.datetime(*time.strptime(dummy_time_str, "%d-%m-%Y %H:%M")[:6])
 
 class JotariQrBackend(object):
@@ -24,6 +24,7 @@ class JotariQrBackend(object):
         current_time = datetime.datetime.now()
 
         try:
+            #import ipdb; ipdb.set_trace()
             age_sched = self.schedules[age]
             current_activities = age_sched[current_time] #TODO: Set correct/current time!
 
@@ -53,6 +54,8 @@ class JotariQrBackend(object):
             print "Haal Loy even, iets is er misgegaan!"
             import pdb; pdb.set_trace()
             self.wait_stop()
+        except TypeError, te:
+            print "Is het wel JOTARI? Er is geen programma op {0}.".format(current_time)
         except Exception, ex:
             print ex
     
@@ -69,8 +72,8 @@ def main(config):
     timeformat = [item['timeformat'] for item in config if item.has_key("timeformat")][0] #load timeformat markup
     schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
 
-    path_klein = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
-    path_groot = "data/planning_2012_groot_1.csv"
+    path_klein = "data/planning_2012_final_klein.csv"
+    path_groot = "data/planning_2012_final_groot.csv"
 
     saturday_prognames_klein = ((2,2),(3,9)) #3C t/m 3I
     saturday_data_area_klein = ((3,0), (32,9)) #5A t/m 33I

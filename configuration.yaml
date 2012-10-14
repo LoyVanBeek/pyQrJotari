@@ -10,6 +10,14 @@
     path: data/planning_2012_final_groot.csv
 
 - activity:
+    name: "lange afstand drinken"
+    image: images/drinken.jpg
+    sound: sounds/drinken.mp3
+- activity:
+    name: pubquiz
+    image: images/pubquiz.jpg
+    sound: sounds/pubquiz.mp3
+- activity:
     name: voetbal
     image: images/voetbal.jpg
     sound: sounds/voetbal.mp3
