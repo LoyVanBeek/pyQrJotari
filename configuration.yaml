@@ -1,5 +1,3 @@
-#pubquiz
-#lange afstand drinken
 - zbarcommand: "zbarcam /dev/video1"
 
 - schedule:
@@ -9,6 +7,10 @@
     age: groot
     path: data/planning_2012_final_groot.csv
 
+- activity:
+    name: "scotland yard"
+    image: images/scotlandyard.jpg
+    sound: sounds/scotlandyard.mp3
 - activity:
     name: "lange afstand drinken"
     image: images/drinken.jpg

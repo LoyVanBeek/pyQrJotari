@@ -26,3 +26,8 @@ Dutch voices were found here:
 http://tcts.fpms.ac.be/synthesis/euler/
 
 Installing them though was not documented well enough.
+----
+
+On Windows, use predownloaded .egg-files to install all needed dependencies, 
+using "easy_install /my_downloads/OtherPackage-3.2.1-py2.3.egg"
+Or just use the .exe-installers...
