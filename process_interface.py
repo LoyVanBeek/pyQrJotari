@@ -61,7 +61,7 @@ class ZBarInterface(object):
                 universal_newlines=True,
                 shell=False)
         
-        f = file("/home/loy/Development/pyQrJotari/data/counts/cards.txt")
+        #f = file("/home/loy/Development/pyQrJotari/data/counts/cards.txt")
         
         while self.process.poll() == None:
             try:
