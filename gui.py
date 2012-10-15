@@ -4,7 +4,10 @@ import tkFont
 import yaml
 import pyQRjotari
 import csv_interface
-from PIL import Image, ImageTk
+try:
+    from PIL import Image, ImageTk
+except ImportError:
+    import Image, ImageTk #Works on windows
 import logging
 
 logging.basicConfig(filename='qr.log', level=logging.DEBUG)
