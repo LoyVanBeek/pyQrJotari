@@ -12,3 +12,6 @@ Makefile.in
 /install-sh
 /missing
 /*.pyc
+/build
+/dist
+/pyQrJotari.egg-info

@@ -6,7 +6,8 @@
 #   which automatically fills in group numbers.
 #Times must be complete, date and time.
 
-import csv, time, datetime, pprint
+import csv, time, datetime
+from dateutil import parser
 
 class RowNotFoundException(Exception):
     pass
@@ -128,8 +129,10 @@ class ScheduleFragment(object):
             starttime_cell = row[0]
             endtime_cell = row[1]
             if starttime_cell and endtime_cell:
-                starttime = datetime.datetime(*time.strptime(starttime_cell, format)[:6])
-                endtime = datetime.datetime(*time.strptime(endtime_cell, format)[:6])
+                #starttime = datetime.datetime(*time.strptime(starttime_cell, format)[:6])
+                #endtime = datetime.datetime(*time.strptime(endtime_cell, format)[:6])
+                starttime = parser.parse(starttime_cell)
+                endtime = parser.parse(endtime_cell)
                 
                 if starttime < querytime < endtime:
                     #import pdb; pdb.set_trace()

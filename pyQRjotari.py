@@ -3,6 +3,7 @@ import yaml
 import csv_interface
 import process_interface
 import time, datetime
+from dateutil import parser
 
 dummy_time_str = """20-10-2012 20:01"""
 current_time = datetime.datetime(*time.strptime(dummy_time_str, "%d-%m-%Y %H:%M")[:6])
@@ -20,8 +21,9 @@ class JotariQrBackend(object):
         group = int(code[5:])
         print "Code: {0} = {1}:{2}".format(code, age, group)
         
-        #import ipdb; ipdb.set_trace()
-        current_time = datetime.datetime.now()
+        ## import ipdb; ipdb.set_trace()
+        #current_time = datetime.datetime.now()
+        current_time = parser.parse("18-10-2013 20:01")
 
         try:
             #import ipdb; ipdb.set_trace()
