@@ -1,4 +1,4 @@
-- zbarcommand: "zbarcam /dev/video1"
+- zbarcommand: "zbarcam"# /dev/video1"
 
 - schedule:
     age: klein
