@@ -5,7 +5,7 @@
     path: data/planning_2013_klein.csv
 - schedule: 
     age: groot
-    path: data/planning_2012_final_groot.csv
+    path: data/planning_2013_groot.csv
 
 - activity:
     name: "scotland yard"
@@ -139,5 +139,39 @@
     name:  'wassen, plassen en naar bed'
     image: 'images/wassen, plassen en naar bed.jpeg'
     sound: 'sounds/wassen, plassen en naar bed.mp3'
+#New:
+- activity: 
+    name: 'Survival'
+    image: 'images/survival.gif'
+- activity: 
+    name: 'Reuze ballen'
+    image: 'images/Reuze ballen.gif'
+- activity: 
+    name: 'Geheimschrift'
+    image: 'images/Geheimschrift.gif'
+- activity: 
+    name: 'Sherow programma'
+    image: 'images/Sherow programma.gif'
+- activity: 
+    name: 'Levend Mijnenvegen'
+    image: 'images/Levend Mijnenvegen.gif'
+- activity: 
+    name: 'Uitleg + klaarmaken voor the Hunt'
+    image: 'images/Uitleg_klaarmaken voor the Hunt.gif'
+- activity:
+    name: 'Levend memorie'
+    image: 'images/Levend memorie.gif'
+- activity:
+    name: 'Blinde geleide spel'
+    image: 'images/Blinde geleide spel.gif'
+- activity:
+    name: 'Levend kwartet'
+    image: 'images/Levend kwartet.gif'
+- activity:
+    name: 'De grote ontknoping'
+    image: 'images/De grote ontknoping.gif'
+
+
 
 - timeformat: "%d-%m-%Y %H:%M"
+
