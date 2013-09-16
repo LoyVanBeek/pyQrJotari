@@ -1,12 +1,17 @@
 pyQrJotari
 ==========
 
-Python port of the C#-written Jotari-QRcode program for Linux.
-It is intended to run cross-platform.
+Kids at http://www.scoutingboxtel.nl get a personal QR-code which they can scan during the Jotari-event. 
+This program will look-up which activity is scheduled for each kid. 
 
-TODO: 
-- DONE: Add time format string to config
-- Take the current time and date if not told otherwise
-- DONE: Create a GUI (in TkInter maybe or pygame)
-- CURRENT: Add images
-- Add sounds reading aloud the scanned program
+TODO
+----
+- Make the UI blink when a new code is succesfully scanned
+- Add images for this year's new activities
+- Test this year's setup.
+- Maybe do some refactoring in the event loop / polling of zbar
+
+Requirements
+------------
+- pip install PIL
+- sudo apt-get install zbar*
