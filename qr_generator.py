@@ -153,28 +153,12 @@ def write_QRcodes(klein, groot, columns=4):
     yield "\t\t</table>"
 
 def generate_cell(code):
-    # return """<div style='border: solid 1px; 
-    #                                     text-align: center; 
-    #                                     width:  300px; 
-    #                                     margin: 10px>
-    #                     <img src='http://chart.apis.google.com/chart?chs=200x200&cht=qr&chld=|0&chl={0}' alt='{0}'/>
-    #                     <br>
-    #                         {0}
-    #                     </div>""".format(code)
-
+    address = "http://www.scoutingboxtel.nl/qr/{0}.asp".format(code)
     return """\t\t\t\t\t<div style='border: solid 1px; text-align: center; width: 200px; height: 240px; margin: 5px; vertical-align:bottom; padding: 10px'>
     \t\t\t\t\t\t<br>
 \t\t\t\t\t\t{0}
-\t\t\t\t\t\t<img src="http://api.qrserver.com/v1/create-qr-code/?data={0}&#38;size=200x200&#38;prov=goqrme" alt="{0}" title=""/>
-\t\t\t\t\t</div>""".format(code)
-                        #http://qrcode.kaywa.com/img.php?s=8&d={0}
-                        #http://chart.apis.google.com/chart?chs=200x200&cht=qr&chld=|0&chl={0}
-                        #http://api.qrserver.com/v1/create-qr-code/?data={0}
-                        
-#     return """\t\t\t\t\t<div style='border: solid 1px; text-align: center; width: 200px;height: 220px; margin: 10px;'>
-# \t\t\t\t\t\t<br>
-# \t\t\t\t\t\t{0}
-# \t\t\t\t\t</div>""".format(code)
+\t\t\t\t\t\t<img src="http://api.qrserver.com/v1/create-qr-code/?data={1}&#38;size=200x200&#38;prov=goqrme" alt="{0}" title=""/>
+\t\t\t\t\t</div>""".format(code, address)
 
 def generate_cells(text, numbers):
     for i in numbers:
