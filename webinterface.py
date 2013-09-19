@@ -1,6 +1,7 @@
+#! /usr/bin/python
 from bottle import route, run, template
 
-from pyQRjotari import 
+#from pyQRjotari import 
 
 @route('/qr/<group>')
 def index(group='klein1'):
