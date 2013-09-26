@@ -177,7 +177,48 @@ def check_program(interval=10):
             print "No program defined at {0}".format(curr)
         curr += datetime.timedelta(minutes=interval)
 
-if __name__ == "__main__":
+class CellCoordParser(object):
+    """Parse Excel's A1 and C6 etc to coordinate tuples and areas."""
+
+    letters = list("ABCDEFHHIJKLMNOPQRSTUVWXYZ")
+
+    @staticmethod
+    def to_coord(coordstr, is_end=False):
+        """ Parse cell coords to a tuple
+        >>> CellCoordParser.to_coord("A1")
+        (0, 0)
+        >>> CellCoordParser.to_coord("A2")
+        (0, 1)
+        >>> CellCoordParser.to_coord("B1")
+        (1, 0)
+        >>> CellCoordParser.to_coord("B2")
+        (1, 1)
+
+        >>> CellCoordParser.to_coord("A1", is_end=True)
+        (0, 0)
+        >>> CellCoordParser.to_coord("A2", is_end=True)
+        (0, 1)
+        >>> CellCoordParser.to_coord("B1", is_end=True)
+        (1, 0)
+        >>> CellCoordParser.to_coord("B2", is_end=True)
+        (1, 1)
+        """
+        letter = coordstr[0]
+        column = CellCoordParser.letters.index(letter)
+        row = int(coordstr[1]) - 1
+        return (column, row)
+
+    @staticmethod
+    def to_area(start, end):
+        """
+        >>> CellCoordParser.to_area("C3", "I3") 
+        ((2, 2),(9, 3))"""
+        startcoord  = CellCoordParser.to_coord(start)
+        endcoord    = CellCoordParser.to_coord(end)
+
+        return startcoord, endcoord
+
+def build_interface():
     path_klein = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
     path_groot = "data/planning_2012_groot_1.csv"
 
@@ -259,8 +300,11 @@ if __name__ == "__main__":
     for groupnumber, activity in groot[t7].iteritems():
         print "groot"+str(groupnumber), activity
 
-    #check_program(10)
-    #check_program(10)
 
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
+    
 
 
