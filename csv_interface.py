@@ -12,6 +12,27 @@ from dateutil import parser
 class RowNotFoundException(Exception):
     pass
 
+
+class ExcelFile(object):
+    """Wrapper around a csv file generated from Excel or LibreOffice"""
+
+    def __init__(self, filename):
+        f = open(filename)
+        self.arr = ExcelFile.csv_to_array(csv.reader(f))
+
+    @staticmethod
+    def csv_to_array(reader):
+        lines = [line for line in reader]
+
+        for rowno, line in enumerate(lines):
+            for cellno, cell in enumerate(line):
+                try:
+                    lines[rowno][cellno] = cell
+                except ValueError:
+                    #The cell did not contain only numbers.
+                    pass
+        return lines
+
 class ScheduleFragment(object):
     """ A fragment of a schedule. Each fragment has assigned its own dictionary of programnames.
     When passed a time into __getitem__, it returns a list of program names, one for each group number."""
