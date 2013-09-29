@@ -69,8 +69,7 @@ class ZBarInterface(object):
                 if "QR-Code:" in out:
                     out = out.strip("QR-Code:")
                     #For this year, the QR-codes encode an URL. We have some old codes as wel, so strip this all out:
-                    out = out.replace("http://www.scoutingboxtel.nl/qr/", "")
-                    out = out.replace(".asp", "")
+                    out = out.replace("http://www.scoutingboxtel.nl/qr.asp?groep=", "")
                     print out
                     if self.callback:
                         self.callback(out)

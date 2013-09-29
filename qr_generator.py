@@ -37,7 +37,7 @@ def write_QRcodes(klein, groot, columns=4):
     yield "\t\t</table>"
 
 def generate_cell(code):
-    address = "http://www.scoutingboxtel.nl/qr/{0}.asp".format(code)
+    address = "http://www.scoutingboxtel.nl/qr.asp?groep={0}".format(code)
     return """\t\t\t\t\t<div style='border: solid 1px; text-align: center; width: 200px; height: 240px; margin: 5px; vertical-align:bottom; padding: 10px'>
     \t\t\t\t\t\t<br>
 \t\t\t\t\t\t{0}
