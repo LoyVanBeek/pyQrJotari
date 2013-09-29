@@ -13,6 +13,48 @@ class RowNotFoundException(Exception):
     pass
 
 
+class CellCoordParser(object):
+    """Parse Excel's A1 and C6 etc to coordinate tuples and areas."""
+
+    letters = list("ABCDEFHHIJKLMNOPQRSTUVWXYZ")
+
+    @staticmethod
+    def to_coord(coordstr, is_end=False):
+        """ Parse cell coords to a (column, row) tuple
+        >>> CellCoordParser.to_coord("A1")
+        (0, 0)
+        >>> CellCoordParser.to_coord("A2")
+        (0, 1)
+        >>> CellCoordParser.to_coord("B1")
+        (1, 0)
+        >>> CellCoordParser.to_coord("B2")
+        (1, 1)
+
+        >>> CellCoordParser.to_coord("A1", is_end=True)
+        (0, 0)
+        >>> CellCoordParser.to_coord("A2", is_end=True)
+        (0, 1)
+        >>> CellCoordParser.to_coord("B1", is_end=True)
+        (1, 0)
+        >>> CellCoordParser.to_coord("B2", is_end=True)
+        (1, 1)
+        """
+        letter = coordstr[0]
+        column = CellCoordParser.letters.index(letter)
+        row = int(coordstr[1]) - 1
+        return (column, row)
+
+    @staticmethod
+    def to_area(start, end):
+        """
+        >>> CellCoordParser.to_area("C3", "I3") 
+        ((2, 2),(9, 3))"""
+        startcoord  = CellCoordParser.to_coord(start)
+        endcoord    = CellCoordParser.to_coord(end)
+
+        return startcoord, endcoord
+
+
 class ExcelFile(object):
     """Wrapper around a csv file generated from Excel or LibreOffice"""
 
@@ -32,6 +74,21 @@ class ExcelFile(object):
                     #The cell did not contain only numbers.
                     pass
         return lines
+
+    def __getitem__(self, coordstr):
+        """
+        >>> ef = ExcelFile("data/excel_test.csv")
+        >>> ef['A1'] 
+        'aap'
+        >>> ef['A2'] 
+        'mies'
+        >>> ef['B1'] 
+        'noot'
+        >>> ef['B2'] 
+        'vis'"""
+        col, row = CellCoordParser.to_coord(coordstr)
+        return self.arr[row][col]
+
 
 class ScheduleFragment(object):
     """ A fragment of a schedule. Each fragment has assigned its own dictionary of programnames.
@@ -198,46 +255,6 @@ def check_program(interval=10):
             print "No program defined at {0}".format(curr)
         curr += datetime.timedelta(minutes=interval)
 
-class CellCoordParser(object):
-    """Parse Excel's A1 and C6 etc to coordinate tuples and areas."""
-
-    letters = list("ABCDEFHHIJKLMNOPQRSTUVWXYZ")
-
-    @staticmethod
-    def to_coord(coordstr, is_end=False):
-        """ Parse cell coords to a tuple
-        >>> CellCoordParser.to_coord("A1")
-        (0, 0)
-        >>> CellCoordParser.to_coord("A2")
-        (0, 1)
-        >>> CellCoordParser.to_coord("B1")
-        (1, 0)
-        >>> CellCoordParser.to_coord("B2")
-        (1, 1)
-
-        >>> CellCoordParser.to_coord("A1", is_end=True)
-        (0, 0)
-        >>> CellCoordParser.to_coord("A2", is_end=True)
-        (0, 1)
-        >>> CellCoordParser.to_coord("B1", is_end=True)
-        (1, 0)
-        >>> CellCoordParser.to_coord("B2", is_end=True)
-        (1, 1)
-        """
-        letter = coordstr[0]
-        column = CellCoordParser.letters.index(letter)
-        row = int(coordstr[1]) - 1
-        return (column, row)
-
-    @staticmethod
-    def to_area(start, end):
-        """
-        >>> CellCoordParser.to_area("C3", "I3") 
-        ((2, 2),(9, 3))"""
-        startcoord  = CellCoordParser.to_coord(start)
-        endcoord    = CellCoordParser.to_coord(end)
-
-        return startcoord, endcoord
 
 def build_interface():
     path_klein = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
