@@ -16,7 +16,7 @@ class RowNotFoundException(Exception):
 class CellCoordParser(object):
     """Parse Excel's A1 and C6 etc to coordinate tuples and areas."""
 
-    letters = list("ABCDEFHHIJKLMNOPQRSTUVWXYZ")
+    letters = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
     @staticmethod
     def to_coord(coordstr, is_end=False):
@@ -31,26 +31,26 @@ class CellCoordParser(object):
         (1, 1)
 
         >>> CellCoordParser.to_coord("A1", is_end=True)
-        (0, 0)
-        >>> CellCoordParser.to_coord("A2", is_end=True)
-        (0, 1)
-        >>> CellCoordParser.to_coord("B1", is_end=True)
-        (1, 0)
-        >>> CellCoordParser.to_coord("B2", is_end=True)
         (1, 1)
+        >>> CellCoordParser.to_coord("A2", is_end=True)
+        (1, 2)
+        >>> CellCoordParser.to_coord("B1", is_end=True)
+        (2, 1)
+        >>> CellCoordParser.to_coord("B2", is_end=True)
+        (2, 2)
         """
         letter = coordstr[0]
-        column = CellCoordParser.letters.index(letter)
-        row = int(coordstr[1]) - 1
+        column = CellCoordParser.letters.index(letter) + (1 if is_end else 0)
+        row = int(coordstr[1]) - (1 if not is_end else 0)
         return (column, row)
 
     @staticmethod
     def to_area(start, end):
         """
         >>> CellCoordParser.to_area("C3", "I3") 
-        ((2, 2),(9, 3))"""
+        ((2, 2), (9, 3))"""
         startcoord  = CellCoordParser.to_coord(start)
-        endcoord    = CellCoordParser.to_coord(end)
+        endcoord    = CellCoordParser.to_coord(end, is_end=True)
 
         return startcoord, endcoord
 
@@ -89,29 +89,48 @@ class ExcelFile(object):
         col, row = CellCoordParser.to_coord(coordstr)
         return self.arr[row][col]
 
+    def get_area(self, start, end):
+        """
+        >>> ef = ExcelFile("data/excel_test.csv")
+        >>> ef.get_area('A1','B1')
+        [['aap', 'noot']]
+        >>> ef.get_area('A2','B2')
+        [['mies', 'vis']]
+        """
+        if isinstance(start, str) and isinstance(end, str):
+            start, end = CellCoordParser.to_area(start, end)
 
-class ScheduleFragment(object):
+        startcol, endcol = start[0], end[0]
+        startrow, endrow = start[1], end[1]
+
+        rows = self.arr[startrow:endrow]
+
+        rows = [row[startcol:endcol] for row in rows]
+        return rows
+
+
+class ScheduleFragment(ExcelFile):
     """ A fragment of a schedule. Each fragment has assigned its own dictionary of programnames.
     When passed a time into __getitem__, it returns a list of program names, one for each group number."""
-    def __init__(self, 
-        filename, 
-        programnamecells_area,
-        datacells_area,
-        format="%d-%m-%Y %H:%M", 
-        groupcount=28):
+    def __init__(   self, 
+                    filename, 
+                    programnamecells_area,
+                    datacells_area,
+                    base_day,
+                    format="%d-%m-%Y %H:%M", 
+                    groupcount=28):
+
+        ExcelFile.__init__(self, filename)
+
         self.format = format
         self.groupcount = groupcount
 
-        f = open(filename)
-        arr = ScheduleFragment.csv_to_array(csv.reader(f))
-        arr = ScheduleFragment.fill_blanks(arr, start_yx=datacells_area[0], end_yx=datacells_area[1])
-
         self.programtables = dict()
-        self.programtables = ScheduleFragment.crop(arr, 
+        self.programtables = ScheduleFragment.crop(self.arr, 
                             programnamecells_area[0], 
                             programnamecells_area[1])[0] #saturday, klein
 
-        self._database = ScheduleFragment.crop(arr, datacells_area[0], datacells_area[1]) #All these 2-tuples are linked to the csv-file. 
+        self._database = ScheduleFragment.crop(self.arr, datacells_area[0], datacells_area[1]) #All these 2-tuples are linked to the csv-file. 
  
     def query(self, querytime, groupnumber):
         #programtables is a dict mapping a (start, end)-tuple to an array of programnames
@@ -169,9 +188,9 @@ class ScheduleFragment(object):
     @staticmethod
     def fill_blanks(array, start_yx=(0,0), end_yx=(65536, 65536)):
         for rowno, line in enumerate(array):
-            if start_yx[0] < rowno < end_yx[0]:
+            if start_yx[1] < rowno < end_yx[1]:
                 for cellno, cell in enumerate(line):
-                    if start_yx[1] < cellno < end_yx[1]:
+                    if start_yx[0] < cellno < end_yx[0]:
                         try:
                             if not cell:
                                 #Cell is empty, so get value from ABOVE
@@ -257,58 +276,63 @@ def check_program(interval=10):
 
 
 def build_interface():
-    path_klein = "data/planning_2012_edit_klein_commonPrograms_fixed_2.csv"
-    path_groot = "data/planning_2012_groot_1.csv"
+    path_klein = "data/planning_2013_klein.csv"
+    path_groot = "data/planning_2013_original_groot.csv"
 
-    saturday_prognames_klein = ((2,2),(3,9)) #3C t/m 3I
-    saturday_data_area_klein = ((3,0), (32,9)) #5A t/m 33I
+    saturday_prognames_klein = CellCoordParser.to_area("C3", "I3")
+    saturday_data_area_klein = CellCoordParser.to_area("C3", "I32")
 
-    sunday_prognames_klein = ((43,2), (44,7))
-    sunday_data_area_klein = ((34,0), (53,7))
+    sunday_prognames_klein = CellCoordParser.to_area("C44", "G44")
+    sunday_data_area_klein = CellCoordParser.to_area("C35", "G54")
 
-    saturday_prognames_groot_dag    = ((8,2), (9,8)) #9C t/m 9H
-    saturday_data_area_groot_dag    = ((3,0), (23,8)) #4A t/m 23H
+    saturday_prognames_groot_dag    = CellCoordParser.to_area("C3", "I3")
+    saturday_data_area_groot_dag    = CellCoordParser.to_area("C3", "I3")
 
-    saturday_prognames_groot_avond  = ((23,2), (24,8)) #24C tm 24H
-    saturday_data_area_groot_avond  = ((24,0), (35,8)) #25A tm 35H
+    saturday_prognames_groot_avond  = CellCoordParser.to_area("C3", "I3")
+    saturday_data_area_groot_avond  = CellCoordParser.to_area("C3", "I3")
 
     #TODO: Fix for groot
-    sunday_prognames_groot          = ((42,2), (43,7)) #43C tm 43G
-    sunday_data_area_groot          = ((37,0), (56,7)) #38A tm 57G
+    sunday_prognames_groot          = CellCoordParser.to_area("C3", "I3")
+    sunday_data_area_groot          = CellCoordParser.to_area("C3", "I3")
 
 
     zat_klein = ScheduleFragment(path_klein, 
             programnamecells_area=saturday_prognames_klein, 
-            datacells_area=saturday_data_area_klein)
+            datacells_area=saturday_data_area_klein,
+            base_day="19-10-2013")
     zon_klein = ScheduleFragment(path_klein, 
             programnamecells_area=sunday_prognames_klein, 
-            datacells_area=sunday_data_area_klein)
+            datacells_area=sunday_data_area_klein, 
+            base_day="20-10-2013")
 
     zat_groot_dag   = ScheduleFragment(path_groot, 
             saturday_prognames_groot_dag, 
-            saturday_data_area_groot_dag, 
+            saturday_data_area_groot_dag,
+            base_day="19-10-2013",
             groupcount=24)
     zat_groot_avond = ScheduleFragment(path_groot, 
             saturday_prognames_groot_avond, 
             saturday_data_area_groot_avond, 
+            base_day="19-10-2013",
             groupcount=24)
     zon_groot       = ScheduleFragment(path_groot, 
-        sunday_prognames_groot, 
-        sunday_data_area_groot, 
-        groupcount=24)
+            sunday_prognames_groot, 
+            sunday_data_area_groot, 
+            base_day="20-10-2013", 
+            groupcount=24)
 
 
     klein = Schedule(zat_klein, zon_klein)
     groot = Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
 
-    t0 = datetime.datetime(*time.strptime("20-10-2012 09:40", "%d-%m-%Y %H:%M")[:6])
-    t1 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
-    t2 = datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])
-    t3 = datetime.datetime(*time.strptime("21-10-2012 08:15", "%d-%m-%Y %H:%M")[:6])
-    t4 = datetime.datetime(*time.strptime("21-10-2012 12:35", "%d-%m-%Y %H:%M")[:6])
-    t5 = datetime.datetime(*time.strptime("22-10-2012 14:35", "%d-%m-%Y %H:%M")[:6]) #Monday after!
-    t6 = datetime.datetime(*time.strptime("21-10-2012 08:35", "%d-%m-%Y %H:%M")[:6])
-    t7 = datetime.datetime(*time.strptime("21-10-2012 13:35", "%d-%m-%Y %H:%M")[:6])
+    t0 = parser.parse("20-10-2012 09:40")
+    t1 = parser.parse("20-10-2012 14:35")
+    t2 = parser.parse("20-10-2012 14:35")
+    t3 = parser.parse("21-10-2012 08:15")
+    t4 = parser.parse("21-10-2012 12:35")
+    t5 = parser.parse("22-10-2012 14:35") #Monday after!
+    t6 = parser.parse("21-10-2012 08:35")
+    t7 = parser.parse("21-10-2012 13:35")
 
     # print "1: ", klein[datetime.datetime(*time.strptime("20-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])][5]
     # print "2: ", klein[datetime.datetime(*time.strptime("20-10-2012 17:35", "%d-%m-%Y %H:%M")[:6])][5]
