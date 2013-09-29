@@ -18,7 +18,7 @@ def write_QRcodes(klein, groot, columns=4):
 
     klein_cells = generate_cells("klein", klein)
     groot_cells = generate_cells("groot", groot)
-    cells = iter(sorted(list(itertools.chain(klein_cells, groot_cells))))
+    cells = itertools.chain(klein_cells, groot_cells)
 
     yield "\n\t\t<table>"
     for rowno in range(rows):
@@ -50,7 +50,7 @@ def generate_cells(text, numbers):
         yield generate_cell(code)
 
 if __name__ == "__main__":
-    filepath = sys.argv[1]
+    filename = sys.argv[1]
 
     klein_array =   [1]     *4 + \
                     [2]     *4 + \
@@ -109,6 +109,6 @@ if __name__ == "__main__":
 
     print len(klein_array)+len(groot_array)
 
-    with file(filepath, "w+") as f:
+    with file(filename, "w+") as f:
         for html in main(klein_array, groot_array):
             f.write(html)
