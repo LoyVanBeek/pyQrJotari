@@ -170,6 +170,9 @@
 - activity:
     name: 'De grote ontknoping'
     image: 'images/De grote ontknoping.gif'
+- activity:
+    name: 'Kettingreactie'
+    image: 'images/Kettingreactie.gif'
 
 
 
