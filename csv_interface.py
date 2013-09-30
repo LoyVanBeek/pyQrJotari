@@ -158,7 +158,8 @@ class ScheduleFragment(ExcelFile):
 
     def has_key(self, querytime):
         try:
-            return bool(self.find_row_for_time(querytime))
+            self[querytime]
+            return True
         except RowNotFoundException:
             return False
 
@@ -172,8 +173,10 @@ class ScheduleFragment(ExcelFile):
 
     def __getitem__(self, querytime):
         try:
-            return dict([(groupnr, self.query(querytime, groupnr)) for groupnr in xrange(1, self.groupcount+1)])
-        except:
+            return {groupnr:self.query(querytime, groupnr) for groupnr in xrange(1, self.groupcount+1)}
+        except RowNotFoundException:
+            import pprint
+            pprint.pprint(self.arr)
             raise KeyError(querytime)
 
     def parse_cells(self, array):
@@ -301,21 +304,18 @@ def build_interface():
     sunday_prognames_klein = CellCoordParser.to_area("C44", "G44")
     sunday_data_area_klein = CellCoordParser.to_area("C35", "G54")
 
-    saturday_prognames_groot_dag    = CellCoordParser.to_area("C3", "I3")
-    saturday_data_area_groot_dag    = CellCoordParser.to_area("C3", "I3")
+    saturday_prognames_groot_dag    = CellCoordParser.to_area("C7", "I7")
+    saturday_data_area_groot_dag    = CellCoordParser.to_area("C3", "I34")
 
-    saturday_prognames_groot_avond  = CellCoordParser.to_area("C3", "I3")
-    saturday_data_area_groot_avond  = CellCoordParser.to_area("C3", "I3")
-
-    #TODO: Fix for groot
-    sunday_prognames_groot          = CellCoordParser.to_area("C3", "I3")
-    sunday_data_area_groot          = CellCoordParser.to_area("C3", "I3")
+    sunday_prognames_groot          = CellCoordParser.to_area("C44", "H44")
+    sunday_data_area_groot          = CellCoordParser.to_area("C37", "I56")
 
 
     zat_klein = ScheduleFragment(path_klein, 
             programnamecells_area=saturday_prognames_klein, 
             datacells_area=saturday_data_area_klein,
             base_day="19-10-2013")
+
     zon_klein = ScheduleFragment(path_klein, 
             programnamecells_area=sunday_prognames_klein, 
             datacells_area=sunday_data_area_klein, 
@@ -326,11 +326,7 @@ def build_interface():
             saturday_data_area_groot_dag,
             base_day="19-10-2013",
             groupcount=24)
-    zat_groot_avond = ScheduleFragment(path_groot, 
-            saturday_prognames_groot_avond, 
-            saturday_data_area_groot_avond, 
-            base_day="19-10-2013",
-            groupcount=24)
+
     zon_groot       = ScheduleFragment(path_groot, 
             sunday_prognames_groot, 
             sunday_data_area_groot, 
@@ -339,8 +335,11 @@ def build_interface():
 
 
     klein = Schedule(zat_klein, zon_klein)
-    groot = Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
+    groot = Schedule(zat_groot_dag, zon_groot)
 
+    return klein, groot
+
+def test(klein, groot):
     t0 = parser.parse("19-10-2013 09:40")
     t1 = parser.parse("19-10-2013 14:35")
     t2 = parser.parse("19-10-2013 14:35")
@@ -356,19 +355,17 @@ def build_interface():
     # print "4: ", klein[datetime.datetime(*time.strptime("19-10-2012 23:35", "%d-%m-%Y %H:%M")[:6])][5]
 
     print "ZATERDAG:"
-    import ipdb; ipdb.set_trace()
     for groupnumber, activity in klein[t0].iteritems():
         print "klein"+str(groupnumber), activity
 
     for groupnumber, activity in klein[t1].iteritems():
         print "klein"+str(groupnumber), activity
 
-    #print zon_klein.query(t4, 5)
-
     print "ZONDAG:"
     for groupnumber, activity in klein[t4].iteritems():
         print "klein"+str(groupnumber), activity
 
+    print "#" * 20
     print "Groot"
 
     print "ZATERDAG {0}:".format(t1)
@@ -379,11 +376,14 @@ def build_interface():
     for groupnumber, activity in groot[t7].iteritems():
         print "groot"+str(groupnumber), activity
 
-    return klein, groot
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+    try:
+        test()
+    except:
+        pass
 
     klein, groot = build_interface()
 
