@@ -140,7 +140,8 @@ class ScheduleFragment(ExcelFile):
     def query(self, querytime, groupnumber):
         #programtables is a dict mapping a (start, end)-tuple to an array of programnames
         rowno = self.find_row_for_time(querytime, self.format)
-        row = self._database[rowno]
+        row = self._database[rowno-1] #because row_for_time should skip the Skip the van/tot rows
+        #print row
 
         for cellno, cell in enumerate(row): #Skip date and time cells
             if isinstance(cell, list):
@@ -229,14 +230,14 @@ class ScheduleFragment(ExcelFile):
 
     def find_row_for_time(self, querytime, format="%d-%m-%Y %H:%M"):
         for rowno, row in enumerate(self.arr[2:]): #Skip the van/tot rows
-            print row
+            #print row
             #import pdb; pdb.set_trace()
             starttime_cell = row[0]
             endtime_cell = row[1]
             if starttime_cell and endtime_cell:
                 start = self.base_day+" "+starttime_cell
                 end = self.base_day+" "+endtime_cell
-                print start, end
+                #print start, end
                 try:
                     starttime = parser.parse(start)
                     endtime = parser.parse(end)
