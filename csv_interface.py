@@ -158,7 +158,7 @@ class ScheduleFragment(ExcelFile):
 
     def has_key(self, querytime):
         try:
-            return bool(self.find_row_for_time(self._database, querytime, self.format))
+            return bool(self.find_row_for_time(querytime))
         except RowNotFoundException:
             return False
 
@@ -242,12 +242,14 @@ class ScheduleFragment(ExcelFile):
                     starttime = parser.parse(start)
                     endtime = parser.parse(end)
                     
+                    #import ipdb; ipdb.set_trace()
                     if starttime < querytime < endtime:
                         #import pdb; pdb.set_trace()
                         return rowno
                 except ValueError:
                     #Could not parse cells to times, so move to the next row.
-                    print "Could not parse {0} and {1} to datetimes".format(start, end)
+                    #print "Could not parse {0} and {1} to datetimes".format(start, end)
+                    pass
         raise RowNotFoundException("No row found for querytime {0}".format(querytime))
 
     @staticmethod
@@ -339,59 +341,53 @@ def build_interface():
     klein = Schedule(zat_klein, zon_klein)
     groot = Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
 
-    # t0 = parser.parse("19-10-2013 09:40")
-    # t1 = parser.parse("19-10-2013 14:35")
-    # t2 = parser.parse("19-10-2013 14:35")
-    # t3 = parser.parse("20-10-2013 08:15")
-    # t4 = parser.parse("20-10-2013 12:35")
-    # t5 = parser.parse("21-10-2013 14:35") #Monday after!
-    # t6 = parser.parse("20-10-2013 08:35")
-    # t7 = parser.parse("20-10-2013 13:35")
+    t0 = parser.parse("19-10-2013 09:40")
+    t1 = parser.parse("19-10-2013 14:35")
+    t2 = parser.parse("19-10-2013 14:35")
+    t3 = parser.parse("20-10-2013 08:15")
+    t4 = parser.parse("20-10-2013 12:35")
+    t5 = parser.parse("21-10-2013 14:35") #Monday after!
+    t6 = parser.parse("20-10-2013 08:35")
+    t7 = parser.parse("20-10-2013 13:35")
 
-    # # print "1: ", klein[datetime.datetime(*time.strptime("19-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])][5]
-    # # print "2: ", klein[datetime.datetime(*time.strptime("19-10-2012 17:35", "%d-%m-%Y %H:%M")[:6])][5]
-    # # print "3: ", klein[datetime.datetime(*time.strptime("19-10-2012 18:35", "%d-%m-%Y %H:%M")[:6])][5]
-    # # print "4: ", klein[datetime.datetime(*time.strptime("19-10-2012 23:35", "%d-%m-%Y %H:%M")[:6])][5]
+    # print "1: ", klein[datetime.datetime(*time.strptime("19-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])][5]
+    # print "2: ", klein[datetime.datetime(*time.strptime("19-10-2012 17:35", "%d-%m-%Y %H:%M")[:6])][5]
+    # print "3: ", klein[datetime.datetime(*time.strptime("19-10-2012 18:35", "%d-%m-%Y %H:%M")[:6])][5]
+    # print "4: ", klein[datetime.datetime(*time.strptime("19-10-2012 23:35", "%d-%m-%Y %H:%M")[:6])][5]
 
-    # print "ZATERDAG:"
-    # for groupnumber, activity in klein[t0].iteritems():
-    #     print "klein"+str(groupnumber), activity
+    print "ZATERDAG:"
+    import ipdb; ipdb.set_trace()
+    for groupnumber, activity in klein[t0].iteritems():
+        print "klein"+str(groupnumber), activity
 
-    # for groupnumber, activity in klein[t1].iteritems():
-    #     print "klein"+str(groupnumber), activity
+    for groupnumber, activity in klein[t1].iteritems():
+        print "klein"+str(groupnumber), activity
 
-    # #print zon_klein.query(t4, 5)
+    #print zon_klein.query(t4, 5)
 
-    # print "ZONDAG:"
-    # for groupnumber, activity in klein[t4].iteritems():
-    #     print "klein"+str(groupnumber), activity
+    print "ZONDAG:"
+    for groupnumber, activity in klein[t4].iteritems():
+        print "klein"+str(groupnumber), activity
 
-    # print "Groot"
+    print "Groot"
 
-    # print "ZATERDAG {0}:".format(t1)
-    # for groupnumber, activity in groot[t1].iteritems():
-    #     print "groot"+str(groupnumber), activity
+    print "ZATERDAG {0}:".format(t1)
+    for groupnumber, activity in groot[t1].iteritems():
+        print "groot"+str(groupnumber), activity
 
-    # print "ZONDAG: {0}".format(t7)
-    # for groupnumber, activity in groot[t7].iteritems():
-    #     print "groot"+str(groupnumber), activity
+    print "ZONDAG: {0}".format(t7)
+    for groupnumber, activity in groot[t7].iteritems():
+        print "groot"+str(groupnumber), activity
 
-    return zat_klein #return klein, groot
-
-
-def pre_process(fragment):
-    ex = ExcelFile(filename)
-    #For the first column after the times, if the cell contains a string instead of a list of ints:
-    #   spread the cell over the whole row
-    pass
+    return klein, groot
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
 
-    klein = build_interface()
+    klein, groot = build_interface()
 
-    print klein.query(parser.parse("19-10-2013 13:05"), 1)
+    print klein[parser.parse("19-10-2013 13:05")]
 
     
 
