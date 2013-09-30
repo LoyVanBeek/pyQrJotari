@@ -1,4 +1,5 @@
 #! /usr/bin/python
+import os
 from bottle import route, run, template
 import datetime
 from dateutil import parser
@@ -20,4 +21,5 @@ def index(code='klein1', time=None):
         return template('<b>Je moet naar {{activity}}</b>!', activity=activity)
 
 if __name__ == "__main__":
-    run(host='localhost', port=8080)
+    port = int(os.environ.get('PORT', 80))
+    run(host='0.0.0.0', port=port, debug=True)
