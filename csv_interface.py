@@ -113,6 +113,17 @@ class ExcelFile(object):
         return rows
 
 
+class ScheduleRow(ExcelFile):
+    """A row in a jotari schedule."""
+
+    def __init__(self, filename, row):
+        ExcelFile.__init__(self, filename)
+        self.arr = self.get_area(row+"1", end+"30")
+
+
+
+
+
 class ScheduleFragment(ExcelFile):
     """ A fragment of a schedule. Each fragment has assigned its own dictionary of programnames.
     When passed a time into __getitem__, it returns a list of program names, one for each group number."""
@@ -348,6 +359,7 @@ def test(klein, groot):
     t5 = parser.parse("21-10-2013 14:35") #Monday after!
     t6 = parser.parse("20-10-2013 08:35")
     t7 = parser.parse("20-10-2013 13:35")
+    t8 = parser.parse("19-10-2013 10:05")
 
     # print "1: ", klein[datetime.datetime(*time.strptime("19-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])][5]
     # print "2: ", klein[datetime.datetime(*time.strptime("19-10-2012 17:35", "%d-%m-%Y %H:%M")[:6])][5]
@@ -355,7 +367,8 @@ def test(klein, groot):
     # print "4: ", klein[datetime.datetime(*time.strptime("19-10-2012 23:35", "%d-%m-%Y %H:%M")[:6])][5]
 
     print "ZATERDAG:"
-    for groupnumber, activity in klein[t0].iteritems():
+    import ipdb; ipdb.set_trace()
+    for groupnumber, activity in klein[t8].iteritems():
         print "klein"+str(groupnumber), activity
 
     for groupnumber, activity in klein[t1].iteritems():
@@ -380,12 +393,13 @@ def test(klein, groot):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-    try:
-        test()
-    except:
-        pass
 
     klein, groot = build_interface()
+    
+    try:
+        test(klein, groot)
+    except:
+        pass
 
     print klein[parser.parse("19-10-2013 13:05")]
 
