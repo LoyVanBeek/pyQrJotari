@@ -20,6 +20,12 @@ def index(code='klein1', time=None):
         activity = schedules[age][time][group]
         return template('<b>Je moet naar {{activity}}</b>!', activity=activity)
 
+@route('/qr/reload')
+def reload():
+    print "Pulling..."
+    os.system("git pull")
+    print "Pulled"
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 80))
     run(host='0.0.0.0', port=port, debug=True, reloader=True)
