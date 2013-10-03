@@ -350,12 +350,14 @@ def build_interface():
 
     return klein, groot
 
-def export_program(schedule):
-    def generate_times(start, end, step=datetime.timedelta(minutes=5)):
-        now = start
-        while now <= end:
-            yield now
-            now += step
+
+def generate_times(start, end, step=datetime.timedelta(minutes=5)):
+    now = start
+    while now <= end:
+        yield now
+        now += step
+
+def export_program(schedule, filename):
 
     start = parser.parse("19-10-2013 09:30")
     end = parser.parse("20-10-2013 15:00")
@@ -366,7 +368,7 @@ def export_program(schedule):
     columns = ["start"]
     columns += schedule[start].keys()
 
-    with open("export.csv", 'wb') as csvfile:
+    with open(filename, 'wb') as csvfile:
         writer = csv.DictWriter(csvfile, columns)
         writer.writeheader()
 
@@ -379,8 +381,9 @@ def export_program(schedule):
                     previous = current
                     last_time = time
 
-                    #current["start"] = time
-                    writer.writerow(current)
+                    to_write = current.copy()
+                    to_write["start"] = time
+                    writer.writerow(to_write)
             except KeyError:
                 pass        
 
@@ -437,9 +440,9 @@ if __name__ == "__main__":
 
     #print klein[parser.parse("19-10-2013 13:05")]
 
-    export_program(klein)
+    export_program(klein, "klein_export.csv")
     print "#"*20
-    export_program(groot)
+    export_program(groot, "groot_export.csv")
 
 
     
