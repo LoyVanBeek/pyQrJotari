@@ -307,7 +307,7 @@ def check_program(interval=10):
 
 def build_interface():
     path_klein = "data/planning_2013_klein.csv"
-    path_groot = "data/planning_2013_original_groot.csv"
+    path_groot = "data/planning_2013_groot.csv"
 
     saturday_prognames_klein = CellCoordParser.to_area("C3", "I3")
     saturday_data_area_klein = CellCoordParser.to_area("C4", "I32")
@@ -317,6 +317,9 @@ def build_interface():
 
     saturday_prognames_groot_dag    = CellCoordParser.to_area("C7", "I7")
     saturday_data_area_groot_dag    = CellCoordParser.to_area("C3", "I34")
+
+    sat_eve_prognames_groot          = CellCoordParser.to_area("C22", "I22")
+    sat_eve_data_area_groot          = CellCoordParser.to_area("C23", "I34")
 
     sunday_prognames_groot          = CellCoordParser.to_area("C44", "H44")
     sunday_data_area_groot          = CellCoordParser.to_area("C37", "I56")
@@ -338,6 +341,12 @@ def build_interface():
             base_day="19-10-2013",
             groupcount=24)
 
+    zat_groot_avond = ScheduleFragment(path_groot, 
+            sat_eve_prognames_groot, 
+            sat_eve_data_area_groot,
+            base_day="19-10-2013",
+            groupcount=24)
+
     zon_groot       = ScheduleFragment(path_groot, 
             sunday_prognames_groot, 
             sunday_data_area_groot, 
@@ -346,7 +355,7 @@ def build_interface():
 
 
     klein = Schedule(zat_klein, zon_klein)
-    groot = Schedule(zat_groot_dag, zon_groot)
+    groot = Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
 
     return klein, groot
 
@@ -362,7 +371,7 @@ def export_program(schedule, filename):
     start = parser.parse("19-10-2013 09:30")
     end = parser.parse("20-10-2013 15:00")
 
-    last_time = start
+    before_jump = start
     previous = {}
 
     columns = ["start"]
@@ -379,7 +388,7 @@ def export_program(schedule, filename):
                     print time, current
 
                     previous = current
-                    last_time = time
+                    before_jump = time
 
                     to_write = current.copy()
                     to_write["start"] = time
@@ -438,10 +447,11 @@ if __name__ == "__main__":
     # except:
     #     pass
 
-    #print klein[parser.parse("19-10-2013 13:05")]
+    #import ipdb; ipdb.set_trace()
+    print groot[parser.parse("19-10-2013 13:05")]
 
-    export_program(klein, "klein_export.csv")
-    print "#"*20
+    # export_program(klein, "klein_export.csv")
+    # print "#"*20
     export_program(groot, "groot_export.csv")
 
 
