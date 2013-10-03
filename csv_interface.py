@@ -186,8 +186,8 @@ class ScheduleFragment(ExcelFile):
         try:
             return {groupnr:self.query(querytime, groupnr) for groupnr in xrange(1, self.groupcount+1)}
         except RowNotFoundException:
-            import pprint
-            pprint.pprint(self.arr)
+            # import pprint
+            # pprint.pprint(self.arr)
             raise KeyError(querytime)
 
     def parse_cells(self, array):
@@ -257,7 +257,7 @@ class ScheduleFragment(ExcelFile):
                     endtime = parser.parse(end)
                     
                     #import ipdb; ipdb.set_trace()
-                    if starttime < querytime < endtime:
+                    if starttime <= querytime < endtime:
                         #import pdb; pdb.set_trace()
                         return rowno
                 except ValueError:
@@ -350,6 +350,40 @@ def build_interface():
 
     return klein, groot
 
+def export_program(schedule):
+    def generate_times(start, end, step=datetime.timedelta(minutes=5)):
+        now = start
+        while now <= end:
+            yield now
+            now += step
+
+    start = parser.parse("19-10-2013 09:30")
+    end = parser.parse("20-10-2013 15:00")
+
+    last_time = start
+    previous = {}
+
+    columns = ["start"]
+    columns += schedule[start].keys()
+
+    with open("export.csv", 'wb') as csvfile:
+        writer = csv.DictWriter(csvfile, columns)
+        writer.writeheader()
+
+        for time in generate_times( start, end):
+            try:
+                current = schedule[time]
+                if previous != current:
+                    print time, current
+
+                    previous = current
+                    last_time = time
+
+                    #current["start"] = time
+                    writer.writerow(current)
+            except KeyError:
+                pass        
+
 def test(klein, groot):
     t0 = parser.parse("19-10-2013 09:40")
     t1 = parser.parse("19-10-2013 14:35")
@@ -396,12 +430,17 @@ if __name__ == "__main__":
 
     klein, groot = build_interface()
     
-    try:
-        test(klein, groot)
-    except:
-        pass
+    # try:
+    #     test(klein, groot)
+    # except:
+    #     pass
 
-    print klein[parser.parse("19-10-2013 13:05")]
+    #print klein[parser.parse("19-10-2013 13:05")]
+
+    export_program(klein)
+    print "#"*20
+    export_program(groot)
+
 
     
 
