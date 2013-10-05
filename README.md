@@ -10,6 +10,7 @@ TODO
 - Add images for this year's new activities
 - Test this year's setup.
 - Maybe do some refactoring in the event loop / polling of zbar
+- DONE: Web interface!
 
 Requirements
 ------------
