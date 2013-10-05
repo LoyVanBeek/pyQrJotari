@@ -127,13 +127,13 @@ class ScheduleRow(ExcelFile):
 class ScheduleFragment(ExcelFile):
     """ A fragment of a schedule. Each fragment has assigned its own dictionary of programnames.
     When passed a time into __getitem__, it returns a list of program names, one for each group number."""
-    def __init__(   self, 
-                    filename, 
-                    programnamecells_area,
-                    datacells_area,
-                    base_day,
-                    format="%d-%m-%Y %H:%M", 
-                    groupcount=28):
+    def __init__(self, 
+        filename, 
+        programnamecells_area,
+        datacells_area,
+        base_day,
+        format="%d-%m-%Y %H:%M", 
+        groupcount=28):
 
         ExcelFile.__init__(self, filename)
 
@@ -144,17 +144,21 @@ class ScheduleFragment(ExcelFile):
         self.programtables = dict()
         self.programtables = self.get_area(*programnamecells_area)[0]
 
-        self._database = self.get_area(*datacells_area)
+        datacells = [list(coord) for coord in datacells_area]
+        datacells[0][0] = 0
+        self._database = self.get_area(*datacells)
 
         self._database = self.parse_cells(self._database)
+
+        self._row_offset = programnamecells_area[0][1]
  
     def query(self, querytime, groupnumber):
         #programtables is a dict mapping a (start, end)-tuple to an array of programnames
         rowno = self.find_row_for_time(querytime, self.format)
-        row = self._database[rowno-1] #because row_for_time should skip the Skip the van/tot rows
+        row = self._database[rowno] #because row_for_time should skip the Skip the van/tot rows
         #print row
-
-        for cellno, cell in enumerate(row): #Skip date and time cells
+        skip_startend = row[2:]
+        for cellno, cell in enumerate(skip_startend): #Skip date and time cells
             if isinstance(cell, list):
                 if groupnumber in cell:
                     #pass
@@ -243,7 +247,7 @@ class ScheduleFragment(ExcelFile):
         return new
 
     def find_row_for_time(self, querytime, format="%d-%m-%Y %H:%M"):
-        for rowno, row in enumerate(self.arr[2:]): #Skip the van/tot rows
+        for rowno, row in enumerate(self._database): #Skip the van/tot rows
             #print row
             #import pdb; pdb.set_trace()
             starttime_cell = row[0]
@@ -256,7 +260,9 @@ class ScheduleFragment(ExcelFile):
                     starttime = parser.parse(start)
                     endtime = parser.parse(end)
                     
-                    #import ipdb; ipdb.set_trace()
+                    #if querytime == parser.parse("19-10-2013 23:29") and starttime == parser.parse("19-10-2013 23:30"): import ipdb;ipdb.set_trace()
+                    #if rowno in [28]: import ipdb;ipdb.set_trace()
+
                     if starttime <= querytime < endtime:
                         #import pdb; pdb.set_trace()
                         return rowno
@@ -283,13 +289,14 @@ class Schedule(object):
     def __init__(self, *fragments):
         self.fragments = fragments
 
-    def has_key(self, querytime):
-        return any([fragment.has_key(querytime) for fragment in self.fragments])
-
     def __getitem__(self, querytime):
         for fragment in self.fragments:
-            if fragment.has_key(querytime):
+            try:
                 return fragment[querytime]
+            except KeyError:
+                #import ipdb; ipdb.set_trace()
+                pass
+
 
 def check_program(interval=10):
     start = datetime.datetime(*time.strptime("19-10-2013 09:31", "%d-%m-%Y %H:%M")[:6])
@@ -312,8 +319,8 @@ def build_interface():
     saturday_prognames_klein = CellCoordParser.to_area("C3", "I3")
     saturday_data_area_klein = CellCoordParser.to_area("C4", "I32")
 
-    sunday_prognames_klein = CellCoordParser.to_area("C44", "G44")
-    sunday_data_area_klein = CellCoordParser.to_area("C35", "G54")
+    sunday_prognames_klein = CellCoordParser.to_area("C35", "G35")
+    sunday_data_area_klein = CellCoordParser.to_area("C36", "G54")
 
     saturday_prognames_groot_dag    = CellCoordParser.to_area("C7", "I7")
     saturday_data_area_groot_dag    = CellCoordParser.to_area("C3", "I34")
@@ -334,6 +341,11 @@ def build_interface():
             programnamecells_area=sunday_prognames_klein, 
             datacells_area=sunday_data_area_klein, 
             base_day="20-10-2013")
+
+    # time = parser.parse("20-10-2013 8:29")
+    # #import ipdb; ipdb.set_trace()
+    # print zon_klein.find_row_for_time(time, "")
+    # print zon_klein.query(time, 1)
 
     zat_groot_dag   = ScheduleFragment(path_groot, 
             saturday_prognames_groot_dag, 
@@ -361,6 +373,10 @@ def build_interface():
 
 
 def generate_times(start, end, step=datetime.timedelta(minutes=5)):
+    """Like xrange for times...
+    >>> times = list(generate_times(parser.parse("19-10-2013 09:30"), parser.parse("20-10-2013 16:00")))
+    >>> assert parser.parse("19-10-2013 14:00") in times
+    >>> assert parser.parse("20-10-2013 14:00") in times"""
     now = start
     while now <= end:
         yield now
@@ -369,7 +385,7 @@ def generate_times(start, end, step=datetime.timedelta(minutes=5)):
 def export_program(schedule, filename):
 
     start = parser.parse("19-10-2013 09:30")
-    end = parser.parse("20-10-2013 15:00")
+    end = parser.parse("20-10-2013 16:00")
 
     before_jump = start
     previous = {}
@@ -384,8 +400,9 @@ def export_program(schedule, filename):
         for time in generate_times( start, end):
             try:
                 current = schedule[time]
-                if previous != current:
-                    print time, current
+                #if current and not previous: import ipdb; ipdb.set_trace();# current = schedule[time]
+                if previous != current and current != None:
+                    #print time, current
 
                     previous = current
                     before_jump = time
@@ -394,7 +411,8 @@ def export_program(schedule, filename):
                     to_write["start"] = time
                     writer.writerow(to_write)
             except KeyError:
-                pass        
+                print time
+                pass
 
 def test(klein, groot):
     t0 = parser.parse("19-10-2013 09:40")
@@ -406,6 +424,7 @@ def test(klein, groot):
     t6 = parser.parse("20-10-2013 08:35")
     t7 = parser.parse("20-10-2013 13:35")
     t8 = parser.parse("19-10-2013 10:05")
+    t9 = parser.parse("19-10-2013 23:35")
 
     # print "1: ", klein[datetime.datetime(*time.strptime("19-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])][5]
     # print "2: ", klein[datetime.datetime(*time.strptime("19-10-2012 17:35", "%d-%m-%Y %H:%M")[:6])][5]
@@ -413,8 +432,8 @@ def test(klein, groot):
     # print "4: ", klein[datetime.datetime(*time.strptime("19-10-2012 23:35", "%d-%m-%Y %H:%M")[:6])][5]
 
     print "ZATERDAG:"
-    import ipdb; ipdb.set_trace()
-    for groupnumber, activity in klein[t8].iteritems():
+    #import ipdb; ipdb.set_trace()
+    for groupnumber, activity in klein[t9].iteritems():
         print "klein"+str(groupnumber), activity
 
     for groupnumber, activity in klein[t1].iteritems():
@@ -445,12 +464,13 @@ if __name__ == "__main__":
     # try:
     #     test(klein, groot)
     # except:
+    #     import ipdb; ipdb.pm()
     #     pass
 
     #import ipdb; ipdb.set_trace()
-    print groot[parser.parse("19-10-2013 13:05")]
+    #print klein[parser.parse("19-10-2013 13:05")]
 
-    # export_program(klein, "klein_export.csv")
+    export_program(klein, "klein_export.csv")
     # print "#"*20
     export_program(groot, "groot_export.csv")
 
