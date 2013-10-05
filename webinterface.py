@@ -1,6 +1,6 @@
 #! /usr/bin/python
 import os
-from bottle import route, run, template
+from bottle import route, run, template, post
 import datetime
 from dateutil import parser
 from csv_interface import build_interface
@@ -24,6 +24,7 @@ def index(code='klein1', time=None):
         except KeyError:
             return "Het is nog geen jotari. Vul een datum en tijd in in de URL en probeer het nog eens"
 
+@post('/qr/reload')
 @route('/qr/reload')
 def reload():
     print "Pulling..."
