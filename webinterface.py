@@ -8,6 +8,8 @@ from csv_interface import build_interface
 klein, groot = build_interface()
 schedules = {"klein":klein, "groot":groot}
 
+@route('/qr/<code>/')
+@route('/qr/<code>/<time>/', defaults={'time': None})
 @route('/qr/<code>')
 @route('/qr/<code>/<time>', defaults={'time': None})
 def index(code='klein1', time=None):
@@ -22,7 +24,9 @@ def index(code='klein1', time=None):
             activity = schedules[age][time][group]
             return template('Je moet naar <b>{{activity}}</b>!', activity=activity)
         except KeyError:
-            return "Het is nog geen jotari. Vul een datum en tijd in in de URL en probeer het nog eens"
+            return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: <a href='19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
+        except TypeError:
+            return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: <a href='19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
 
 @post('/qr/reload')
 @route('/qr/reload')
