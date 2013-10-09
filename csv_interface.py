@@ -62,7 +62,12 @@ class ExcelFile(object):
 
     def __init__(self, filename):
         f = open(filename)
-        self.arr = ExcelFile.csv_to_array(csv.reader(f))
+
+        dialect = csv.Sniffer().sniff(f.read(10240))
+        f.seek(0)
+
+        reader = csv.reader(f, dialect)
+        self.arr = ExcelFile.csv_to_array(reader)
 
     @staticmethod
     def csv_to_array(reader):

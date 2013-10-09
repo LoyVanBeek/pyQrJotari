@@ -4,6 +4,7 @@ from bottle import route, run, template, post
 import datetime
 from dateutil import parser
 from csv_interface import build_interface
+import pprint
 
 klein, groot = build_interface()
 schedules = {"klein":klein, "groot":groot}
@@ -13,20 +14,43 @@ schedules = {"klein":klein, "groot":groot}
 @route('/qr/<code>')
 @route('/qr/<code>/<time>', defaults={'time': None})
 def index(code='klein1', time=None):
-    age = code[:5]
-    group = int(code[5:])
-    if age in schedules:
-        if time:
-            time = parser.parse(time)
-        if not time: 
-            time = datetime.datetime.now()
-        try:
-            activity = schedules[age][time][group]
-            return template('Je moet naar <b>{{activity}}</b>!', activity=activity)
-        except KeyError:
-            return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: <a href='19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
-        except TypeError:
-            return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: <a href='19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
+    if "groot" in code or "klein" in code:
+        age = code[:5]
+        group = int(code[5:])
+        if age in schedules:
+            if time:
+                time = parser.parse(time)
+            if not time: 
+                time = datetime.datetime.now()
+            try:
+                ageschedule = schedules[age]
+                print ageschedule
+                current_activities = ageschedule[time]
+                print current_activities
+                activity = current_activities[group]
+                return template('Je moet naar <b>{{activity}}</b>!', activity=activity)
+            except KeyError:
+                return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
+                    <a href='{{group}}/19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
+            except TypeError:
+                return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
+                    <a href='{{group}}/19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
+    else:
+        output = "<html>\n"
+        time = parser.parse(code)
+        for age,ageschedule in schedules.iteritems():
+            current_activities = ageschedule[time]
+
+            schedulestr = "<br>".join("{0}:{1}".format(k,v) for k,v in current_activities.iteritems())
+
+            output += template("<b>{{age}}</b>:<br>{{!current_activities}}", 
+                age=age, 
+                current_activities=schedulestr)
+
+            output += "<hr>"
+        output += "</html>"
+        return output
+
 
 @post('/qr/reload')
 @route('/qr/reload')
