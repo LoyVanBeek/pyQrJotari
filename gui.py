@@ -81,7 +81,11 @@ class QrJotariGui(object):
     def load_images(activities):
         map = dict()#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
         for name, props in activities.iteritems():
-            im = Image.open(props['image'])
+            try:
+                im = Image.open(props['image'])
+            except IOError:
+                print "Kon {0} niet laden".format(props['image'])
+                im = Image.open("images/onbekend.png")
             im = im.resize((300,300))
             try:
                 #pi = tk.PhotoImage(file=props['image'])

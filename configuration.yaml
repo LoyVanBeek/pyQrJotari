@@ -145,34 +145,34 @@
     image: 'images/survival.gif'
 - activity: 
     name: 'Reuze ballen'
-    image: 'images/Reuze ballen.gif'
+    image: 'images/reuze ballen.gif'
 - activity: 
     name: 'Geheimschrift'
-    image: 'images/Geheimschrift.gif'
+    image: 'images/geheimschrift.gif'
 - activity: 
     name: 'Sherow programma'
-    image: 'images/Sherow programma.gif'
+    image: 'images/sherrow programma.gif'
 - activity: 
     name: 'Levend Mijnenvegen'
-    image: 'images/Levend Mijnenvegen.gif'
+    image: 'images/levend mijnenveger.gif'
 - activity: 
     name: 'Uitleg + klaarmaken voor the Hunt'
-    image: 'images/Uitleg_klaarmaken voor the Hunt.gif'
+    image: images/hunt.jpg
 - activity:
     name: 'Levend memorie'
-    image: 'images/Levend memorie.gif'
+    image: 'images/memory.gif'
 - activity:
     name: 'Blinde geleide spel'
-    image: 'images/Blinde geleide spel.gif'
+    image: 'images/blindegeleidespel.gif'
 - activity:
     name: 'Levend kwartet'
-    image: 'images/Levend kwartet.gif'
+    image: 'images/kwartet.gif'
 - activity:
     name: 'De grote ontknoping'
-    image: 'images/De grote ontknoping.gif'
+    image: 'images/grote ontknoping.gif'
 - activity:
     name: 'Kettingreactie'
-    image: 'images/Kettingreactie.gif'
+    image: 'images/kettingreactie.gif'
 
 
 
