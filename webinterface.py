@@ -59,6 +59,14 @@ def reload():
     os.system("git pull")
     print "Pulled"
 
+@route('/qr/log')
+def log():
+    with open("web.log") as f:
+        content = f.read()
+        content = content.replace("\n", "<br>\n")
+        return content #template("!{{content}}", content=content)
+
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 8080))
     run(host='0.0.0.0', port=port, debug=True, reloader=True)
