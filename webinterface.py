@@ -32,7 +32,7 @@ def group(code, time):
             current_activities = ageschedule[time]
             print current_activities
             activity = current_activities[group]
-            return template('Je moet naar <b>{{activity}}</b>!', activity=activity)
+            return template('group', activity=activity, group=code, time=time)
         except KeyError:
             return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
                 <a href='{{group}}/19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
@@ -41,20 +41,12 @@ def group(code, time):
                 <a href='{{group}}/19-10-2013%2010:00'>Zaterdag 10 uur</a>", group=code)
 
 def schedule(time):
-    output = "<html>\n"
     time = parser.parse(time)
-    for age,ageschedule in schedules.iteritems():
-        current_activities = ageschedule[time]
 
-        schedulestr = "<br>".join("{0}:{1}".format(k,v) for k,v in current_activities.iteritems())
+    k = schedules['klein'][time]
+    g = schedules['groot'][time]
 
-        output += template("<b>{{age}}</b>:<br>{{!current_activities}}", 
-            age=age, 
-            current_activities=schedulestr)
-
-        output += "<hr>"
-    output += "</html>"
-    return output
+    return template('schedule', klein=k, groot=g, time=time)
 
 
 @post('/qr/reload')
