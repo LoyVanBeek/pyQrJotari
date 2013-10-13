@@ -10,6 +10,8 @@ except ImportError:
     import Image, ImageTk #Works on windows
 import logging
 
+import time
+
 logging.basicConfig(filename='qr.log', level=logging.DEBUG)
 
 #GUI:
@@ -36,6 +38,8 @@ class QrJotariGui(object):
         frame = tk.Frame(master, background='white')
         frame.pack(fill=tk.BOTH, expand=1)
 
+        self.frame = frame
+
         self.customFont = tkFont.Font(family="Helvetica", size=50)
         
         self.dateframe = tk.Frame(frame, background='white')
@@ -46,7 +50,7 @@ class QrJotariGui(object):
         self.groupLabel = tk.Label(frame, textvariable=self.groupText, font=self.customFont, background='white')
         self.groupLabel.grid(row=2)#pack()#tk.TOP
                 
-        self.goto_firstLabel = tk.Label(frame, text="gaat naar", font=self.customFont, background='white')
+        self.goto_firstLabel = tk.Label(frame, text="nu:", font=self.customFont, background='white')
         self.goto_firstLabel.grid(row=3)#pack(side=tk.LEFT)
         
         self.currentActivityFrame = tk.Frame(frame, background='white', width=600)
@@ -56,7 +60,7 @@ class QrJotariGui(object):
         self.activity_firstLabel.pack(side=tk.LEFT,
             padx=20, pady=20)
 
-        self.activity_firstImage = tk.PhotoImage(file="images/tenten opzetten.GIF", height=200)
+        self.activity_firstImage = tk.PhotoImage(file="images/opening.gif", height=200)
         self.activity_firstImLbl = tk.Label(self.currentActivityFrame, 
             image=self.activity_firstImage, 
             background='white')
@@ -65,16 +69,16 @@ class QrJotariGui(object):
         
         self.currentActivityFrame.grid(row=4,sticky=tk.N+tk.S+tk.E+tk.W)#pack()
         
-        self.goto_secondLabel = tk.Label(frame, text="daarna", font=self.customFont, background='white')
+        self.goto_secondLabel = tk.Label(frame, text="", font=self.customFont, background='white')
         self.goto_secondLabel.grid(row=5)#pack()
         
         self.activity_secondText = tk.StringVar()
         self.activity_secondLabel = tk.Label(frame, textvariable=self.activity_secondText, font=self.customFont, background='white')
         self.activity_secondLabel.grid(row=6)#pack()
         
-        self.groupText.set("Groep 1")
-        self.activity_firstText.set("Avondspel")
-        self.activity_secondText.set("Slapen")
+        self.groupText.set("Iedereen")
+        self.activity_firstText.set("Opening")
+        self.activity_secondText.set("?")
         self.activity_firstImLbl.configure(image=self.act2img['opening'])
     
     @staticmethod
@@ -99,13 +103,15 @@ class QrJotariGui(object):
         print "START update"
         print age, group, group_activity, current_time, image
 
+        self.frame.config(background='black')
+
         logging.info("\t{0}:{1} scanned at {3} for activity '{2}'".format(age, group, group_activity, current_time))
 
         self.activity_firstImLbl.bell()
 
         self.groupText.set("Groep "+str(group))
         self.activity_firstText.set(str(group_activity.capitalize()))
-        self.activity_secondText.set("{0}, {1} minuten later".format(str(next_activity).capitalize(), next_start))
+        self.activity_secondText.set("(over {1} minuten: {0})".format(str(next_activity).capitalize(), next_start))
 
         #import pdb; pdb.set_trace()
         if self.act2img.has_key(group_activity):
@@ -114,6 +120,9 @@ class QrJotariGui(object):
             self.activity_firstImLbl.configure(image=img)
         else: 
             print "No image defined for %s" % group_activity
+
+        time.sleep(0.1)
+        self.frame.config(background='white')
         print "END update"
 
 def main(config):

@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import yaml
-import csv_interface
 import process_interface
 import time, datetime
 from dateutil import parser
@@ -23,7 +22,7 @@ class JotariQrBackend(object):
         
         ## import ipdb; ipdb.set_trace()
         #current_time = datetime.datetime.now()
-        current_time = parser.parse("18-10-2013 20:01")
+        current_time = parser.parse("19-10-2013 20:01")
 
         try:
             #import ipdb; ipdb.set_trace()
@@ -71,52 +70,8 @@ class JotariQrBackend(object):
         self.scanner.force_stop()
 
 def main(config):
-    timeformat = [item['timeformat'] for item in config if item.has_key("timeformat")][0] #load timeformat markup
-    schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
-
-    path_klein = "data/planning_2012_final_klein.csv"
-    path_groot = "data/planning_2012_final_groot.csv"
-
-    saturday_prognames_klein = ((2,2),(3,9)) #3C t/m 3I
-    saturday_data_area_klein = ((3,0), (32,9)) #5A t/m 33I
-
-    sunday_prognames_klein = ((43,2), (44,7))
-    sunday_data_area_klein = ((34,0), (53,7))
-
-    saturday_prognames_groot_dag    = ((8,2), (9,8)) #9C t/m 9H
-    saturday_data_area_groot_dag    = ((2,0), (23,8)) #4A t/m 23H
-
-    saturday_prognames_groot_avond  = ((23,2), (24,8)) #24C tm 24H
-    saturday_data_area_groot_avond  = ((24,0), (35,8)) #25A tm 35H
-
-    sunday_prognames_groot          = ((42,2), (43,7)) #43C tm 43G
-    sunday_data_area_groot          = ((37,0), (56,7)) #38A tm 57G
-
-
-    zat_klein = csv_interface.ScheduleFragment(path_klein, 
-            programnamecells_area=saturday_prognames_klein, 
-            datacells_area=saturday_data_area_klein)
-    zon_klein = csv_interface.ScheduleFragment(path_klein, 
-            programnamecells_area=sunday_prognames_klein, 
-            datacells_area=sunday_data_area_klein)
-
-    zat_groot_dag   = csv_interface.ScheduleFragment(path_groot, 
-            saturday_prognames_groot_dag, 
-            saturday_data_area_groot_dag, 
-            groupcount=24)
-    zat_groot_avond = csv_interface.ScheduleFragment(path_groot, 
-            saturday_prognames_groot_avond, 
-            saturday_data_area_groot_avond, 
-            groupcount=24)
-    zon_groot       = csv_interface.ScheduleFragment(path_groot, 
-        sunday_prognames_groot, 
-        sunday_data_area_groot, 
-        groupcount=24)
-
-
-    klein = csv_interface.Schedule(zat_klein, zon_klein)
-    groot = csv_interface.Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
-
+    from csv_interface import build_interface
+    klein, groot = build_interface()
 
     schedules = {'klein':klein, "groot":groot}
     
