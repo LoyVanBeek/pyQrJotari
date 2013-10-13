@@ -99,11 +99,16 @@ class QrJotariGui(object):
                 pass
         return map
 
+    def set_backgrounds(self, color):
+        for item in [self.frame, self.groupLabel,self.dateframe,self.goto_firstLabel,
+                     self.currentActivityFrame,self.activity_firstLabel,self.goto_secondLabel,self.activity_secondLabel]:
+            item.config(background=color)
+
     def update(self, age, group, group_activity, current_time, image, next_activity=None, next_start="wat"):
         print "START update"
         print age, group, group_activity, current_time, image
 
-        self.frame.config(background='black')
+        self.set_backgrounds('black')
 
         logging.info("\t{0}:{1} scanned at {3} for activity '{2}'".format(age, group, group_activity, current_time))
 
@@ -121,8 +126,8 @@ class QrJotariGui(object):
         else: 
             print "No image defined for %s" % group_activity
 
-        time.sleep(0.1)
-        self.frame.config(background='white')
+        time.sleep(0.3)
+        self.set_backgrounds('white')
         print "END update"
 
 def main(config):
