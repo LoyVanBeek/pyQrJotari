@@ -8,6 +8,20 @@
 
 import csv, time, datetime
 from dateutil import parser
+class memoize:
+    def __init__(self, function):
+        self.function = function
+        self.memoized = {}
+
+    def __call__(self, *args):
+        try:
+            return self.memoized[args]
+        except KeyError:
+            self.memoized[args] = self.function(*args)
+            return self.memoized[args]
+
+parse_time = memoize(parser.parse)
+
 
 class RowNotFoundException(Exception):
     pass
@@ -124,9 +138,6 @@ class ScheduleRow(ExcelFile):
     def __init__(self, filename, row):
         ExcelFile.__init__(self, filename)
         self.arr = self.get_area(row+"1", end+"30")
-
-
-
 
 
 class ScheduleFragment(ExcelFile):
@@ -262,10 +273,10 @@ class ScheduleFragment(ExcelFile):
                 end = self.base_day+" "+endtime_cell
                 #print start, end
                 try:
-                    starttime = parser.parse(start)
-                    endtime = parser.parse(end)
+                    starttime = parse_time(start)
+                    endtime = parse_time(end)
                     
-                    #if querytime == parser.parse("19-10-2013 23:29") and starttime == parser.parse("19-10-2013 23:30"): import ipdb;ipdb.set_trace()
+                    #if querytime == parse_time("19-10-2013 23:29") and starttime == parse_time("19-10-2013 23:30"): import ipdb;ipdb.set_trace()
                     #if rowno in [28]: import ipdb;ipdb.set_trace()
 
                     if starttime <= querytime < endtime:
@@ -288,6 +299,7 @@ class ScheduleFragment(ExcelFile):
             
             if starttime < querytime < endtime:
                 return value
+
 
 class Schedule(object):
     """Hosts a set of ScheduleFragments to become one large, complete Schedule"""
@@ -347,7 +359,7 @@ def build_interface():
             datacells_area=sunday_data_area_klein, 
             base_day="20-10-2013")
 
-    # time = parser.parse("20-10-2013 8:29")
+    # time = parse_time("20-10-2013 8:29")
     # #import ipdb; ipdb.set_trace()
     # print zon_klein.find_row_for_time(time, "")
     # print zon_klein.query(time, 1)
@@ -379,9 +391,9 @@ def build_interface():
 
 def generate_times(start, end, step=datetime.timedelta(minutes=5)):
     """Like xrange for times...
-    >>> times = list(generate_times(parser.parse("19-10-2013 09:30"), parser.parse("20-10-2013 16:00")))
-    >>> assert parser.parse("19-10-2013 14:00") in times
-    >>> assert parser.parse("20-10-2013 14:00") in times"""
+    >>> times = list(generate_times(parse_time("19-10-2013 09:30"), parse_time("20-10-2013 16:00")))
+    >>> assert parse_time("19-10-2013 14:00") in times
+    >>> assert parse_time("20-10-2013 14:00") in times"""
     now = start
     while now <= end:
         yield now
@@ -389,8 +401,8 @@ def generate_times(start, end, step=datetime.timedelta(minutes=5)):
 
 def export_program(schedule, filename):
 
-    start = parser.parse("19-10-2013 09:30")
-    end = parser.parse("20-10-2013 16:00")
+    start = parse_time("19-10-2013 09:30")
+    end = parse_time("20-10-2013 16:00")
 
     before_jump = start
     previous = {}
@@ -420,16 +432,16 @@ def export_program(schedule, filename):
                 pass
 
 def test(klein, groot):
-    t0 = parser.parse("19-10-2013 09:40")
-    t1 = parser.parse("19-10-2013 14:35")
-    t2 = parser.parse("19-10-2013 14:35")
-    t3 = parser.parse("20-10-2013 08:15")
-    t4 = parser.parse("20-10-2013 12:35")
-    t5 = parser.parse("21-10-2013 14:35") #Monday after!
-    t6 = parser.parse("20-10-2013 08:35")
-    t7 = parser.parse("20-10-2013 13:35")
-    t8 = parser.parse("19-10-2013 10:05")
-    t9 = parser.parse("19-10-2013 23:35")
+    t0 = parse_time("19-10-2013 09:40")
+    t1 = parse_time("19-10-2013 14:35")
+    t2 = parse_time("19-10-2013 14:35")
+    t3 = parse_time("20-10-2013 08:15")
+    t4 = parse_time("20-10-2013 12:35")
+    t5 = parse_time("21-10-2013 14:35") #Monday after!
+    t6 = parse_time("20-10-2013 08:35")
+    t7 = parse_time("20-10-2013 13:35")
+    t8 = parse_time("19-10-2013 10:05")
+    t9 = parse_time("19-10-2013 23:35")
 
     # print "1: ", klein[datetime.datetime(*time.strptime("19-10-2012 14:35", "%d-%m-%Y %H:%M")[:6])][5]
     # print "2: ", klein[datetime.datetime(*time.strptime("19-10-2012 17:35", "%d-%m-%Y %H:%M")[:6])][5]
@@ -473,7 +485,7 @@ if __name__ == "__main__":
     #     pass
 
     #import ipdb; ipdb.set_trace()
-    #print klein[parser.parse("19-10-2013 13:05")]
+    #print klein[parse_time("19-10-2013 13:05")]
 
     export_program(klein, "klein_export.csv")
     # print "#"*20

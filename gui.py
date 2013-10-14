@@ -9,6 +9,7 @@ try:
 except ImportError:
     import Image, ImageTk #Works on windows
 import logging
+import profile
 
 import time
 
@@ -165,4 +166,5 @@ if __name__ == "__main__":
     conffile = open(confpath)
     config = yaml.load(conffile)
         
+    #profile.run("main(config)")
     main(config)
