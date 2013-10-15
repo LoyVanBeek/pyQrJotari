@@ -14,5 +14,5 @@ TODO
 
 Requirements
 ------------
-- pip install PIL
+- ./setup.py install #Installs PIL, bottle and dateutil
 - sudo apt-get install zbar*
