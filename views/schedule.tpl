@@ -47,7 +47,7 @@
   #groot td, #groot th 
   {
     font-size:1.2em;
-    border:1px solid #C92424;
+    border:1px solid #999966;
     padding:3px 7px 2px 7px;
   }
   #groot th 
@@ -56,13 +56,13 @@
     text-align:left;
     padding-top:5px;
     padding-bottom:4px;
-    background-color:#C92424;
+    background-color:#999966;
     color:#fff;
   }
   #groot tr.alt td 
   {
     color:#000;
-    background-color:#C92424;
+    background-color:#C999966;
   }
 </style>
   </head>
