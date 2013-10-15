@@ -6,9 +6,9 @@ This program will look-up which activity is scheduled for each kid.
 
 TODO
 ----
-- Make the UI blink when a new code is succesfully scanned
-- Add images for this year's new activities
-- Test this year's setup.
+- DONE: Make the UI blink when a new code is succesfully scanned
+- DONE: Add images for this year's new activities
+- DONE: Test this year's setup.
 - Maybe do some refactoring in the event loop / polling of zbar
 - DONE: Web interface! It reloads when I push to github using webhooks, really handy. Just adding more stuff to commit to test this out though :-(
 
