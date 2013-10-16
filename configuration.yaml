@@ -1,4 +1,4 @@
-- zbarcommand: "zbarcam"# /dev/video1"
+- zbarcommand: "C:/Program Files/ZBar/bin/zbarcam"# /dev/video1"
 
 - schedule:
     age: klein
