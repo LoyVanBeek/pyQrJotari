@@ -72,6 +72,9 @@
           <tr>
             <td>{{group}}</td><td>{{activity}}</td>
           </tr>
+          <tr>
+            <td colspan="2" style="font-size:0.7em">Maar over {{time_to_next}} minuten: {{next_activity}}!</td>
+          </tr>
       </table>
     </div>
   </body>
