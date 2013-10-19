@@ -21,8 +21,8 @@ class JotariQrBackend(object):
         print "Code: {0} = {1}:{2}".format(code, age, group)
         
         ## import ipdb; ipdb.set_trace()
-        #current_time = datetime.datetime.now()
-        current_time = parser.parse("19-10-2013 20:01")
+        current_time = datetime.datetime.now()
+        #current_time = parser.parse("19-10-2013 20:01")
 
         try:
             #import ipdb; ipdb.set_trace()
