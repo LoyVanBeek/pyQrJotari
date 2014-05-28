@@ -2,10 +2,10 @@
 
 - schedule:
     age: klein
-    path: data/planning_2013_klein.csv
+    path: data/klein_2014.csv
 - schedule: 
     age: groot
-    path: data/planning_2013_groot.csv
+    path: data/groot_2014.csv
 
 - activity:
     name: "scotland yard"

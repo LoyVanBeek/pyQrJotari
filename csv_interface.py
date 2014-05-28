@@ -324,6 +324,29 @@ class Schedule(object):
             import ipdb; ipdb.set_trace()
             return {}
 
+class SimpleCsvSchedule(object):
+    """Parse and query a more simple format. Columns have headers (start,end, N group numbers).
+    Each row has a start and end date."""
+
+    def __init__(self, filename):
+        self.schedule = list(self.parse(filename))
+
+    def parse(filename):
+        schedule = csv.DictReader(open(filename))
+        for row in schedule:
+            try:
+                row["start"] = parse_time(row["start"])
+                row["eind"] = parse_time(row["eind"])
+                yield row
+            except ValueError, ve:
+                import ipdb; ipdb.set_trace()
+
+    @memoize
+    def __getitem__(self, querytime):
+        for timeslot in self.schedule:
+            if timeslot["start"] <= querytime < timeslot["eind"]:
+                return timeslot
+
 
 def check_program(interval=10):
     start = datetime.datetime(*time.strptime("19-10-2013 09:31", "%d-%m-%Y %H:%M")[:6])
