@@ -331,6 +331,7 @@ class SimpleCsvSchedule(object):
     def __init__(self, filename):
         self.schedule = list(self.parse(filename))
 
+    @staticmethod
     def parse(filename):
         schedule = csv.DictReader(open(filename))
         for row in schedule:
@@ -341,11 +342,12 @@ class SimpleCsvSchedule(object):
             except ValueError, ve:
                 import ipdb; ipdb.set_trace()
 
-    @memoize
     def __getitem__(self, querytime):
         for timeslot in self.schedule:
             if timeslot["start"] <= querytime < timeslot["eind"]:
                 return timeslot
+        else:
+            raise KeyError("There is no program on {0}".format(querytime))
 
 
 def check_program(interval=10):
