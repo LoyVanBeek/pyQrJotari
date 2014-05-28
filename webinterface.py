@@ -46,9 +46,9 @@ def group(code, time):
             time = datetime.datetime.now()
         try:
             ageschedule = schedules[age]
-            #print ageschedule
+            print ageschedule
             current_activities = ageschedule[time]
-            #print current_activities
+            print current_activities
             activity = current_activities[group]
 
             next_activity, time_gap = find_next(ageschedule, time, group)
@@ -64,6 +64,7 @@ def group(code, time):
 def schedule(time):
     time = parser.parse(time)
 
+    #import ipdb; ipdb.set_trace()
     k = schedules['klein'][time]
     g = schedules['groot'][time]
 

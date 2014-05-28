@@ -156,6 +156,7 @@ class ScheduleFragment(ExcelFile):
         self.base_day = base_day
         self.format = format
         self.groupcount = groupcount
+        self.datacells_area = datacells_area
 
         self.programtables = dict()
         self.programtables = self.get_area(*programnamecells_area)[0]
@@ -279,9 +280,15 @@ class ScheduleFragment(ExcelFile):
                     #if querytime == parse_time("19-10-2013 23:29") and starttime == parse_time("19-10-2013 23:30"): import ipdb;ipdb.set_trace()
                     #if rowno in [28]: import ipdb;ipdb.set_trace()
 
+                    #import pdb; pdb.set_trace()
+                    #Only return a row when it is in our datarange
                     if starttime <= querytime < endtime:
-                        #import pdb; pdb.set_trace()
-                        return rowno
+                        if True: #rowno < self.datacells_area[1][1]:
+                            #import pdb; pdb.set_trace()
+                            #print "time={0}, rowno={1}, limits={2}".format(querytime, rowno, self.datacells_area[1])
+                            return rowno
+                        else:
+                            import pdb; pdb.set_trace()
                 except ValueError:
                     #Could not parse cells to times, so move to the next row.
                     #print "Could not parse {0} and {1} to datetimes".format(start, end)
@@ -307,12 +314,15 @@ class Schedule(object):
         self.fragments = fragments
 
     def __getitem__(self, querytime):
-        for fragment in self.fragments:
-            try:
-                return fragment[querytime]
-            except KeyError:
-                #import ipdb; ipdb.set_trace()
-                pass
+        try:
+            for fragment in self.fragments:
+                try:
+                    return fragment[querytime]
+                except KeyError:
+                    pass
+        except KeyError, ke:
+            import ipdb; ipdb.set_trace()
+            return {}
 
 
 def check_program(interval=10):
