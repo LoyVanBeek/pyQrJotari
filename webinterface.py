@@ -64,9 +64,8 @@ def group(code, time):
 def schedule(time):
     time = parser.parse(time)
 
-    #import ipdb; ipdb.set_trace()
-    k = schedules['klein'][time]
-    g = schedules['groot'][time]
+    k = {group:act for group,act in schedules['klein'][time].iteritems() if isinstance(group, int)}
+    g = {group:act for group,act in schedules['groot'][time].iteritems() if isinstance(group, int)}
 
     return template('schedule', klein=k, groot=g, time=time)
 
