@@ -139,7 +139,6 @@
     name:  'wassen, plassen en naar bed'
     image: 'images/wassen, plassen en naar bed.jpeg'
     sound: 'sounds/wassen, plassen en naar bed.mp3'
-#New:
 - activity: 
     name: 'Survival'
     image: 'images/survival.gif'

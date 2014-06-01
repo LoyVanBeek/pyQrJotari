@@ -11,6 +11,8 @@ except ImportError:
 import logging
 import profile
 
+import sys
+
 import time
 
 logging.basicConfig(filename='qr.log', level=logging.DEBUG)
@@ -131,7 +133,7 @@ class QrJotariGui(object):
         self.set_backgrounds('white')
         print "END update"
 
-def main(config):
+def main(config, datetimeOverrule=None):
     schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
     zbarcommand = str([item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0]) #load schedule yaml-objects
     
@@ -154,7 +156,7 @@ def main(config):
     root.configure(background='white')
     app = QrJotariGui(root, activities)
     
-    backend = pyQRjotari.JotariQrBackend(schedules, app.update, command=zbarcommand)
+    backend = pyQRjotari.JotariQrBackend(schedules, app.update, command=zbarcommand, datetimeOverrule=datetimeOverrule)
     backend.start()
     
     root.mainloop()
@@ -165,6 +167,13 @@ if __name__ == "__main__":
     confpath = "configuration.yaml"
     conffile = open(confpath)
     config = yaml.load(conffile)
+
+    datetimeOverrule = None
+    try:
+        datetimeOverrule = sys.argv[1] + " " + sys.argv[2]
+        print "Override current_time with {0}".format(datetimeOverrule)
+    except IndexError:
+        print "You can optionally override the datetime for testing by passing a date: 18-10-2014 10:00"
         
     #profile.run("main(config)")
-    main(config)
+    main(config, datetimeOverrule)

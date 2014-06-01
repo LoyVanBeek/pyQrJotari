@@ -8,9 +8,13 @@ dummy_time_str = """20-10-2012 20:01"""
 current_time = datetime.datetime(*time.strptime(dummy_time_str, "%d-%m-%Y %H:%M")[:6])
 
 class JotariQrBackend(object):
-    def __init__(self, schedules, onScannedCB, scannerClass=process_interface.ZBarInterface, command="zbarcam"):
+    def __init__(self, schedules, onScannedCB, 
+                    scannerClass=process_interface.ZBarInterface, 
+                    command="zbarcam",
+                    datetimeOverrule=None):
         self.schedules = schedules
         self.onScannedCB = onScannedCB
+        self.datetimeOverrule = datetimeOverrule
         
         self.scanner = scannerClass(callback=self.lookup, command=command) 
         
@@ -21,13 +25,15 @@ class JotariQrBackend(object):
         print "Code: {0} = {1}:{2}".format(code, age, group)
         
         ## import ipdb; ipdb.set_trace()
-        current_time = datetime.datetime.now()
-        #current_time = parser.parse("19-10-2013 20:01")
+        if not self.datetimeOverrule:
+            current_time = datetime.datetime.now()
+        else:
+            current_time = parser.parse(self.datetimeOverrule)
 
         try:
             #import ipdb; ipdb.set_trace()
             age_sched = self.schedules[age]
-            current_activities = age_sched[current_time] #TODO: Set correct/current time!
+            current_activities = age_sched[current_time] 
 
             next_activity = "Onbekend"
             if current_activities:
@@ -56,6 +62,7 @@ class JotariQrBackend(object):
             import pdb; pdb.set_trace()
             self.wait_stop()
         except TypeError, te:
+            print te
             print "Is het wel JOTARI? Er is geen programma op {0}.".format(current_time)
         except Exception, ex:
             print ex

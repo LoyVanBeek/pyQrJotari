@@ -338,6 +338,10 @@ class SimpleCsvSchedule(object):
             try:
                 row["start"] = parse_time(row["start"])
                 row["eind"] = parse_time(row["eind"])
+                groupkeys = [k for k in row if k.isdigit()]
+                for group in groupkeys:
+                    row[int(group)] = row[group] #Copy string key to int
+                    del row[group] #delete the string version of the key.
                 yield row
             except ValueError, ve:
                 import ipdb; ipdb.set_trace()
@@ -365,61 +369,12 @@ def check_program(interval=10):
 
 
 def build_interface():
-    path_klein = "data/planning_2013_klein.csv"
-    path_groot = "data/planning_2013_groot.csv"
+    path_klein = "data/klein_2014.csv"
+    path_groot = "data/groot_2014.csv"
 
-    saturday_prognames_klein = CellCoordParser.to_area("C3", "I3")
-    saturday_data_area_klein = CellCoordParser.to_area("C4", "I32")
-
-    sunday_prognames_klein = CellCoordParser.to_area("C35", "G35")
-    sunday_data_area_klein = CellCoordParser.to_area("C36", "G54")
-
-    saturday_prognames_groot_dag    = CellCoordParser.to_area("C7", "I7")
-    saturday_data_area_groot_dag    = CellCoordParser.to_area("C3", "I34")
-
-    sat_eve_prognames_groot          = CellCoordParser.to_area("C22", "I22")
-    sat_eve_data_area_groot          = CellCoordParser.to_area("C23", "I34")
-
-    sunday_prognames_groot          = CellCoordParser.to_area("C44", "H44")
-    sunday_data_area_groot          = CellCoordParser.to_area("C37", "I56")
-
-
-    zat_klein = ScheduleFragment(path_klein, 
-            programnamecells_area=saturday_prognames_klein, 
-            datacells_area=saturday_data_area_klein,
-            base_day="19-10-2013")
-
-    zon_klein = ScheduleFragment(path_klein, 
-            programnamecells_area=sunday_prognames_klein, 
-            datacells_area=sunday_data_area_klein, 
-            base_day="20-10-2013")
-
-    # time = parse_time("20-10-2013 8:29")
-    # #import ipdb; ipdb.set_trace()
-    # print zon_klein.find_row_for_time(time, "")
-    # print zon_klein.query(time, 1)
-
-    zat_groot_dag   = ScheduleFragment(path_groot, 
-            saturday_prognames_groot_dag, 
-            saturday_data_area_groot_dag,
-            base_day="19-10-2013",
-            groupcount=24)
-
-    zat_groot_avond = ScheduleFragment(path_groot, 
-            sat_eve_prognames_groot, 
-            sat_eve_data_area_groot,
-            base_day="19-10-2013",
-            groupcount=24)
-
-    zon_groot       = ScheduleFragment(path_groot, 
-            sunday_prognames_groot, 
-            sunday_data_area_groot, 
-            base_day="20-10-2013", 
-            groupcount=24)
-
-
-    klein = Schedule(zat_klein, zon_klein)
-    groot = Schedule(zat_groot_dag, zat_groot_avond, zon_groot)
+    
+    klein = SimpleCsvSchedule(path_klein)
+    groot = SimpleCsvSchedule(path_groot)
 
     return klein, groot
 
