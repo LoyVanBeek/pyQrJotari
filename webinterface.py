@@ -6,7 +6,8 @@ from dateutil import parser
 from csv_interface import build_interface
 
 klein, groot = build_interface()
-schedules = {"klein":klein, "groot":groot}
+schedules = {"klein":klein, 
+             "groot":groot}
 
 @route('/qr/<code>/')
 @route('/qr/<code>')
