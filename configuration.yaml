@@ -172,7 +172,46 @@
 - activity:
     name: 'Kettingreactie'
     image: 'images/kettingreactie.gif'
-
+- activity:
+    name: 'Boerengolf'
+    image: 'images/boerengolf.png'
+- activity:
+    name: 'Eggdrop'
+    image: 'images/eggdrop.png'
+- activity:
+    name: 'Kampvuur'
+    image: 'images/kampvuur.jpg'
+- activity:
+    name: 'Klaarmaken voor the HUNT'
+    image: 'images/hunt.jpg'
+- activity:
+    name: 'Knutselen'
+    image: 'images/knutselen.gif'
+- activity:
+    name: 'Moment met eigen speltak'
+    image: 'images/Brilsmurf.jpg'
+- activity:
+    name: 'Naar huis'
+    image: 'images/huis.jpg'
+- activity:
+    name:  'opstaan + spullen opruimen'
+    image: 'images/opstaan en spullen opruimen.jpg'
+    sound: 'sounds/opstaan en spullen opruimen.mp3'
+- activity:
+    name: 'Tangram'
+    image: 'images/tangram.jpg'
+- activity:
+    name: 'The Phone'
+    image: 'images/phone.jpg'
+- activity:
+    name: 'Ticket-activiteit ronde 1'
+    image: 'images/ticket.jpg'
+- activity:
+    name: 'Ticket-activiteit ronde 2'
+    image: 'images/ticket.jpg'
+- activity:
+    name: 'Walkie-talkie'
+    image: 'images/walkietalkie.jpg'
 
 
 - timeformat: "%d-%m-%Y %H:%M"
