@@ -87,5 +87,6 @@ def log():
 
 
 if __name__ == "__main__":
+    from bottledaemon import daemon_run
     port = int(os.environ.get('PORT', 8080))
     run(host='0.0.0.0', port=port, debug=True, reloader=True)

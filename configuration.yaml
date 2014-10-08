@@ -211,7 +211,7 @@
     image: 'images/ticket.jpg'
 - activity:
     name: 'Walkie-talkie'
-    image: 'images/walkietalkie.jpg'
+    image: 'images/walkietalkie.jpg' #TODO add
 
 
 - timeformat: "%d-%m-%Y %H:%M"
