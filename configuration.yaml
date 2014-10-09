@@ -1,4 +1,4 @@
-- zbarcommand: C:\Program Files\ZBar\bin\zbarcam #"zbarcam /dev/video0" #
+- zbarcommand: "zbarcam /dev/video0" #C:\Program Files\ZBar\bin\zbarcam #
 
 - schedule:
     age: klein
@@ -9,19 +9,19 @@
 
 - activity:
     name: "scotland yard"
-    image: images/scotlandyard.jpg
+    image: images/scotlandyard.gif
     sound: sounds/scotlandyard.mp3
 - activity:
     name: "lange afstand drinken"
-    image: images/drinken.jpg
+    image: images/drinken.gif
     sound: sounds/drinken.mp3
 - activity:
     name: pubquiz
-    image: images/pubquiz.jpg
+    image: images/pubquiz.gif
     sound: sounds/pubquiz.mp3
 - activity:
     name: voetbal
-    image: images/voetbal.jpg
+    image: images/voetbal.gif
     sound: sounds/voetbal.mp3
 - activity:
     name: ballon
@@ -29,23 +29,23 @@
     sound: sounds/ballon.mp3
 - activity:
     name: inloopspellen
-    image: images/inloop.jpg
+    image: images/inloop.gif
     sound: sounds/inloopspellen.mp3
 - activity:
     name: drinken
-    image: images/drinken.jpg
+    image: images/drinken.gif
     sound: sounds/drinken.mp3
 - activity:
     name: creatief
-    image: images/creative.jpg
+    image: images/creative.gif
     sound: sounds/creatief.mp3
 - activity:
     name: gps
-    image: images/gps.png
+    image: images/gps.gif
     sound: sounds/gps.mp3
 - activity:
     name: parcours
-    image: images/parcours.jpg
+    image: images/parcours.gif
     sound: sounds/parcours.mp3
 - activity:
     name: jota
@@ -53,63 +53,63 @@
     sound: sounds/jota.mp3
 - activity:
     name: joti
-    image: images/joti.jpg
+    image: images/joti.gif
     sound: sounds/joti.mp3
 - activity:
     name: radio
-    image: images/radio.png
+    image: images/radio.gif
     sound: sounds/radio.mp3
 - activity:
     name: avondeten
-    image: images/avondeten.png
+    image: images/avondeten.gif
     sound: sounds/avondeten.mp3
 - activity:
     name: avondspel
-    image: images/avondspel.png
+    image: images/avondspel.gif
     sound: sounds/avondspel.mp3
 - activity:
     name: bos
-    image: images/bos.png
+    image: images/bos.gif
     sound: sounds/bos.mp3
 - activity:
     name: bosspel
-    image: images/bos.png
+    image: images/bos.gif
     sound: sounds/bos.mp3
 - activity:
     name: 'gezamenlijk spel'
-    image: 'images/gezamenlijk spel.jpg'
+    image: 'images/gezamenlijk spel.gif'
     sound: 'sounds/gezamenlijk spel.mp3'
 - activity:
     name: 'gezamenlijk programma'
-    image: 'images/gezamenlijk spel.jpg'
+    image: 'images/gezamenlijk spel.gif'
     sound: 'sounds/gezamenlijk spel.mp3'
 - activity:
     name: hunt
-    image: images/hunt.jpg
+    image: images/hunt.gif
     sound: sounds/hunt.mp3
 - activity:
     name: lunch
-    image: images/lunch.jpg
+    image: images/lunch.gif
     sound: sounds/lunch.mp3
 - activity:
     name: ontbijt
-    image: images/ontbijt.jpg
+    image: images/ontbijt.gif
     sound: sounds/ontbijt.mp3
 - activity:
     name: opening
-    image: images/opening.jpg
+    image: images/opening.gif
     sound: sounds/opening.mp3
 - activity:
     name:  'opstaan en spullen opruimen'
-    image: 'images/opstaan en spullen opruimen.jpg'
+    image: 'images/opstaan en spullen opruimen.gif'
     sound: 'sounds/opstaan en spullen opruimen.mp3'
 - activity:
     name: slapen
-    image: images/slapen.jpg
+    image: images/slapen.gif
     sound: sounds/slapen.mp3
 - activity:
     name: sluiting
-    image: images/sluiting.jpg
+    image: images/sluiting.gif
     sound: sounds/sluiting.mp3
 - activity:
     name: 'tenten opzetten'
@@ -140,78 +140,78 @@
     image: 'images/wassen, plassen en naar bed.jpeg'
     sound: 'sounds/wassen, plassen en naar bed.mp3'
 - activity: 
-    name: 'Survival'
+    name: 'survival'
     image: 'images/survival.gif'
 - activity: 
-    name: 'Reuze ballen'
+    name: 'reuze ballen'
     image: 'images/reuze ballen.gif'
 - activity: 
-    name: 'Geheimschrift'
+    name: 'geheimschrift'
     image: 'images/geheimschrift.gif'
 - activity: 
-    name: 'Sherow programma'
+    name: 'sherow programma'
     image: 'images/sherrow programma.gif'
 - activity: 
-    name: 'Levend Mijnenvegen'
+    name: 'levend mijnenvegen'
     image: 'images/levend mijnenveger.gif'
 - activity: 
-    name: 'Uitleg + klaarmaken voor the Hunt'
-    image: images/hunt.jpg
+    name: 'uitleg + klaarmaken voor the hunt'
+    image: images/hunt.gif
 - activity:
-    name: 'Levend memorie'
+    name: 'levend memorie'
     image: 'images/memory.gif'
 - activity:
-    name: 'Blinde geleide spel'
+    name: 'blinde geleide spel'
     image: 'images/blindegeleidespel.gif'
 - activity:
-    name: 'Levend kwartet'
+    name: 'levend kwartet'
     image: 'images/kwartet.gif'
 - activity:
-    name: 'De grote ontknoping'
+    name: 'de grote ontknoping'
     image: 'images/grote ontknoping.gif'
 - activity:
-    name: 'Kettingreactie'
+    name: 'kettingreactie'
     image: 'images/kettingreactie.gif'
 - activity:
-    name: 'Boerengolf'
-    image: 'images/boerengolf.png'
+    name: 'boerengolf'
+    image: 'images/boerengolf.gif'
 - activity:
-    name: 'Eggdrop'
-    image: 'images/eggdrop.png'
+    name: 'eggdrop'
+    image: 'images/eggdrop.gif'
 - activity:
-    name: 'Kampvuur'
-    image: 'images/kampvuur.jpg'
+    name: 'kampvuur'
+    image: 'images/kampvuur.gif'
 - activity:
-    name: 'Klaarmaken voor the HUNT'
-    image: 'images/hunt.jpg'
+    name: 'klaarmaken voor the hunt'
+    image: 'images/hunt.gif'
 - activity:
-    name: 'Knutselen'
-    image: 'images/knutselen.gif'
+    name: 'flessenspel'
+    image: 'images/flessenspel.gif'
 - activity:
-    name: 'Moment met eigen speltak'
-    image: 'images/Brilsmurf.jpg'
+    name: 'moment met eigen speltak'
+    image: 'images/Brilsmurf.gif'
 - activity:
-    name: 'Naar huis'
-    image: 'images/huis.jpg'
+    name: 'naar huis'
+    image: 'images/huis.gif'
 - activity:
     name:  'opstaan + spullen opruimen'
-    image: 'images/opstaan en spullen opruimen.jpg'
+    image: 'images/opstaan en spullen opruimen.gif'
     sound: 'sounds/opstaan en spullen opruimen.mp3'
 - activity:
-    name: 'Tangram'
-    image: 'images/tangram.jpg'
+    name: 'tangram'
+    image: 'images/tangram.gif'
 - activity:
-    name: 'The Phone'
-    image: 'images/phone.jpg'
+    name: 'the phone'
+    image: 'images/phone.gif'
 - activity:
-    name: 'Ticket-activiteit ronde 1'
-    image: 'images/ticket.jpg'
+    name: 'ticket-activiteit ronde 1'
+    image: 'images/ticket.gif'
 - activity:
-    name: 'Ticket-activiteit ronde 2'
-    image: 'images/ticket.jpg'
+    name: 'ticket-activiteit ronde 2'
+    image: 'images/ticket.gif'
 - activity:
-    name: 'Walkie-talkie'
-    image: 'images/walkietalkie.jpg' #TODO add
+    name: 'walkie-talkie'
+    image: 'images/walkietalkie.gif' #TODO add
 
 
 - timeformat: "%d-%m-%Y %H:%M"
