@@ -1,0 +1,7 @@
+sudo apt-get install zbar-tools
+sudo apt-get install libjpeg-dev
+sudo ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/
+sudo ln -s /usr/lib/i386-linux-gnu/libfreetype.so.6 /usr/lib/
+sudo ln -s /usr/lib/i386-linux-gnu/libz.so /usr/lib/
+sudo apt-get install tk8.5-dev tcl8.5-dev
+sudo pip install --no-cache-dir -I pillow
