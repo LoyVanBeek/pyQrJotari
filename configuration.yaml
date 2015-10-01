@@ -2,10 +2,10 @@
 
 - schedule:
     age: klein
-    path: data/klein_2014.csv
+    path: data/klein_2015.csv
 - schedule: 
     age: groot
-    path: data/groot_2014.csv
+    path: data/groot_2015.csv
 
 - activity:
     name: "scotland yard"
@@ -137,7 +137,7 @@
     sound: sounds/veld.mp3
 - activity:
     name:  'wassen, plassen en naar bed'
-    image: 'images/wassen, plassen en naar bed.jpeg'
+    image: 'images/wassen, plassen en naar bed.gif'
     sound: 'sounds/wassen, plassen en naar bed.mp3'
 - activity: 
     name: 'survival'

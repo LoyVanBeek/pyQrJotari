@@ -82,25 +82,39 @@ class QrJotariGui(object):
         self.groupText.set("Iedereen")
         self.activity_firstText.set("Opening")
         self.activity_secondText.set("?")
+        # import ipdb; ipdb.set_trace()
         self.activity_firstImLbl.configure(image=self.act2img['opening'])
     
     @staticmethod
     def load_images(activities):
-        map = dict()#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
+        act2image_map = dict()#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
+        # import ipdb; ipdb.set_trace()
         for name, props in activities.iteritems():
+            path = props['image']
             try:
-                im = Image.open(props['image'])
+                im = Image.open(path)
+                print "Loaded image for {}: {}".format(name, path)
             except IOError:
-                print "Kon {0} niet laden".format(props['image'])
+                print "Kon {0} niet laden".format(path)
                 im = Image.open("images/onbekend.png")
-            im = im.resize((300,300))
+
             try:
-                #pi = tk.PhotoImage(file=props['image'])
+                im = im.resize((300,300))
+                print "Resized image for {}: {}".format(name, path)
+            except IOError, ioe:
+                print "Could not resize image {}".format(path)
+                im = Image.open("images/onbekend.png")   
+
+            try:
+                #pi = tk.PhotoImage(file=path)
                 pi = ImageTk.PhotoImage(im)
-                map[name] = pi
-            except:
-                pass
-        return map
+                act2image_map[name] = pi
+                print "Added image for {}: {} to act2image_map".format(name, path)
+            except Exception, e:
+                print e
+                print "Could not add image for {}".format(name)
+
+        return act2image_map
 
     def set_backgrounds(self, color):
         for item in [self.frame, self.groupLabel,self.dateframe,self.goto_firstLabel,
