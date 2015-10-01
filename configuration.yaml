@@ -1,4 +1,4 @@
-- zbarcommand: C:\Program Files\ZBar\bin\zbarcam #"zbarcam /dev/video0" #
+- zbarcommand: "zbarcam /dev/video0" #C:\Program Files\ZBar\bin\zbarcam #
 
 - schedule:
     age: klein
