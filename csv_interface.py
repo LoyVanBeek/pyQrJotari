@@ -8,6 +8,8 @@
 
 import csv, time, datetime
 from dateutil import parser
+import yaml
+
 class memoize:
     def __init__(self, function):
         self.function = function
@@ -344,6 +346,7 @@ class SimpleCsvSchedule(object):
                     del row[group] #delete the string version of the key.
                 yield row
             except ValueError, ve:
+                print ve, row
                 import ipdb; ipdb.set_trace()
 
     def __getitem__(self, querytime):
@@ -369,9 +372,14 @@ def check_program(interval=10):
 
 
 def build_interface():
-    path_klein = "data/klein_2014.csv"
-    path_groot = "data/groot_2014.csv"
+    confpath = "configuration.yaml"
+    conffile = open(confpath)
+    config = yaml.load(conffile)
 
+    schedule_config = {item['schedule']['age']:item['schedule']['path'] for item in
+                       [item for item in config if "schedule" in item.keys()]}
+    path_klein = schedule_config['klein']
+    path_groot = schedule_config['groot']
     
     klein = SimpleCsvSchedule(path_klein)
     groot = SimpleCsvSchedule(path_groot)

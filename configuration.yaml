@@ -1,9 +1,11 @@
-- zbarcommand: "zbarcam /dev/video0" #C:\Program Files\ZBar\bin\zbarcam #
+- zbarcommand:
+    Linux: "zbarcam /dev/video0"
+    Windows: C:\Program Files\ZBar\bin\zbarcam
 
 - schedule:
     age: klein
     path: data/klein_2015.csv
-- schedule: 
+- schedule:
     age: groot
     path: data/groot_2015.csv
 

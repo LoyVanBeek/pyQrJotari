@@ -12,6 +12,7 @@ import logging
 import profile
 
 import sys
+import platform
 
 import time
 
@@ -149,7 +150,9 @@ class QrJotariGui(object):
 
 def main(config, datetimeOverrule=None):
     schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
-    zbarcommand = str([item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0]) #load schedule yaml-objects
+    zbarcommands = [item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0] #load schedule
+    # import ipdb; ipdb.set_trace()
+    zbarcommand = zbarcommands[platform.system()]
     
     from csv_interface import build_interface
 
@@ -187,7 +190,7 @@ if __name__ == "__main__":
         datetimeOverrule = sys.argv[1] + " " + sys.argv[2]
         print "Override current_time with {0}".format(datetimeOverrule)
     except IndexError:
-        print "You can optionally override the datetime for testing by passing a date: 18-10-2014 10:00"
+        print "You can optionally override the datetime for testing by passing a date: ./gui.py 18-10-2015 10:00"
         
     #profile.run("main(config)")
     main(config, datetimeOverrule)
