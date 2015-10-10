@@ -214,6 +214,30 @@
 - activity:
     name: 'walkie-talkie'
     image: 'images/walkietalkie.gif' #TODO add
+- activity:
+    name: 'Leipe Halli Galli'
+    image: 'images/halli_galli.gif'
+- activity:
+    name: 'Muizen vissen'
+    image: 'images/muizen.gif'
+- activity:
+    name: 'Escape-room'
+    image: 'images/escape-room.gif'
+- activity:
+    name: 'Stormbaan'
+    image: 'images/stormbaan.gif'
+- activity:
+    name: 'Ticket-activiteit ronde 1'
+    image: 'images/ticket.gif'
+- activity:
+    name: 'Ticket-activiteit ronde 2'
+    image: 'images/ticket.gif'
+- activity:
+    name: 'Levend Halli Galli'
+    image: 'images/halli_galli.gif'
+- activity:
+    name: 'Levend zeeslag'
+    image: 'images/zeeslag.gif'
 
 
 - timeformat: "%d-%m-%Y %H:%M"
