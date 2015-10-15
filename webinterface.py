@@ -58,10 +58,10 @@ def group(code, time):
             return template('group', activity=activity, group=code, time=time, next_activity=next_activity, time_to_next=time_gap)
         except KeyError:
             return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
-                <a href='{{group}}/18-10-2014%2010:00'>Zaterdag 10 uur</a>", group=code)
+                <a href='{{group}}/17-10-2015%2010:00'>Zaterdag 10 uur</a>", group=code)
         except TypeError:
             return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
-                <a href='{{group}}/18-10-2014%2010:00'>Zaterdag 10 uur</a>", group=code)
+                <a href='{{group}}/17-10-2015%2010:00'>Zaterdag 10 uur</a>", group=code)
 
 def schedule(time):
     time = parser.parse(time)
