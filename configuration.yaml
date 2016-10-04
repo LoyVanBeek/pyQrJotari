@@ -238,6 +238,30 @@
 - activity:
     name: 'Levend zeeslag'
     image: 'images/zeeslag.gif'
+- activity:
+    name: 'Vossenjacht'
+    image: 'images/share.png'
+- activity:
+    name: 'Proefjes'
+    image: 'images/proefjes.jpg'
+- activity:
+    name: 'Stratego'
+    image: 'images/stratego.jpg'
+- activity:
+    name: 'Pokemon-go'
+    image: 'images/pokemongo.png'
+- activity:
+    name: 'Doordraai'
+    image: 'images/doordraai.png'
+- activity:
+    name: 'Langeafstandspionieren'
+    image: 'images/walkietalkie.gif'
+- activity:
+    name: 'Hoverballshooting'
+    image: 'images/hunt.gif'
+- activity:
+    name: 'Vlaggen'
+    image: 'images/flag.gif'
 
 
 - timeformat: "%d-%m-%Y %H:%M"
