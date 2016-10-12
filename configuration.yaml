@@ -261,7 +261,7 @@
     image: 'images/hunt.gif'
 - activity:
     name: 'Vlaggen'
-    image: 'images/flag.gif'
+    image: 'images/flag.jpg'
 
 
 - timeformat: "%d-%m-%Y %H:%M"

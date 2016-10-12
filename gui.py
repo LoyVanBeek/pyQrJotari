@@ -4,6 +4,8 @@ import tkFont
 import yaml
 import pyQRjotari
 import csv_interface
+
+
 try:
     from PIL import Image, ImageTk
 except ImportError:
@@ -94,14 +96,14 @@ class QrJotariGui(object):
             path = props['image']
             try:
                 im = Image.open(path)
-                print "Loaded image for {}: {}".format(name, path)
+                logging.debug("Loaded image for {}: {}".format(name, path))
             except IOError:
                 print "Kon {0} niet laden".format(path)
                 im = Image.open("images/onbekend.png")
 
             try:
                 im = im.resize((300,300))
-                print "Resized image for {}: {}".format(name, path)
+                logging.debug("Resized image for {}: {}".format(name, path))
             except IOError, ioe:
                 print "Could not resize image {}".format(path)
                 im = Image.open("images/onbekend.png")   
@@ -110,7 +112,7 @@ class QrJotariGui(object):
                 #pi = tk.PhotoImage(file=path)
                 pi = ImageTk.PhotoImage(im)
                 act2image_map[name] = pi
-                print "Added image for {}: {} to act2image_map".format(name, path)
+                logging.debug("Added image for {}: {} to act2image_map".format(name, path))
             except Exception, e:
                 print e
                 print "Could not add image for {}".format(name)
