@@ -59,8 +59,8 @@ class JotariQrBackend(object):
         except KeyError, ke:
             print ke
             print "Haal Loy even, iets is er misgegaan!"
-            import pdb; pdb.set_trace()
-            self.wait_stop()
+            # import pdb; pdb.set_trace()
+            # self.wait_stop()
         except TypeError, te:
             print te
             print "Is het wel JOTARI? Er is geen programma op {0}.".format(current_time)
