@@ -150,6 +150,17 @@ class QrJotariGui(object):
         self.set_backgrounds('white')
         print "END update"
 
+def check_images(activities, schedule):
+    programs = []
+    for time in schedule.schedule:
+        programs += [prog.lower() for prog in time.values() if isinstance(prog, str)]
+
+    unique_programs = set(programs)
+
+    missing = unique_programs - set(activities.keys())
+    return missing
+
+
 def main(config, datetimeOverrule=None):
     schedules = [item['schedule'] for item in config if item.has_key("schedule")] #load schedule yaml-objects
     zbarcommands = [item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0] #load schedule
@@ -164,6 +175,7 @@ def main(config, datetimeOverrule=None):
     activities = dict([(item['activity']['name'], item['activity']) for item in config if item.has_key("activity")])
 
     #print activities
+    print check_images(activities, klein) | check_images(activities, groot)
     
     def update(*args):
         print args

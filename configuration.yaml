@@ -118,11 +118,11 @@
     image: 'images/tenten opzetten.GIF'
     sound: 'sounds/tenten opzetten.mp3'
 - activity:
-    name: 'images/tocht van daar naar hier'
-    image: 'images/tocht van daar naar hier.gif'
-    sound: 'sounds/tocht van daar naar hier.mp3'
-- activity:
     name: "tocht van hier naar daar"
+    image: 'images/tocht van hier naar daar.gif'
+    sound: 'sounds/tocht van hier naar daar.mp3'
+- activity:
+    name: "tocht van daar naar hier"
     image: 'images/tocht van hier naar daar.gif'
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
@@ -197,6 +197,10 @@
     image: 'images/huis.gif'
 - activity:
     name:  'opstaan + spullen opruimen'
+    image: 'images/opstaan en spullen opruimen.gif'
+    sound: 'sounds/opstaan en spullen opruimen.mp3'
+- activity:
+    name:  'opstaan'
     image: 'images/opstaan en spullen opruimen.gif'
     sound: 'sounds/opstaan en spullen opruimen.mp3'
 - activity:
