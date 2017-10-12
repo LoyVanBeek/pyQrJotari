@@ -41,8 +41,8 @@ class JotariQrBackend(object):
                     #Keep looking through the schedule until a next, different program is found. 
                     next_activities = current_activities
                     time_gap = 1
-                    #import ipdb; ipdb.set_trace()
-                    while next_activities == current_activities:
+                    # import ipdb; ipdb.set_trace()
+                    while next_activities[group] == current_activities[group]:
                         next_activities = age_sched[current_time + datetime.timedelta(0,0,minutes=time_gap)] # days, seconds, then other fields.] #TODO: Set correct/current time!
                         time_gap += 1
                     print "Next program starts in {0} minutes".format(time_gap)
