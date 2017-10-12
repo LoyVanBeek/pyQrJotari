@@ -4,10 +4,10 @@
 
 - schedule:
     age: klein
-    path: data/klein_2016.csv
+    path: data/klein_2017.csv
 - schedule:
     age: groot
-    path: data/groot_2016.csv
+    path: data/groot_2017.csv
 
 - activity:
     name: "scotland yard"
@@ -127,6 +127,14 @@
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: tocht
+    image: 'images/tocht van hier naar daar.gif'
+    sound: 'sounds/tocht van hier naar daar.mp3'
+- activity:
+    name: "tocht naar hier"
+    image: 'images/tocht van hier naar daar.gif'
+    sound: 'sounds/tocht van hier naar daar.mp3'
+- activity:
+    name: "tocht naar ginder"
     image: 'images/tocht van hier naar daar.gif'
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
@@ -266,6 +274,75 @@
 - activity:
     name: 'Vlaggen'
     image: 'images/flag.jpg'
+- activity:
+    name: 'Cluedo'
+    image: 'images/cluedo.jpg'
+- activity:
+    name: 'GPS-doolhof'
+    image: 'images/geocache.png'
+- activity:
+    name: 'Ginder-Tinder'
+    image: 'images/gindertinder.jpg'
+- activity:
+    name: 'Highland-games'
+    image: 'images/highlandgames.jpg'
+- activity:
+    name: 'Instagramspel'
+    image: 'images/instagram.jpg'
+- activity:
+    name: 'Kubb'
+    image: 'images/kubb.jpg'
+- activity:
+    name: "De Lama's"
+    image: 'images/lamas.png'
+- activity:
+    name: 'Washandjesmonsterspel'
+    image: 'images/monster.jpg'
+- activity:
+    name: 'Radio actieve vaten'
+    image: 'images/radio_actieve_vaten.jpg'
+- activity:
+    name: 'Saboteur'
+    image: 'images/saboteur.jpg'
+- activity:
+    name: 'Solderen'
+    image: 'images/solderen.jpg'
+- activity:
+    name: 'Station'
+    image: 'images/station.png'
+- activity:
+    name: 'Parcours'
+    image: 'images/tetris.png'
+- activity:
+    name: 'Communicatie-estafette'
+    image: 'images/tin-can-telephone.jpg'
+- activity:
+    name: 'Water spons vuur'
+    image: 'images/water_spons_vuur.jpg'
+- activity:
+    name: 'Workshop 1'
+    image: 'images/workshop.png'
+- activity:
+    name: 'Workshop 2'
+    image: 'images/workshop.png'
+- activity:
+    name: 'Workshop 3'
+    image: 'images/workshop.png'
+- activity:
+    name: 'Octopus'
+    image: 'images/octopus.jpg'
+- activity:
+    name: 'Elektronica slopen/knutselen'
+    image: 'images/elektronica.png'
+- activity:
+    name: 'Jongens tegen de meisjes'
+    image: 'images/jongens_tegen_meisjes.png'
+- activity:
+    name: 'Lunch + tickets workshops'
+    image: images/lunch.gif
+- activity:
+    name: 'opbouw+voorbereiden'
+    image: images/werk-in-uitvoering.jpg
 
 
 - timeformat: "%d-%m-%Y %H:%M"
