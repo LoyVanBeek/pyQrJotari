@@ -124,7 +124,7 @@ class QrJotariGui(object):
                      self.currentActivityFrame,self.activity_firstLabel,self.goto_secondLabel,self.activity_secondLabel]:
             item.config(background=color)
 
-    def update(self, age, group, group_activity, current_time, image, next_activity=None, next_start="wat"):
+    def update(self, age, group, group_activity, current_time, image, next_activity=None, next_start=0):
         print "START update"
         print age, group, group_activity, current_time, image
 
@@ -136,7 +136,12 @@ class QrJotariGui(object):
 
         self.groupText.set("Groep "+str(group))
         self.activity_firstText.set(str(group_activity.capitalize()))
-        self.activity_secondText.set("(over {1} minuten: {0})".format(str(next_activity).capitalize(), next_start))
+
+        hours = next_start // 60
+        minutes = next_start - (hours * 60)
+        next_start_str = "{h} uur en {m} minuten".format(h=hours, m=minutes)
+
+        self.activity_secondText.set("(over {1}: {0})".format(str(next_activity).capitalize(), next_start_str))
 
         #import pdb; pdb.set_trace()
         if self.act2img.has_key(group_activity):
