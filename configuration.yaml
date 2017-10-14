@@ -138,6 +138,14 @@
     image: 'images/tocht van hier naar daar.gif'
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
+    name: "tocht van ginder naar hier"
+    image: 'images/tocht van hier naar daar.gif'
+    sound: 'sounds/tocht van hier naar daar.mp3'
+- activity:
+    name: "tocht van hier naar ginder"
+    image: 'images/tocht van hier naar daar.gif'
+    sound: 'sounds/tocht van hier naar daar.mp3'
+- activity:
     name: tv
     image: images/tv.gif
     sound: sounds/tv.mp3
@@ -343,6 +351,9 @@
 - activity:
     name: 'opbouw+voorbereiden'
     image: images/werk-in-uitvoering.jpg
+- activity:
+    name: 'bevers'
+    image: images/bevers.png
 
 
 - timeformat: "%d-%m-%Y %H:%M"
