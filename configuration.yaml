@@ -227,118 +227,118 @@
     name: 'walkie-talkie'
     image: 'images/walkietalkie.gif' #TODO add
 - activity:
-    name: 'Leipe Halli Galli'
+    name: 'leipe halli galli'
     image: 'images/halli_galli.gif'
 - activity:
-    name: 'Muizen vissen'
+    name: 'muizen vissen'
     image: 'images/muizen.gif'
 - activity:
-    name: 'Escape-room'
+    name: 'escape-room'
     image: 'images/escape-room.gif'
 - activity:
-    name: 'Stormbaan'
+    name: 'stormbaan'
     image: 'images/stormbaan.gif'
 - activity:
-    name: 'Ticket-activiteit ronde 1'
+    name: 'ticket-activiteit ronde 1'
     image: 'images/ticket.gif'
 - activity:
-    name: 'Ticket-activiteit ronde 2'
+    name: 'ticket-activiteit ronde 2'
     image: 'images/ticket.gif'
 - activity:
-    name: 'Levend Halli Galli'
+    name: 'levend halli galli'
     image: 'images/halli_galli.gif'
 - activity:
-    name: 'Levend zeeslag'
+    name: 'levend zeeslag'
     image: 'images/zeeslag.gif'
 - activity:
-    name: 'Vossenjacht'
+    name: 'vossenjacht'
     image: 'images/share.png'
 - activity:
-    name: 'Proefjes'
+    name: 'proefjes'
     image: 'images/proefjes.jpg'
 - activity:
-    name: 'Stratego'
+    name: 'stratego'
     image: 'images/stratego.jpg'
 - activity:
-    name: 'Pokemon-go'
+    name: 'pokemon-go'
     image: 'images/pokemongo.png'
 - activity:
-    name: 'Doordraai'
+    name: 'doordraai'
     image: 'images/doordraai.png'
 - activity:
-    name: 'Langeafstandspionieren'
+    name: 'langeafstandspionieren'
     image: 'images/walkietalkie.gif'
 - activity:
-    name: 'Hoverballshooting'
+    name: 'hoverballshooting'
     image: 'images/hunt.gif'
 - activity:
-    name: 'Vlaggen'
+    name: 'vlaggen'
     image: 'images/flag.jpg'
 - activity:
-    name: 'Cluedo'
+    name: 'cluedo'
     image: 'images/cluedo.jpg'
 - activity:
-    name: 'GPS-doolhof'
+    name: 'gps-doolhof'
     image: 'images/geocache.png'
 - activity:
-    name: 'Ginder-Tinder'
+    name: 'ginder-tinder'
     image: 'images/gindertinder.jpg'
 - activity:
-    name: 'Highland-games'
+    name: 'highland-games'
     image: 'images/highlandgames.jpg'
 - activity:
-    name: 'Instagramspel'
+    name: 'instagramspel'
     image: 'images/instagram.jpg'
 - activity:
-    name: 'Kubb'
+    name: 'kubb'
     image: 'images/kubb.jpg'
 - activity:
-    name: "De Lama's"
+    name: "de lama's"
     image: 'images/lamas.png'
 - activity:
-    name: 'Washandjesmonsterspel'
+    name: 'washandjesmonsterspel'
     image: 'images/monster.jpg'
 - activity:
-    name: 'Radio actieve vaten'
+    name: 'radio actieve vaten'
     image: 'images/radio_actieve_vaten.jpg'
 - activity:
-    name: 'Saboteur'
+    name: 'saboteur'
     image: 'images/saboteur.jpg'
 - activity:
-    name: 'Solderen'
+    name: 'solderen'
     image: 'images/solderen.jpg'
 - activity:
-    name: 'Station'
+    name: 'station'
     image: 'images/station.png'
 - activity:
-    name: 'Parcours'
+    name: 'parcours'
     image: 'images/tetris.png'
 - activity:
-    name: 'Communicatie-estafette'
+    name: 'communicatie-estafette'
     image: 'images/tin-can-telephone.jpg'
 - activity:
-    name: 'Water spons vuur'
+    name: 'water spons vuur'
     image: 'images/water_spons_vuur.jpg'
 - activity:
-    name: 'Workshop 1'
+    name: 'workshop 1'
     image: 'images/workshop.png'
 - activity:
-    name: 'Workshop 2'
+    name: 'workshop 2'
     image: 'images/workshop.png'
 - activity:
-    name: 'Workshop 3'
+    name: 'workshop 3'
     image: 'images/workshop.png'
 - activity:
-    name: 'Octopus'
+    name: 'octopus'
     image: 'images/octopus.jpg'
 - activity:
-    name: 'Elektronica slopen/knutselen'
+    name: 'elektronica slopen/knutselen'
     image: 'images/elektronica.png'
 - activity:
-    name: 'Jongens tegen de meisjes'
+    name: 'jongens tegen de meisjes'
     image: 'images/jongens_tegen_meisjes.png'
 - activity:
-    name: 'Lunch + tickets workshops'
+    name: 'lunch + tickets workshops'
     image: images/lunch.gif
 - activity:
     name: 'opbouw+voorbereiden'
