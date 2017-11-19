@@ -136,13 +136,14 @@ class QrJotariGui(object):
         self.activity_firstImLbl.bell()
 
         self.groupText.set("Groep "+str(group))
-        self.activity_firstText.set(str(group_activity.capitalize()) + "\n" + self.act2loc[group_activity])
+        self.activity_firstText.set(str(group_activity.capitalize()) + "\n (" + self.act2loc[group_activity]+")")
 
         hours = next_start // 60
         minutes = next_start - (hours * 60)
         next_start_str = "{h} uur en {m} minuten".format(h=hours, m=minutes)
+        next_loc_str = ", "+self.act2loc[next_activity] if self.act2loc[next_activity] else ""
 
-        self.activity_secondText.set("(over {1}: {0})".format(str(next_activity).capitalize(), next_start_str))
+        self.activity_secondText.set("(over {1}: {0}{2})".format(str(next_activity).capitalize(), next_start_str, next_loc_str))
 
         #import pdb; pdb.set_trace()
         if self.act2img.has_key(group_activity):

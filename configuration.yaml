@@ -387,15 +387,15 @@
 - activity:
     name: "de lama's"
     image: 'images/lamas.png'
-    location: ''
+    location: 'Kampvuurkuil'
 - activity:
     name: 'washandjesmonsterspel'
     image: 'images/monster.jpg'
-    location: ''
+    location: 'Bos, verzamelen bij poort'
 - activity:
     name: 'radio actieve vaten'
     image: 'images/radio_actieve_vaten.jpg'
-    location: ''
+    location: 'Veld'
 - activity:
     name: 'saboteur'
     image: 'images/saboteur.jpg'
