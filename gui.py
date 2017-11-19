@@ -37,6 +37,7 @@ class QrJotariGui(object):
 
     def __init__(self, master, activities):
         self.act2img = self.load_images(activities)#dict([(name, tk.PhotoImage(Image.open(props['image']), height=200)) for name, props in activities.iteritems()])
+        self.act2loc = dict([(name, props['location']) for name, props in activities.iteritems()])
         #print self.act2img
 
         master.title("JOTARI QR-codescanner")
@@ -135,7 +136,7 @@ class QrJotariGui(object):
         self.activity_firstImLbl.bell()
 
         self.groupText.set("Groep "+str(group))
-        self.activity_firstText.set(str(group_activity.capitalize()))
+        self.activity_firstText.set(str(group_activity.capitalize()) + "\n" + self.act2loc[group_activity])
 
         hours = next_start // 60
         minutes = next_start - (hours * 60)

@@ -12,348 +12,450 @@
 - activity:
     name: "scotland yard"
     image: images/scotlandyard.gif
+    location: ''
     sound: sounds/scotlandyard.mp3
 - activity:
     name: "lange afstand drinken"
     image: images/drinken.gif
+    location: ''
     sound: sounds/drinken.mp3
 - activity:
     name: pubquiz
     image: images/pubquiz.gif
+    location: ''
     sound: sounds/pubquiz.mp3
 - activity:
     name: voetbal
     image: images/voetbal.gif
+    location: ''
     sound: sounds/voetbal.mp3
 - activity:
     name: ballon
     image: images/ballon.gif
+    location: ''
     sound: sounds/ballon.mp3
 - activity:
     name: inloopspellen
     image: images/inloop.gif
+    location: ''
     sound: sounds/inloopspellen.mp3
 - activity:
     name: drinken
     image: images/drinken.gif
+    location: ''
     sound: sounds/drinken.mp3
 - activity:
     name: creatief
     image: images/creative.gif
+    location: ''
     sound: sounds/creatief.mp3
 - activity:
     name: gps
     image: images/gps.gif
+    location: ''
     sound: sounds/gps.mp3
 - activity:
     name: parcours
     image: images/parcours.gif
+    location: ''
     sound: sounds/parcours.mp3
 - activity:
     name: jota
     image: images/jota.gif
+    location: 'Beverruimte, boven'
     sound: sounds/jota.mp3
 - activity:
     name: joti
     image: images/joti.gif
+    location: 'Chatt City, beneden'
     sound: sounds/joti.mp3
 - activity:
     name: radio
     image: images/radio.gif
+    location: 'Sherparuimte'
     sound: sounds/radio.mp3
 - activity:
     name: avondeten
     image: images/avondeten.gif
+    location: 'Grote zaal'
     sound: sounds/avondeten.mp3
 - activity:
     name: avondspel
     image: images/avondspel.gif
+    location: ''
     sound: sounds/avondspel.mp3
 - activity:
     name: bos
     image: images/bos.gif
+    location: ''
     sound: sounds/bos.mp3
 - activity:
     name: bosspel
     image: images/bos.gif
+    location: 'Bos, verzamelen bij poort'
     sound: sounds/bos.mp3
 - activity:
     name: 'gezamenlijk spel'
     image: 'images/gezamenlijk spel.gif'
+    location: ''
     sound: 'sounds/gezamenlijk spel.mp3'
 - activity:
     name: 'gezamenlijk programma'
     image: 'images/gezamenlijk spel.gif'
+    location: ''
     sound: 'sounds/gezamenlijk spel.mp3'
 - activity:
     name: hunt
     image: images/hunt.gif
+    location: ''
     sound: sounds/hunt.mp3
 - activity:
     name: lunch
     image: images/lunch.gif
+    location: ''
     sound: sounds/lunch.mp3
 - activity:
     name: ontbijt
     image: images/ontbijt.gif
+    location: ''
     sound: sounds/ontbijt.mp3
 - activity:
     name: opening
     image: images/opening.gif
+    location: ''
     sound: sounds/opening.mp3
 - activity:
     name:  'opstaan en spullen opruimen'
     image: 'images/opstaan en spullen opruimen.gif'
+    location: ''
     sound: 'sounds/opstaan en spullen opruimen.mp3'
 - activity:
     name: slapen
     image: images/slapen.gif
+    location: 'Slaapzaal'
     sound: sounds/slapen.mp3
 - activity:
     name: sluiting
     image: images/sluiting.gif
+    location: 'Veld'
     sound: sounds/sluiting.mp3
 - activity:
     name: 'tenten opzetten'
     image: 'images/tenten opzetten.GIF'
+    location: 'Veld'
     sound: 'sounds/tenten opzetten.mp3'
 - activity:
     name: "tocht van hier naar daar"
     image: 'images/tocht van hier naar daar.gif'
+    location: 'Verzamelen bij het paaltje'
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: "tocht van daar naar hier"
     image: 'images/tocht van hier naar daar.gif'
+    location: ''
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: tocht
     image: 'images/tocht van hier naar daar.gif'
+    location: ''
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: "tocht naar hier"
     image: 'images/tocht van hier naar daar.gif'
+    location: ''
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: "tocht naar ginder"
     image: 'images/tocht van hier naar daar.gif'
+    location: ''
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: "tocht van ginder naar hier"
     image: 'images/tocht van hier naar daar.gif'
+    location: ''
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: "tocht van hier naar ginder"
     image: 'images/tocht van hier naar daar.gif'
+    location: ''
     sound: 'sounds/tocht van hier naar daar.mp3'
 - activity:
     name: tv
     image: images/tv.gif
+    location: 'Pivoruimte'
     sound: sounds/tv.mp3
 - activity:
     name: veld
     image: images/veld.gif
+    location: 'Veld'
     sound: sounds/veld.mp3
 - activity:
     name:  'wassen, plassen en naar bed'
     image: 'images/wassen, plassen en naar bed.gif'
+    location: 'Toilet & slaapzaal'
     sound: 'sounds/wassen, plassen en naar bed.mp3'
 - activity: 
     name: 'survival'
     image: 'images/survival.gif'
+    location: ''
 - activity: 
     name: 'reuze ballen'
     image: 'images/reuze ballen.gif'
+    location: ''
 - activity: 
     name: 'geheimschrift'
     image: 'images/geheimschrift.gif'
+    location: ''
 - activity: 
     name: 'sherow programma'
     image: 'images/sherrow programma.gif'
+    location: ''
 - activity: 
     name: 'levend mijnenvegen'
     image: 'images/levend mijnenveger.gif'
+    location: ''
 - activity: 
     name: 'uitleg + klaarmaken voor the hunt'
     image: images/hunt.gif
+    location: ''
 - activity:
     name: 'levend memorie'
     image: 'images/memory.gif'
+    location: ''
 - activity:
     name: 'blinde geleide spel'
     image: 'images/blindegeleidespel.gif'
+    location: ''
 - activity:
     name: 'levend kwartet'
     image: 'images/kwartet.gif'
+    location: ''
 - activity:
     name: 'de grote ontknoping'
     image: 'images/grote ontknoping.gif'
+    location: ''
 - activity:
     name: 'kettingreactie'
     image: 'images/kettingreactie.gif'
+    location: ''
 - activity:
     name: 'boerengolf'
     image: 'images/boerengolf.gif'
+    location: ''
 - activity:
     name: 'eggdrop'
     image: 'images/eggdrop.gif'
+    location: ''
 - activity:
     name: 'kampvuur'
     image: 'images/kampvuur.gif'
+    location: ''
 - activity:
     name: 'klaarmaken voor the hunt'
     image: 'images/hunt.gif'
+    location: ''
 - activity:
     name: 'flessenspel'
     image: 'images/flessenspel.gif'
+    location: ''
 - activity:
     name: 'moment met eigen speltak'
     image: 'images/Brilsmurf.gif'
+    location: ''
 - activity:
     name: 'naar huis'
     image: 'images/huis.gif'
+    location: 'Thuis'
 - activity:
     name:  'opstaan + spullen opruimen'
     image: 'images/opstaan en spullen opruimen.gif'
+    location: ''
     sound: 'sounds/opstaan en spullen opruimen.mp3'
 - activity:
     name:  'opstaan'
     image: 'images/opstaan en spullen opruimen.gif'
+    location: ''
     sound: 'sounds/opstaan en spullen opruimen.mp3'
 - activity:
     name: 'tangram'
     image: 'images/tangram.gif'
+    location: ''
 - activity:
     name: 'the phone'
     image: 'images/phone.gif'
+    location: ''
 - activity:
     name: 'ticket-activiteit ronde 1'
     image: 'images/ticket.gif'
+    location: ''
 - activity:
     name: 'ticket-activiteit ronde 2'
     image: 'images/ticket.gif'
+    location: ''
 - activity:
     name: 'walkie-talkie'
     image: 'images/walkietalkie.gif' #TODO add
+    location: ''
 - activity:
     name: 'leipe halli galli'
     image: 'images/halli_galli.gif'
+    location: ''
 - activity:
     name: 'muizen vissen'
     image: 'images/muizen.gif'
+    location: ''
 - activity:
     name: 'escape-room'
     image: 'images/escape-room.gif'
+    location: ''
 - activity:
     name: 'stormbaan'
     image: 'images/stormbaan.gif'
+    location: ''
 - activity:
     name: 'ticket-activiteit ronde 1'
     image: 'images/ticket.gif'
+    location: ''
 - activity:
     name: 'ticket-activiteit ronde 2'
     image: 'images/ticket.gif'
+    location: ''
 - activity:
     name: 'levend halli galli'
     image: 'images/halli_galli.gif'
+    location: ''
 - activity:
     name: 'levend zeeslag'
     image: 'images/zeeslag.gif'
+    location: ''
 - activity:
     name: 'vossenjacht'
     image: 'images/share.png'
+    location: ''
 - activity:
     name: 'proefjes'
     image: 'images/proefjes.jpg'
+    location: ''
 - activity:
     name: 'stratego'
     image: 'images/stratego.jpg'
+    location: ''
 - activity:
     name: 'pokemon-go'
     image: 'images/pokemongo.png'
+    location: ''
 - activity:
     name: 'doordraai'
     image: 'images/doordraai.png'
+    location: ''
 - activity:
     name: 'langeafstandspionieren'
     image: 'images/walkietalkie.gif'
+    location: ''
 - activity:
     name: 'hoverballshooting'
     image: 'images/hunt.gif'
+    location: ''
 - activity:
     name: 'vlaggen'
     image: 'images/flag.jpg'
+    location: ''
 - activity:
     name: 'cluedo'
     image: 'images/cluedo.jpg'
+    location: ''
 - activity:
     name: 'gps-doolhof'
     image: 'images/geocache.png'
+    location: ''
 - activity:
     name: 'ginder-tinder'
     image: 'images/gindertinder.jpg'
+    location: ''
 - activity:
     name: 'highland-games'
     image: 'images/highlandgames.jpg'
+    location: ''
 - activity:
     name: 'instagramspel'
     image: 'images/instagram.jpg'
+    location: ''
 - activity:
     name: 'kubb'
     image: 'images/kubb.jpg'
+    location: 'Veld'
 - activity:
     name: "de lama's"
     image: 'images/lamas.png'
+    location: ''
 - activity:
     name: 'washandjesmonsterspel'
     image: 'images/monster.jpg'
+    location: ''
 - activity:
     name: 'radio actieve vaten'
     image: 'images/radio_actieve_vaten.jpg'
+    location: ''
 - activity:
     name: 'saboteur'
     image: 'images/saboteur.jpg'
+    location: ''
 - activity:
     name: 'solderen'
     image: 'images/solderen.jpg'
+    location: ''
 - activity:
     name: 'station'
     image: 'images/station.png'
+    location: ''
 - activity:
     name: 'parcours'
     image: 'images/tetris.png'
+    location: ''
 - activity:
     name: 'communicatie-estafette'
     image: 'images/tin-can-telephone.jpg'
+    location: 'Veld'
 - activity:
     name: 'water spons vuur'
     image: 'images/water_spons_vuur.jpg'
+    location: 'Veld'
 - activity:
     name: 'workshop 1'
     image: 'images/workshop.png'
+    location: 'Zie ticket'
 - activity:
     name: 'workshop 2'
     image: 'images/workshop.png'
+    location: 'Zie ticket'
 - activity:
     name: 'workshop 3'
     image: 'images/workshop.png'
+    location: 'Zie ticket'
 - activity:
     name: 'octopus'
     image: 'images/octopus.jpg'
+    location: 'Buiten, voorkant blokhut'
 - activity:
     name: 'elektronica slopen/knutselen'
     image: 'images/elektronica.png'
+    location: 'Ros van Lima-ruimte'
 - activity:
     name: 'jongens tegen de meisjes'
     image: 'images/jongens_tegen_meisjes.png'
+    location: ''
 - activity:
     name: 'lunch + tickets workshops'
     image: images/lunch.gif
+    location: 'Grote zaal'
 - activity:
     name: 'opbouw+voorbereiden'
     image: images/werk-in-uitvoering.jpg
+    location: 'Overal'
 - activity:
     name: 'bevers'
     image: images/bevers.png
+    location: ''
 
 
 - timeformat: "%d-%m-%Y %H:%M"
