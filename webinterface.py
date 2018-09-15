@@ -36,7 +36,7 @@ def find_next(age_sched, current_time, group, time_gap=1):
             while next_activities == current_activities:
                 next_time = current_time + datetime.timedelta(0,0,minutes=time_gap)
                 next_activities = dict(age_sched[next_time]) # days, seconds, then other fields.] #TODO: Set correct/current time!
-                time_gap += 5
+                time_gap += 1
             print "Next program starts in {0} minutes".format(time_gap)
             next_activity = next_activities[group]
             return next_activity, time_gap
