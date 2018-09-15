@@ -6,6 +6,7 @@ from dateutil import parser
 from csv_interface import build_interface
 from leidingplanning import build_interface as leiding_interface
 from bottledaemon import daemon_run
+from collections import OrderedDict
 
 klein, groot = build_interface()
 schedules = {"klein":klein,
@@ -94,10 +95,14 @@ def leiding(code, time):
 def schedule(time):
     time = parser.parse(time)
 
+    leiding_at_time = OrderedDict(leiding_planning[time])
+    leiding_at_time = OrderedDict(sorted(leiding_at_time.iteritems()))
+
     k = {group:act for group,act in schedules['klein'][time].iteritems() if isinstance(group, int)}
     g = {group:act for group,act in schedules['groot'][time].iteritems() if isinstance(group, int)}
+    l = leiding_at_time
 
-    return template('schedule', klein=k, groot=g, time=time)
+    return template('schedule', klein=k, groot=g, leiding=l, time=time)
 
 
 @post('/qr/reload')

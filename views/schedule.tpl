@@ -12,13 +12,13 @@
   #klein
   {
     font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-    width:100%;
+    width:33%;
     border-collapse:collapse;
   }
   #klein td, #klein th 
   {
     font-size:1.2em;
-    border:1px solid #98bf21;
+    border:1px solid #347638;
     padding:3px 7px 2px 7px;
   }
   #klein th 
@@ -27,13 +27,13 @@
     text-align:left;
     padding-top:5px;
     padding-bottom:4px;
-    background-color:#A7C942;
+    background-color:#347638;
     color:#fff;
   }
   #klein tr.alt td 
   {
     color:#000;
-    background-color:#EAF2D3;
+    background-color:#347638;
   }
 </style>
 
@@ -41,13 +41,13 @@
   #groot
   {
     font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-    width:100%;
+    width:33%;
     border-collapse:collapse;
   }
   #groot td, #groot th 
   {
     font-size:1.2em;
-    border:1px solid #999966;
+    border:1px solid #DFCAAB;
     padding:3px 7px 2px 7px;
   }
   #groot th 
@@ -56,15 +56,45 @@
     text-align:left;
     padding-top:5px;
     padding-bottom:4px;
-    background-color:#999966;
+    background-color:#DFCAAB;
     color:#fff;
   }
   #groot tr.alt td 
   {
     color:#000;
-    background-color:#C999966;
+    background-color:#DFCAAB;
   }
 </style>
+
+<style>
+  #leiding
+  {
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+    width:33%;
+    border-collapse:collapse;
+  }
+  #leiding td, #leiding th
+  {
+    font-size:1.2em;
+    border:1px solid #DE2A4D;
+    padding:3px 7px 2px 7px;
+  }
+  #leiding th
+  {
+    font-size:1.4em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    background-color:#DE2A4D;
+    color:#fff;
+  }
+  #leiding tr.alt td
+  {
+    color:#000;
+    background-color:#DE2A4D;
+  }
+</style>
+
   </head>
   <body>
     <div style="float: left;">
@@ -77,13 +107,22 @@
           % end
       </table>
     </div>
-
-    <div style="float: right;">
+    <div style="float: left;">
       <table id='groot'>
         <tr><th>Groot</th><th>Programma</th></tr>
          % for group, activity in groot.iteritems():
             <tr>
               <td>{{group}}</td><td>{{activity}}</td>
+            </tr>
+          % end
+      </table>
+    </div>
+    <div style="float: right; width: 500px">
+      <table id='leiding'>
+        <tr><th>Speltak</th><th>Naam</th><th>Programma</th></tr>
+         % for group, activity in leiding.iteritems():
+            <tr>
+              <td>{{group[0]}}</td><td>{{group[1]}}</td><td>{{activity}}</td>
             </tr>
           % end
       </table>
