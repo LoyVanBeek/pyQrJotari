@@ -4,11 +4,13 @@ from bottle import route, run, template, post
 import datetime
 from dateutil import parser
 from csv_interface import build_interface
+from leidingplanning import build_interface as leiding_interface
 from bottledaemon import daemon_run
 
 klein, groot = build_interface()
-schedules = {"klein":klein, 
+schedules = {"klein":klein,
              "groot":groot}
+leiding_planning = leiding_interface()
 
 @route('/qr/<code>/')
 @route('/qr/<code>')
@@ -17,11 +19,13 @@ schedules = {"klein":klein,
 def qr(code='klein1', time=None):
     if "groot" in code or "klein" in code:
         return group(code, time)
+    if 'leiding' in code:
+        return leiding(code, time)
     else:
         return schedule(code) #No group specified, interpret code as time
 
 def find_next(age_sched, current_time, group, time_gap=1):
-    current_activities = age_sched[current_time] #TODO: Set correct/current time!
+    current_activities = dict(age_sched[current_time]) #TODO: Set correct/current time!
     next_activity = "Onbekend"
     if current_activities:
         try:
@@ -40,7 +44,7 @@ def find_next(age_sched, current_time, group, time_gap=1):
 
 def group(code, time):
     age = code[:5]
-    group = int(code[5:])
+    group_ = int(code[5:])
     if age in schedules:
         if time:
             time = parser.parse(time)
@@ -51,9 +55,9 @@ def group(code, time):
             print ageschedule
             current_activities = ageschedule[time]
             print current_activities
-            activity = current_activities[group]
+            activity = current_activities[group_]
 
-            next_activity, time_gap = find_next(ageschedule, time, group)
+            next_activity, time_gap = find_next(ageschedule, time, group_)
 
             return template('group', activity=activity, group=code, time=time, next_activity=next_activity, time_to_next=time_gap)
         except KeyError:
@@ -62,6 +66,29 @@ def group(code, time):
         except TypeError:
             return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
                 <a href='{{group}}/17-10-2015%2010:00'>Zaterdag 10 uur</a>", group=code)
+
+def leiding(code, time):
+    parts = code.split(":")
+    _ = parts[0]  # Should be 'leiding'
+    speltak = parts[1]
+    naam = parts[2]
+
+    group_ = (speltak, naam)
+
+    if time:
+        time = parser.parse(time)
+    if not time:
+        time = datetime.datetime.now()
+
+    current_activities = leiding_planning[time]
+    print current_activities
+    activity = current_activities[group_]
+
+    next_activity, time_gap = "", "" #find_next(leiding_planning, time, group_)
+
+    return template('group', activity=activity, group=code, time=time, next_activity=next_activity,
+                    time_to_next=time_gap)
+
 
 def schedule(time):
     time = parser.parse(time)

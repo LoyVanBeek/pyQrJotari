@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import dateutil
-
+import yaml
 
 class LeidingPlanning(object):
     def __init__(self, path_zaterdag, path_zondag):
@@ -55,6 +55,16 @@ class LeidingPlanning(object):
             except KeyError:
                 raise KeyError("There is no program on {0}".format(rounded))
 
+def build_interface():
+    confpath = "configuration.yaml"
+    conffile = open(confpath)
+    config = yaml.load(conffile)
+
+    leiding_schedule = [sub for sub in config if 'leiding_schedule' in sub][0]['leiding_schedule']
+    path_zat = leiding_schedule['path_zaterdag']
+    path_zon = leiding_schedule['path_zondag']
+
+    return LeidingPlanning(path_zat, path_zon)
 
 if __name__ == "__main__":
     lp = LeidingPlanning(
