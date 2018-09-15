@@ -1,18 +1,17 @@
 import pandas as pd
 import numpy as np
+import datetime
 import dateutil
 
 
 class LeidingPlanning(object):
-    def __init__(self, path):
-        zaterdag = self.parse(path, "Leiding Zaterdag")
-        # zondag = self.parse(path, "Leiding Zondag")
-
-        # self.planning = pd.concat([zaterdag, zondag], axis=1)#, join_axes=[df1.index])
-        self.planning = pd.concat([zaterdag], axis=1)#, join_axes=[df1.index])
+    def __init__(self, path_zaterdag, path_zondag):
+        self._zaterdag = self.parse_preformatted(path_zaterdag, "Leiding Zaterdag")
+        self._zondag = self.parse_preformatted(path_zondag, "Leiding Zondag")
 
     @staticmethod
-    def parse(path, sheet):
+    def parse_smart(path, sheet):
+        """Smart parsing tries to do use the sheet as-is, without any human alterations"""
         planning = pd.read_excel(path, sheet_name=sheet, header=[0, 1, 2], index_col=[0, 1])
         planning = planning.fillna(method='pad', axis=1)
         pairs = []
@@ -25,14 +24,51 @@ class LeidingPlanning(object):
 
         return planning
 
+    @staticmethod
+    def parse_preformatted(path, sheet):
+        """Smart parsing tries to do use the sheet as-is, without any human alterations"""
+        df = pd.read_excel(path, sheet_name=sheet, index_col=[0, 1])
+        planning = df.fillna(method='pad', axis=1)
+        return planning
+
+    @staticmethod
+    def round_time(querytime, radix=10):
+        rounded = datetime.datetime(year=querytime.year,
+                                    month=querytime.month,
+                                    day=querytime.day,
+                                    hour=querytime.hour,
+                                    minute=int(np.floor(querytime.minute / radix) * radix),
+                                    second=querytime.second
+                                    )
+        return rounded
+
     def __getitem__(self, querytime):
-        try:
-            return self.planning[(querytime.strftime("%Y-%m-%d"), querytime.hour, np.floor(querytime.minute/10)*10)]
-        except KeyError:
-            raise KeyError("There is no program on {0}".format(querytime))
+        rounded = LeidingPlanning.round_time(querytime)
+        if rounded in self._zaterdag:
+            try:
+                return self._zaterdag[rounded]
+            except KeyError:
+                raise KeyError("There is no program on {0}".format(rounded))
+        if rounded in self._zondag:
+            try:
+                return self._zondag[rounded]
+            except KeyError:
+                raise KeyError("There is no program on {0}".format(rounded))
 
 
 if __name__ == "__main__":
-    lp = LeidingPlanning(path="/home/loy/Dropbox/02_Scouting/Jotari/2017/Leidingplanning 2017.xlsx")
-    print(lp[dateutil.parser.parse("2017-10-16 09:46")][('Remus', 'Lynn')])
-    print(lp[dateutil.parser.parse("2017-10-17 09:46")][('Remus', 'Lynn')])
+    lp = LeidingPlanning(
+        path_zaterdag="/home/loy/Dropbox/02_Scouting/Jotari/2017/Leidingplanning 2017 date formatted zaterdag.xlsx",
+        path_zondag="/home/loy/Dropbox/02_Scouting/Jotari/2017/Leidingplanning 2017 date formatted zondag.xlsx")
+
+    zaterdag_ochtend = dateutil.parser.parse("2017-10-16 09:46")
+    try:
+        print(lp[zaterdag_ochtend][('Remus', 'Lynn')])
+    except Exception as e:
+        print(e)
+
+    zondag_ochtend = dateutil.parser.parse("2017-10-17 09:46")
+    try:
+        print(lp[zondag_ochtend][('Remus', 'Lynn')])
+    except Exception as e:
+        print(e)
