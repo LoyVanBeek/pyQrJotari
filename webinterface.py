@@ -34,7 +34,8 @@ def find_next(age_sched, current_time, group, time_gap=1):
             time_gap = 1
             #import ipdb; ipdb.set_trace()
             while next_activities == current_activities:
-                next_activities = age_sched[current_time + datetime.timedelta(0,0,minutes=time_gap)] # days, seconds, then other fields.] #TODO: Set correct/current time!
+                next_time = current_time + datetime.timedelta(0,0,minutes=time_gap)
+                next_activities = dict(age_sched[next_time]) # days, seconds, then other fields.] #TODO: Set correct/current time!
                 time_gap += 5
             print "Next program starts in {0} minutes".format(time_gap)
             next_activity = next_activities[group]
@@ -84,7 +85,7 @@ def leiding(code, time):
     print current_activities
     activity = current_activities[group_]
 
-    next_activity, time_gap = "", "" #find_next(leiding_planning, time, group_)
+    next_activity, time_gap = find_next(leiding_planning, time, group_)
 
     return template('group', activity=activity, group=code, time=time, next_activity=next_activity,
                     time_to_next=time_gap)
