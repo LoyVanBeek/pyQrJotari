@@ -83,14 +83,18 @@ def leiding(code, time):
     if not time:
         time = datetime.datetime.now()
 
-    current_activities = leiding_planning[time]
-    print current_activities
-    activity = current_activities[group_]
+    try:
+        current_activities = leiding_planning[time]
+        print current_activities
+        activity = current_activities[group_]
 
-    next_activity, time_gap = find_next(leiding_planning, time, group_)
+        next_activity, time_gap = find_next(leiding_planning, time, group_)
 
-    return template('group', activity=activity, group=code, time=time, next_activity=next_activity,
-                    time_to_next=time_gap)
+        return template('group', activity=activity, group=code, time=time, next_activity=next_activity,
+                        time_to_next=time_gap)
+    except KeyError:
+            return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
+                <a href='{{group}}/17-10-2015%2010:00'>Zaterdag 10 uur</a>", group=code)
 
 
 def schedule(time):

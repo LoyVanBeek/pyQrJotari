@@ -47,13 +47,14 @@ class LeidingPlanning(object):
         if rounded in self._zaterdag:
             try:
                 return self._zaterdag[rounded]
-            except KeyError:
+            except Exception:
                 raise KeyError("There is no program on {0}".format(rounded))
         if rounded in self._zondag:
             try:
                 return self._zondag[rounded]
-            except KeyError:
+            except Exception:
                 raise KeyError("There is no program on {0}".format(rounded))
+        raise KeyError("There is no program on {0}".format(rounded))
 
 def build_interface():
     confpath = "configuration.yaml"
