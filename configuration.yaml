@@ -357,6 +357,42 @@
 - activity:
     name: 'bevers'
     image: images/bevers.png
+- activity:
+    name: 'doolhof'
+    image: images/doolhof.png
+- activity:
+    name: 'escaperoom'
+    image: images/escaperoom.png
+- activity:
+    name: 'lego'
+    image: images/lego.png
+- activity:
+    name: 'neusverven'
+    image: images/neusverven.jpeg
+- activity:
+    name: 'natuurschilderij'
+    image: images/natuurschilderij.jpeg
+- activity:
+    name: 'lasergamen'
+    image: images/lasergame.jpeg
+- activity:
+    name: 'rebus'
+    image: images/rebus.jpeg
+- activity:
+    name: 'animaties'
+    image: images/animaties.jpeg
+- activity:
+    name: 'nachtspel'
+    image: images/bokkenrijders.jpeg
+- activity:
+    name: 'speedcuppen'
+    image: images/speedcup.jpeg
+- activity:
+    name: 'pionieren'
+    image: images/pionieren.jpeg
+- activity:
+    name: 'kinetische bom'
+    image: images/kinetische_bom.jpeg
 
 
 - timeformat: "%d-%m-%Y %H:%M"
