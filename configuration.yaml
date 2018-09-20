@@ -8,6 +8,9 @@
 - schedule:
     age: groot
     path: data/groot_2017.csv
+- leiding_schedule:
+    path_zaterdag: "data/Leidingplanning 2017 date formatted zaterdag.xlsx"
+    path_zondag: "data/Leidingplanning 2017 date formatted zondag.xlsx"
 
 - activity:
     name: "scotland yard"
