@@ -62,7 +62,7 @@ def group(code, time):
 
             next_activity, time_gap = find_next(ageschedule, time, group_)
 
-            return template('group', activity=activity, group=code, time=time, next_activity=next_activity, time_to_next=time_gap)
+            return template('group', activity=activity, age=age, group=str(group_), time=time, next_activity=next_activity, time_to_next=time_gap)
         except KeyError:
             return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
                 <a href='{{group}}/17-10-2015%2010:00'>Zaterdag 10 uur</a>", group=code)
@@ -90,7 +90,7 @@ def leiding(code, time):
 
         next_activity, time_gap = find_next(leiding_planning, time, group_)
 
-        return template('group', activity=activity, group=code, time=time, next_activity=next_activity,
+        return template('group', activity=activity, age='leiding', group="{} ({})".format(naam, speltak), time=time, next_activity=next_activity,
                         time_to_next=time_gap)
     except KeyError:
             return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \

@@ -64,10 +64,41 @@
     background-color:#999966;
   }
 </style>
+
+
+<style>
+  #leiding
+  {
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+    width:33%;
+    border-collapse:collapse;
+  }
+  #leiding td, #leiding th
+  {
+    font-size:1.2em;
+    border:1px solid #DE2A4D;
+    padding:3px 7px 2px 7px;
+  }
+  #leiding th
+  {
+    font-size:1.4em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    background-color:#DE2A4D;
+    color:#fff;
+  }
+  #leiding tr.alt td
+  {
+    color:#000;
+    background-color:#DE2A4D;
+  }
+</style>
+
   </head>
   <body>
     <div style="float: center">      
-      <table id='{{group[:5]}}'>
+      <table id='{{age}}'>
         <tr><th>Groep</th><th>Programma</th></tr>
           <tr>
             <td>{{group}}</td><td>{{activity}}</td>
