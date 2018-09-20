@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import pandas as pd
 import numpy as np
 import datetime
@@ -69,16 +71,16 @@ def build_interface():
 
 if __name__ == "__main__":
     lp = LeidingPlanning(
-        path_zaterdag="/home/loy/Dropbox/02_Scouting/Jotari/2017/Leidingplanning 2017 date formatted zaterdag.xlsx",
-        path_zondag="/home/loy/Dropbox/02_Scouting/Jotari/2017/Leidingplanning 2017 date formatted zondag.xlsx")
+        path_zaterdag="data/Leidingplanning 2017 date formatted zaterdag.xlsx",
+        path_zondag="data/Leidingplanning 2017 date formatted zondag.xlsx")
 
-    zaterdag_ochtend = dateutil.parser.parse("2017-10-16 09:46")
+    zaterdag_ochtend = dateutil.parser.parse("2017-10-21 09:46")
     try:
         print(lp[zaterdag_ochtend][('Remus', 'Lynn')])
     except Exception as e:
         print(e)
 
-    zondag_ochtend = dateutil.parser.parse("2017-10-17 09:46")
+    zondag_ochtend = dateutil.parser.parse("2017-10-22 09:46")
     try:
         print(lp[zondag_ochtend][('Remus', 'Lynn')])
     except Exception as e:

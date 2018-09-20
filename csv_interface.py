@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+
 #csv_interface.py
 #This program expects the schedule to have all common programms to be completely filled out, 
 #   to all occupied times and columns. 
