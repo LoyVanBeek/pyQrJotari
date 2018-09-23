@@ -45,8 +45,8 @@ def find_next(age_sched, current_time, group, time_gap=1):
             pass
 
 def group(code, time):
-    age = code[5:]
-    group_ = int(code[:5])
+    age = code[:5]
+    group_ = int(code[5:])
     if age in schedules:
         if time:
             time = parser.parse(time)
