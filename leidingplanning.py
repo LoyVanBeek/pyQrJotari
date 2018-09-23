@@ -58,6 +58,13 @@ class LeidingPlanning(object):
                 raise KeyError("There is no program on {0}".format(rounded))
         raise KeyError("There is no program on {0}".format(rounded))
 
+    @property
+    def all_leiding(self):
+        zat = self._zaterdag.keys()[0]
+        zon = self._zondag.keys()[0]
+        alle_leiding = set(list(dict(zat).keys()) + list(dict(zon).keys()))
+        return alle_leiding
+
 def build_interface():
     confpath = "configuration.yaml"
     conffile = open(confpath)
