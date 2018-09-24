@@ -88,9 +88,9 @@ def leiding(code, time):
 
         return template('group', activity=activity, age='leiding', group="{} ({})".format(naam, speltak), time=time, next_activity=next_activity,
                         time_to_next=time_gap)
-    except KeyError:
-            return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
-                <a href='{{group}}/17-10-2015%2010:00'>Zaterdag 10 uur</a>", group=code)
+    except (KeyError, TypeError):
+        return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
+                                <a href='{{group}}/2017-10-21%2010:00'>Zaterdag 10 uur</a>", group=code)
 
 
 def schedule(time):
