@@ -62,13 +62,15 @@ def group(code, time):
             next_activity, time_gap = find_next(ageschedule, time, group_)
 
             return template('group', activity=activity, age=age, group=str(group_), time=time, next_activity=next_activity, time_to_next=time_gap)
-        except (KeyError, TypeError):
+        except (KeyError, TypeError) as e:
+            print e
             return template('error', group=code.replace(' ', '%20'), time=time)
 
 def leiding(code, time):
     parts = code.split(":")
     _ = parts[0]  # Should be 'leiding'
-    speltak = parts[1]
+
+    speltak = parts[1].replace('%20', ' ')
     naam = parts[2]
 
     group_ = (speltak, naam)
@@ -87,7 +89,8 @@ def leiding(code, time):
 
         return template('group', activity=activity, age='leiding', group="{} ({})".format(naam, speltak), time=time, next_activity=next_activity,
                         time_to_next=time_gap)
-    except (KeyError, TypeError):
+    except (KeyError, TypeError) as e:
+        print e
         return template('error', group=code.replace(' ', '%20'), time=time)
 
 
