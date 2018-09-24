@@ -64,7 +64,7 @@ def group(code, time):
             return template('group', activity=activity, age=age, group=str(group_), time=time, next_activity=next_activity, time_to_next=time_gap)
         except (KeyError, TypeError):
             return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
-                <a href='{{group}}/2017-10-21%2010:00'>Zaterdag 10 uur</a>", group=code)
+                <a href='{{group}}/2017-10-21%2010:00'>Zaterdag 10 uur</a>", group=code.replace(' ', '%20'))
 
 def leiding(code, time):
     parts = code.split(":")
@@ -90,7 +90,7 @@ def leiding(code, time):
                         time_to_next=time_gap)
     except (KeyError, TypeError):
         return template("Het is nog geen JOTARI. Je kunt ook een tijd proberen: \
-                                <a href='{{group}}/2017-10-21%2010:00'>Zaterdag 10 uur</a>", group=code)
+                                <a href='{{group}}/2017-10-21%2010:00'>Zaterdag 10 uur</a>", group=code.replace(' ', '%20'))
 
 
 def schedule(time):
