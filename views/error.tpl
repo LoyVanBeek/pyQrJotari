@@ -99,8 +99,8 @@
   <body>
     <div style="float: center">      
       Het is nog geen JOTARI. Je kunt ook een tijd proberen:
-      <a href='/qr/{{group}}/2017-10-21%2010:00'>Zaterdag 10 uur</a>
-      <a href='/qr/{{group}}/2017-10-22%2010:00'>Zondag 10 uur</a>
+      <a href='/qr/{{group}}/2018-10-20%2010:00'>Zaterdag 10 uur</a>
+      <a href='/qr/{{group}}/2018-10-21%2010:00'>Zondag 10 uur</a>
     </div>
   </body>
 </html>
