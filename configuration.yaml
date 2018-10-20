@@ -4,13 +4,13 @@
 
 - schedule:
     age: klein
-    path: data/klein_2017.csv
+    path: data/klein_2018.csv
 - schedule:
     age: groot
-    path: data/groot_2017.csv
+    path: data/groot_2018.csv
 - leiding_schedule:
-    path_zaterdag: "data/Leidingplanning 2017 date formatted zaterdag.xlsx"
-    path_zondag: "data/Leidingplanning 2017 date formatted zondag.xlsx"
+    path_zaterdag: "data/Leidingplanning QR 2018 zaterdag.csv"
+    path_zondag: "data/Leidingplanning QR 2018 zondag.csv"
 
 - activity:
     name: "scotland yard"
@@ -93,6 +93,10 @@
     image: images/hunt.gif
     sound: sounds/hunt.mp3
 - activity:
+    name: the hunt
+    image: images/hunt.gif
+    sound: sounds/hunt.mp3
+- activity:
     name: lunch
     image: images/lunch.gif
     sound: sounds/lunch.mp3
@@ -108,6 +112,9 @@
     name:  'opstaan en spullen opruimen'
     image: 'images/opstaan en spullen opruimen.gif'
     sound: 'sounds/opstaan en spullen opruimen.mp3'
+- activity:
+    name:  'spullen opruimen'
+    image: 'images/opstaan en spullen opruimen.gif'
 - activity:
     name: slapen
     image: images/slapen.gif
@@ -178,6 +185,9 @@
 - activity: 
     name: 'uitleg + klaarmaken voor the hunt'
     image: images/hunt.gif
+- activity: 
+    name: 'klaarmaken voor the hunt'
+    image: images/hunt.gif
 - activity:
     name: 'levend memorie'
     image: 'images/memory.gif'
@@ -210,6 +220,9 @@
     image: 'images/flessenspel.gif'
 - activity:
     name: 'moment met eigen speltak'
+    image: 'images/Brilsmurf.gif'
+- activity:
+    name: 'eigen speltak'
     image: 'images/Brilsmurf.gif'
 - activity:
     name: 'naar huis'
@@ -340,6 +353,12 @@
     name: 'workshop 3'
     image: 'images/workshop.png'
 - activity:
+    name: 'workshop 4'
+    image: 'images/workshop.png'
+- activity:
+    name: 'workshop 5'
+    image: 'images/workshop.png'
+- activity:
     name: 'octopus'
     image: 'images/octopus.jpg'
 - activity:
@@ -362,15 +381,18 @@
     image: images/doolhof.png
 - activity:
     name: 'escaperoom'
-    image: images/escaperoom.png
+    image: images/escape-room.gif
 - activity:
     name: 'lego'
     image: images/lego.png
 - activity:
-    name: 'neusverven'
+    name: 'lego op afstand'
+    image: images/lego.png
+- activity:
+    name: 'estafette neusverven'
     image: images/neusverven.jpeg
 - activity:
-    name: 'natuurschilderij'
+    name: 'natuurschilderij maken'
     image: images/natuurschilderij.jpeg
 - activity:
     name: 'lasergamen'
@@ -379,13 +401,13 @@
     name: 'rebus'
     image: images/rebus.jpeg
 - activity:
-    name: 'animaties'
+    name: 'animaties maken'
     image: images/animaties.jpeg
 - activity:
     name: 'nachtspel'
     image: images/bokkenrijders.jpeg
 - activity:
-    name: 'speedcuppen'
+    name: 'lenvend speedcup'
     image: images/speedcup.jpeg
 - activity:
     name: 'pionieren'
@@ -393,7 +415,36 @@
 - activity:
     name: 'kinetische bom'
     image: images/kinetische_bom.jpeg
-
+- activity:
+    name: 'bosgolf'
+    image: images/Bosgolf.jpg
+- activity:
+    name: 'trefbalvaganza'
+    image: images/Trefbalvaganza.jpg
+- activity:
+    name: 'bamboepionieren'
+    image: images/Bamboe pionieren.jpg
+- activity:
+    name: "rowans + sherpa's"
+    image: images/explorers.png
+- activity:
+    name: 'slaapspullen klaarleggen'
+    image: 'images/tent inrichten.jpg'
+- activity:
+    name: 'bevers'
+    image: 'images/bevers.jpg'
+- activity:
+    name: 'ticketactiviteit 1'
+    image: 'images/ticket.gif'
+- activity:
+    name: 'ticketactiviteit 2'
+    image: 'images/ticket.gif'
+- activity:
+    name: 'ticketactiviteit 3'
+    image: 'images/ticket.gif'
+- activity:
+    name: 'ticketactiviteit 4'
+    image: 'images/ticket.gif'
 
 - timeformat: "%d-%m-%Y %H:%M"
 
