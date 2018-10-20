@@ -141,7 +141,7 @@ class QrJotariGui(object):
         minutes = next_start - (hours * 60)
         next_start_str = "{h} uur en {m} minuten".format(h=hours, m=minutes)
 
-        self.activity_secondText.set("(over {1}: {0})".format(str(next_activity).capitalize(), next_start_str))
+        self.activity_secondText.set("(over {1}:\n {0})".format(str(next_activity).capitalize(), next_start_str))
 
         #import pdb; pdb.set_trace()
         if self.act2img.has_key(group_activity):
