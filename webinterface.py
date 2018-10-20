@@ -81,9 +81,11 @@ def leiding(code, time):
         time = datetime.datetime.now()
 
     try:
+        # import ipdb; ipdb.set_trace()
         current_activities = leiding_planning[time]
         print current_activities
         activity = current_activities[group_]
+        print "{c} --> {a}".format(c=code, a=activity)
 
         next_activity, time_gap = find_next(leiding_planning, time, group_)
 

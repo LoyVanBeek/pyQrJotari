@@ -29,7 +29,8 @@ class LeidingPlanning(object):
     @staticmethod
     def parse_preformatted(path, sheet):
         """Smart parsing tries to do use the sheet as-is, without any human alterations"""
-        df = pd.read_excel(path, sheet_name=sheet, index_col=[0, 1])
+        df = pd.read_csv(path, index_col=[0, 1])
+        df.columns = pd.to_datetime(df.columns)
         planning = df.fillna(method='pad', axis=1)
         return planning
 
@@ -40,7 +41,7 @@ class LeidingPlanning(object):
                                     day=querytime.day,
                                     hour=querytime.hour,
                                     minute=int(np.floor(querytime.minute / radix) * radix),
-                                    second=querytime.second
+                                    second=0
                                     )
         return rounded
 
