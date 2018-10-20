@@ -72,7 +72,10 @@ class ZBarInterface(object):
                     out = out.replace("http://www.scoutingboxtel.nl/qr.asp?groep=", "")
                     print out
                     if self.callback:
-                        self.callback(out)
+                        try:
+                            self.callback(out)
+                        except Exception as e:
+                            print e
             except Exception, e:
                 print "Trying to read did not work: ", e
                 self.wait_stop()
