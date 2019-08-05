@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import yaml
-import process_interface
+import process_interface, cv_scanner
 import time, datetime
 from dateutil import parser
 
@@ -18,7 +18,7 @@ class JotariQrBackend(object):
         
         self.scanner = scannerClass(callback=self.lookup, command=command) 
         
-    def lookup(self, code):
+    def lookup(self, code, camera_image=None):
         code = code.lower().strip()
         age = code[:5]
         group = int(code[5:])
@@ -56,7 +56,8 @@ class JotariQrBackend(object):
             
             #print age, group, group_activity, time, None
             self.onScannedCB(age, group, group_activity, current_time, None,
-                             next_activity=next_activity, next_start=time_gap) #age, group, activity, time, image
+                             next_activity=next_activity, next_start=time_gap,
+                             camera_image=camera_image) #age, group, activity, time, image
         except KeyError, ke:
             print ke
             print "Haal Loy even, iets is er misgegaan!"
