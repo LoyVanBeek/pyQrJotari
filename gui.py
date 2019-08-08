@@ -4,6 +4,8 @@ import tkFont
 import yaml
 import pyQRjotari
 import csv_interface
+import cv_scanner
+import cv2
 
 
 try:
@@ -155,6 +157,21 @@ class QrJotariGui(object):
         self.set_backgrounds('white')
         print "END update"
 
+    def update_camera(self, cv_bgr_img):
+        print "Got image: {}".format(cv_bgr_img.shape)
+        cv_bgr_flipped_img = cv2.flip(cv_bgr_img, 1)
+        cv_rgba_flipped_img = cv2.cvtColor(cv_bgr_flipped_img, cv2.COLOR_BGR2RGBA)
+        img_for_tk = Image.fromarray(cv_rgba_flipped_img)
+        imgtk = ImageTk.PhotoImage(image=img_for_tk)
+
+        self.activity_firstImage.imgtk = imgtk
+        # self.activity_firstImage.configure()
+        self.activity_firstImLbl.configure(image=imgtk)
+
+        # cv2.imshow('image', cv_bgr_img)
+        # cv2.waitKey(10)
+
+
 def check_images(activities, schedule):
     programs = []
     for time in schedule.schedule:
@@ -171,33 +188,38 @@ def main(config, datetimeOverrule=None):
     zbarcommands = [item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0] #load schedule
     # import ipdb; ipdb.set_trace()
     zbarcommand = zbarcommands[platform.system()]
-    
-    from csv_interface import build_interface
 
-    klein, groot = build_interface()
+    klein, groot = csv_interface.build_interface()
     schedules = {"klein":klein, "groot":groot}
 
     activities = dict([(item['activity']['name'], item['activity']) for item in config if item.has_key("activity")])
 
     #print activities
     print check_images(activities, klein) | check_images(activities, groot)
-    
+
     def update(*args):
         print args
-        
+
     root = tk.Tk()
-    
+
     root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
                                        root.winfo_screenheight()))
     root.configure(background='white')
     app = QrJotariGui(root, activities)
-    
-    backend = pyQRjotari.JotariQrBackend(schedules, app.update, command=zbarcommand, datetimeOverrule=datetimeOverrule)
-    backend.start()
-    
+
+    backend = pyQRjotari.JotariQrBackend(schedules, app.update, datetimeOverrule=datetimeOverrule)
+    scanner = cv_scanner.CvInterface(data_callback=backend.lookup)
+    scanner.video_callback = app.update_camera
+    scanner.start()
+
+    def scan_update():
+        scanner.tick()
+        root.after(30, scan_update)
+    root.after(10, scan_update)
+
     root.mainloop()
     print "Mainloop ended"
-    backend.force_stop()
+    scanner.force_stop()
     
 if __name__ == "__main__":
     confpath = "configuration.yaml"
