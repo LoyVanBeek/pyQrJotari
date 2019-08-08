@@ -52,38 +52,37 @@ class QrJotariGui(object):
         
         self.dateframe = tk.Frame(frame, background='white')
         #Build the datecontrol frame
-        self.dateframe.grid(row=1)#pack())
+        self.dateframe.grid(row=1)
         
         self.groupText = tk.StringVar()
         self.groupLabel = tk.Label(frame, textvariable=self.groupText, font=self.customFont, background='white')
-        self.groupLabel.grid(row=2)#pack()#tk.TOP
+        self.groupLabel.grid(row=2)
                 
         self.goto_firstLabel = tk.Label(frame, text="nu:", font=self.customFont, background='white')
-        self.goto_firstLabel.grid(row=3)#pack(side=tk.LEFT)
+        self.goto_firstLabel.grid(row=3)
         
         self.currentActivityFrame = tk.Frame(frame, background='white', width=600)
         
         self.activity_firstText = tk.StringVar()
         self.activity_firstLabel = tk.Label(self.currentActivityFrame, textvariable=self.activity_firstText, font=self.customFont, background='white')
-        self.activity_firstLabel.pack(side=tk.LEFT,
-            padx=20, pady=20)
+        self.activity_firstLabel.pack(side=tk.LEFT, padx=20, pady=20)
 
         self.activity_firstImage = tk.PhotoImage(file="images/opening.gif", height=200)
-        self.activity_firstImLbl = tk.Label(self.currentActivityFrame, 
-            image=self.activity_firstImage, 
-            background='white')
-        self.activity_firstImLbl.pack(side=tk.RIGHT,
-            padx=20, pady=20)
+        self.activity_firstImLbl = tk.Label(self.currentActivityFrame,  image=self.activity_firstImage, background='white')
+        self.activity_firstImLbl.pack(side=tk.RIGHT, padx=20, pady=20)
         
-        self.currentActivityFrame.grid(row=4,sticky=tk.N+tk.S+tk.E+tk.W)#pack()
+        self.currentActivityFrame.grid(row=4,sticky=tk.N+tk.S+tk.E+tk.W)
         
         self.goto_secondLabel = tk.Label(frame, text="", font=self.customFont, background='white')
-        self.goto_secondLabel.grid(row=5)#pack()
+        self.goto_secondLabel.grid(row=5)
         
         self.activity_secondText = tk.StringVar()
         self.activity_secondLabel = tk.Label(frame, textvariable=self.activity_secondText, font=self.customFont, background='white')
-        self.activity_secondLabel.grid(row=6)#pack()
-        
+        self.activity_secondLabel.grid(row=6)
+
+        self.first_activity()
+
+    def first_activity(self):
         self.groupText.set("Iedereen")
         self.activity_firstText.set("Opening")
         self.activity_secondText.set("?")
@@ -164,12 +163,8 @@ class QrJotariGui(object):
         img_for_tk = Image.fromarray(cv_rgba_flipped_img)
         imgtk = ImageTk.PhotoImage(image=img_for_tk)
 
-        self.activity_firstImage.imgtk = imgtk
-        # self.activity_firstImage.configure()
-        self.activity_firstImLbl.configure(image=imgtk)
-
-        # cv2.imshow('image', cv_bgr_img)
-        # cv2.waitKey(10)
+        # self.activity_firstImage.imgtk = imgtk
+        # self.activity_firstImLbl.configure(image=imgtk)
 
 
 def check_images(activities, schedule):
