@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 import zbar
 import cv2
+import threading
 
 # video_capture = cv2.VideoCapture(0)
 #
@@ -34,18 +35,27 @@ class CvInterface(object):
         self.scanner = zbar.ImageScanner()
         self.device = device
         self.video_capture = None
+        self.keep_running = False
+        self.thread = None
 
     def start(self):
         self.video_capture = cv2.VideoCapture(self.device)
 
+        self.keep_running = True
+
+        self.thread = threading.Thread(target=self.run)
+        self.thread.start()
+
     def force_stop(self):
-        pass
+        self.keep_running = False
+        self.thread.join()
+        del self.thread
 
     def wait_stop(self):
-        pass
+        self.thread.join()
 
     def run(self):
-        while True:
+        while self.keep_running:
             try:
                 ret, img = self.video_capture.read()
                 gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -66,7 +76,8 @@ class CvInterface(object):
                                 print e
                         break
 
-                self.video_callback(img)
+                if self.video_callback:
+                    self.video_callback(img)
 
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
