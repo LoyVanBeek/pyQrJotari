@@ -3,30 +3,6 @@ import zbar
 import cv2
 import threading
 
-# video_capture = cv2.VideoCapture(0)
-#
-# scanner = zbar.ImageScanner()
-#
-# while True:
-#     try:
-#         ret, img = video_capture.read()
-#         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-#         image = zbar.Image(gray.shape[1], gray.shape[0], 'Y800', gray.tobytes())
-#
-#         if scanner.scan(image):
-#             print([symbol.data for symbol in image])
-#             for symbol in image:  # type: zbar.Symbol
-#                 # print symbol.location
-#                 for start, end in zip(symbol.location, symbol.location[:-1]):
-#                     cv2.line(img=img, pt1=start, pt2=end, color=(255, 255, 0), thickness=1, lineType=cv2.LINE_8)
-#                     print start, end
-#                 # cv2.line(img, symbol.location[:-1], symbol.location[0], color=(0, 255, 0))
-#
-#         cv2.imshow('image', img)
-#         cv2.waitKey(10)
-#     except KeyboardInterrupt:
-#         break
-
 
 class CvInterface(object):
     def __init__(self, device=0, data_callback=None, video_callback=None):
@@ -107,14 +83,6 @@ def main():
     zbar = CvInterface(data_callback=dummy_callback, video_callback=video_callback)
     zbar.start()
 
-    '''
-    while True:
-        try:
-            pass
-        except KeyboardInterrupt:
-            break
-    zbar.stop()
-    '''
     zbar.run()
     zbar.wait_stop()
 
