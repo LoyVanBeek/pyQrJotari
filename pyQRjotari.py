@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import yaml
-import process_interface
 import time, datetime
 from dateutil import parser
 
@@ -8,17 +7,12 @@ dummy_time_str = """20-10-2012 20:01"""
 current_time = datetime.datetime(*time.strptime(dummy_time_str, "%d-%m-%Y %H:%M")[:6])
 
 class JotariQrBackend(object):
-    def __init__(self, schedules, onScannedCB, 
-                    scannerClass=process_interface.ZBarInterface, 
-                    command="zbarcam",
-                    datetimeOverrule=None):
+    def __init__(self, schedules, onScannedCB, datetimeOverrule=None):
         self.schedules = schedules
         self.onScannedCB = onScannedCB
         self.datetimeOverrule = datetimeOverrule
         
-        self.scanner = scannerClass(callback=self.lookup, command=command) 
-        
-    def lookup(self, code):
+    def lookup(self, code, camera_image=None):
         code = code.lower().strip()
         age = code[:5]
         group = int(code[5:])
@@ -56,7 +50,8 @@ class JotariQrBackend(object):
             
             #print age, group, group_activity, time, None
             self.onScannedCB(age, group, group_activity, current_time, None,
-                             next_activity=next_activity, next_start=time_gap) #age, group, activity, time, image
+                             next_activity=next_activity, next_start=time_gap,
+                             camera_image=camera_image) #age, group, activity, time, image
         except KeyError, ke:
             print ke
             print "Haal Loy even, iets is er misgegaan!"
@@ -67,28 +62,25 @@ class JotariQrBackend(object):
             print "Is het wel JOTARI? Er is geen programma op {0}.".format(current_time)
         except Exception, ex:
             print ex
-    
-    def start(self):
-        self.scanner.start()
-    
-    def wait_stop(self):
-        self.scanner.wait_stop()
-        
-    def force_stop(self):
-        self.scanner.force_stop()
+
 
 def main(config):
     from csv_interface import build_interface
+    from cv_scanner import CvInterface
+    from process_interface import ZBarInterface
     klein, groot = build_interface()
 
     schedules = {'klein':klein, "groot":groot}
     
     def update(*args):
         print args
-    
-    backend = JotariQrBackend(schedules, update, command="zbarcam /dev/video1")
-    backend.start()
-    backend.wait_stop()
+
+    backend = JotariQrBackend(schedules, update)
+    scanner = CvInterface(data_callback=backend.lookup)
+    # scanner = ZBarInterface(callback=backend.lookup, command='zbarcam')
+
+    scanner.start()
+    scanner.wait_stop()
     
 if __name__ == "__main__":
     confpath = "configuration.yaml"

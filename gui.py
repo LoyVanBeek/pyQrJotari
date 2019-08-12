@@ -4,6 +4,8 @@ import tkFont
 import yaml
 import pyQRjotari
 import csv_interface
+import cv_scanner
+import cv2
 
 
 try:
@@ -50,38 +52,40 @@ class QrJotariGui(object):
         
         self.dateframe = tk.Frame(frame, background='white')
         #Build the datecontrol frame
-        self.dateframe.grid(row=1)#pack())
+        self.dateframe.grid(row=1, columnspan=2, sticky=tk.E+tk.W)
         
         self.groupText = tk.StringVar()
         self.groupLabel = tk.Label(frame, textvariable=self.groupText, font=self.customFont, background='white')
-        self.groupLabel.grid(row=2)#pack()#tk.TOP
+        self.groupLabel.grid(row=2, columnspan=2, sticky=tk.E+tk.W)
                 
         self.goto_firstLabel = tk.Label(frame, text="nu:", font=self.customFont, background='white')
-        self.goto_firstLabel.grid(row=3)#pack(side=tk.LEFT)
+        self.goto_firstLabel.grid(row=3, columnspan=2, sticky=tk.E+tk.W)
         
-        self.currentActivityFrame = tk.Frame(frame, background='white', width=600)
+        # self.currentActivityFrame = tk.Frame(frame, background='white', width=600)
         
         self.activity_firstText = tk.StringVar()
-        self.activity_firstLabel = tk.Label(self.currentActivityFrame, textvariable=self.activity_firstText, font=self.customFont, background='white')
-        self.activity_firstLabel.pack(side=tk.LEFT,
-            padx=20, pady=20)
+        self.activity_firstLabel = tk.Label(frame, textvariable=self.activity_firstText, font=self.customFont, background='white')
+        self.activity_firstLabel.grid(row=4, column=1, sticky=tk.W)#.pack(side=tk.LEFT, padx=20, pady=20)
 
         self.activity_firstImage = tk.PhotoImage(file="images/opening.gif", height=200)
-        self.activity_firstImLbl = tk.Label(self.currentActivityFrame, 
-            image=self.activity_firstImage, 
-            background='white')
-        self.activity_firstImLbl.pack(side=tk.RIGHT,
-            padx=20, pady=20)
-        
-        self.currentActivityFrame.grid(row=4,sticky=tk.N+tk.S+tk.E+tk.W)#pack()
+        self.activity_firstImLbl = tk.Label(frame,  image=self.activity_firstImage, background='white')
+        self.activity_firstImLbl.grid(row=4, column=2, sticky=tk.E)
+
         
         self.goto_secondLabel = tk.Label(frame, text="", font=self.customFont, background='white')
-        self.goto_secondLabel.grid(row=5)#pack()
+        self.goto_secondLabel.grid(row=5, columnspan=2, sticky=tk.E+tk.W)
         
         self.activity_secondText = tk.StringVar()
         self.activity_secondLabel = tk.Label(frame, textvariable=self.activity_secondText, font=self.customFont, background='white')
-        self.activity_secondLabel.grid(row=6)#pack()
-        
+        self.activity_secondLabel.grid(row=6, column=1, sticky=tk.E+tk.W)
+
+        self.cameraImage = tk.PhotoImage(file="images/opening.gif", height=180, width=240)
+        self.cameraImLbl = tk.Label(frame,  image=self.cameraImage, background='white')
+        self.cameraImLbl.grid(row=6, column=2, sticky=tk.E)
+
+        self.first_activity()
+
+    def first_activity(self):
         self.groupText.set("Iedereen")
         self.activity_firstText.set("Opening")
         self.activity_secondText.set("?")
@@ -155,6 +159,20 @@ class QrJotariGui(object):
         self.set_backgrounds('white')
         print "END update"
 
+    def update_camera(self, cv_bgr_img):
+        print "Got image: {}".format(cv_bgr_img.shape)
+        cv_bgr_flipped_img = cv2.flip(cv_bgr_img, 1)
+        cv_rgba_flipped_img = cv2.cvtColor(cv_bgr_flipped_img, cv2.COLOR_BGR2RGBA)
+
+        dim = (self.cameraImage.width(), self.cameraImage.height())
+        cv_resized = cv2.resize(cv_rgba_flipped_img, dim, interpolation=cv2.INTER_AREA)
+        img_for_tk = Image.fromarray(cv_resized)
+        imgtk = ImageTk.PhotoImage(image=img_for_tk)
+
+        self.cameraImage.imgtk = imgtk
+        self.cameraImLbl.configure(image=imgtk)
+
+
 def check_images(activities, schedule):
     programs = []
     for time in schedule.schedule:
@@ -171,33 +189,38 @@ def main(config, datetimeOverrule=None):
     zbarcommands = [item['zbarcommand'] for item in config if item.has_key("zbarcommand")][0] #load schedule
     # import ipdb; ipdb.set_trace()
     zbarcommand = zbarcommands[platform.system()]
-    
-    from csv_interface import build_interface
 
-    klein, groot = build_interface()
+    klein, groot = csv_interface.build_interface()
     schedules = {"klein":klein, "groot":groot}
 
     activities = dict([(item['activity']['name'], item['activity']) for item in config if item.has_key("activity")])
 
     #print activities
     print check_images(activities, klein) | check_images(activities, groot)
-    
+
     def update(*args):
         print args
-        
+
     root = tk.Tk()
-    
+
     root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
                                        root.winfo_screenheight()))
     root.configure(background='white')
     app = QrJotariGui(root, activities)
-    
-    backend = pyQRjotari.JotariQrBackend(schedules, app.update, command=zbarcommand, datetimeOverrule=datetimeOverrule)
-    backend.start()
-    
+
+    backend = pyQRjotari.JotariQrBackend(schedules, app.update, datetimeOverrule=datetimeOverrule)
+    scanner = cv_scanner.CvInterface(data_callback=backend.lookup)
+    scanner.video_callback = app.update_camera
+    scanner.start()
+
+    def scan_update():
+        scanner.tick()
+        root.after(30, scan_update)
+    root.after(10, scan_update)
+
     root.mainloop()
     print "Mainloop ended"
-    backend.force_stop()
+    scanner.force_stop()
     
 if __name__ == "__main__":
     confpath = "configuration.yaml"
