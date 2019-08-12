@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     schedules = {'klein':klein, "groot":groot}
 
-    def update(*args):
-        print args
+    def update(*args, **kwargs):
+        print args, kwargs
 
-    assert pyQRjotari.JotariQrBackend(schedules, update, '2019-10-20 09:35').lookup('klein1') == 'Opening'
+    assert pyQRjotari.JotariQrBackend(schedules, update, '2019-10-20 09:35').lookup('klein1') == 'opening'
