@@ -4,13 +4,13 @@
 
 - schedule:
     age: klein
-    path: data/klein_2018.csv
+    path: data/klein_2019.csv
 - schedule:
     age: groot
-    path: data/groot_2018.csv
+    path: data/groot_2019.csv
 - leiding_schedule:
-    path_zaterdag: "data/Leidingplanning QR 2018 zaterdag.csv"
-    path_zondag: "data/Leidingplanning QR 2018 zondag.csv"
+    path_zaterdag: "data/Leidingplanning QR 2019 zaterdag.csv"
+    path_zondag: "data/Leidingplanning QR 2019 zondag.csv"
 
 - activity:
     name: "scotland yard"
