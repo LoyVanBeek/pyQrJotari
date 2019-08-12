@@ -52,6 +52,7 @@ class JotariQrBackend(object):
             self.onScannedCB(age, group, group_activity, current_time, None,
                              next_activity=next_activity, next_start=time_gap,
                              camera_image=camera_image) #age, group, activity, time, image
+            return group_activity
         except KeyError, ke:
             print ke
             print "Haal Loy even, iets is er misgegaan!"
