@@ -160,7 +160,7 @@ class QrJotariGui(object):
         print "END update"
 
     def update_camera(self, cv_bgr_img):
-        print "Got image: {}".format(cv_bgr_img.shape)
+        # print "Got image: {}".format(cv_bgr_img.shape)
         cv_bgr_flipped_img = cv2.flip(cv_bgr_img, 1)
         cv_rgba_flipped_img = cv2.cvtColor(cv_bgr_flipped_img, cv2.COLOR_BGR2RGBA)
 
