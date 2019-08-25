@@ -3,8 +3,8 @@ import Tkinter as tk
 import tkFont
 import yaml
 import pyQRjotari
-import csv_interface
-import cv_scanner
+from schedule_reading import csv_interface
+from qr_reading import cv_scanner
 import cv2
 
 

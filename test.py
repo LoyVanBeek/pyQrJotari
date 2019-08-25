@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import yaml
-from csv_interface import build_interface
+from schedule_reading.csv_interface import build_interface
 import pyQRjotari
 
 if __name__ == "__main__":

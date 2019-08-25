@@ -3,8 +3,8 @@ import os
 from bottle import route, run, template, post
 import datetime
 from dateutil import parser
-from csv_interface import build_interface
-from leidingplanning import build_interface as leiding_interface
+from schedule_reading.csv_interface import build_interface
+from schedule_reading.leidingplanning import build_interface as leiding_interface
 from bottledaemon import daemon_run
 from collections import OrderedDict
 

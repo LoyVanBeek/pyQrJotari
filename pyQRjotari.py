@@ -64,9 +64,9 @@ class JotariQrBackend(object):
 
 
 def main(config):
-    from csv_interface import build_interface
-    from cv_scanner import CvInterface
-    from process_interface import ZBarInterface
+    from schedule_reading.csv_interface import build_interface
+    from qr_reading.cv_scanner import CvInterface
+    from qr_reading.process_interface import ZBarInterface
     klein, groot = build_interface()
 
     schedules = {'klein':klein, "groot":groot}
