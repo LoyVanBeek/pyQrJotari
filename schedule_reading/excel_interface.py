@@ -49,6 +49,7 @@ class CellCoordParser(object):
 
     @staticmethod
     def to_area(start, end):
+        # type: (str, str) -> Tuple[Tuple[int, int], Tuple[int, int]]
         """
         >>> CellCoordParser.to_area("C3", "I3")
         ((2, 2), (9, 3))"""
@@ -62,6 +63,7 @@ class ExcelFile(object):
     """Wrapper around a csv file generated from Excel or LibreOffice"""
 
     def __init__(self, filename):
+        self._filename = filename
         f = open(filename)
 
         dialect = csv.Sniffer().sniff(f.read(10240))
@@ -69,6 +71,9 @@ class ExcelFile(object):
 
         reader = csv.reader(f, dialect)
         self.arr = ExcelFile.csv_to_array(reader)
+
+    def __repr__(self):
+        return "ExcelFile({})".format(self._filename)
 
     @staticmethod
     def csv_to_array(reader):
@@ -98,6 +103,7 @@ class ExcelFile(object):
         return self.arr[row][col]
 
     def get_area(self, start, end):
+        # type: (Union[str, Tuple[int, int]], Union[str, Tuple[int, int]]) -> List[List[str]]
         """
         >>> ef = ExcelFile("data/excel_test.csv")
         >>> ef.get_area('A1','B1')
@@ -127,49 +133,48 @@ class ScheduleRow(ExcelFile):
         self.arr = self.get_area(row + "1", end + "30")
 
 
-class ExcelScheduleFragment(ScheduleFragment, ExcelFile):
+class ExcelScheduleFragment(ScheduleFragment):
     """ A fragment of a schedule. Each fragment has assigned its own dictionary of programnames.
     When passed a time into __getitem__, it returns a list of program names, one for each group number."""
 
     def __init__(self,
-                 filename,
-                 programnamecells_area,
-                 datacells_area,
-                 base_day,
+                 header_area,
+                 content_area,
                  format="%d-%m-%Y %H:%M",
-                 groupcount=28):
+                 groupcount=28,
+                 excelfile=None):
 
         ScheduleFragment.__init__(self, groupcount)
 
-        self.base_day = base_day
+        self._excelfile = excelfile
+        self._header_area = header_area
+        self._content_area = content_area
+
+        header_data = self._excelfile.get_area(*CellCoordParser.to_area(*self._header_area))
+        content_data = self._excelfile.get_area(*CellCoordParser.to_area(*self._content_area))
+
         self.format = format
-        self.datacells_area = datacells_area
 
-        self.programtables = dict()
-        self.programtables = self.get_area(*programnamecells_area)[0]
+        skip_start_end = header_data[2:]  # The row starts with the start, end columns
+        self.programtables = {col: act for col, act in enumerate(skip_start_end)}  # type: Mapping[int, str]
 
-        datacells = [list(coord) for coord in datacells_area]
-        datacells[0][0] = 0
-        self._database = self.get_area(*datacells)
+        self._database = self.parse_cells(content_data)
 
-        self._database = self.parse_cells(self._database)
-
-        self._row_offset = programnamecells_area[0][1]
+    def __repr__(self):
+        return "ExcelScheduleFragment({}, {}, {})".format(self._header_area, self._content_area, self._excelfile)
 
     def query(self, querytime, groupnumber):
         # programtables is a dict mapping a (start, end)-tuple to an array of programnames
-        rowno = self.find_row_for_time(querytime, self.format)
+        rowno = self.find_row_for_time(querytime)
         row = self._database[rowno]  # because row_for_time should skip the Skip the van/tot rows
         # print row
-        skip_startend = row[2:]
-        for cellno, cell in enumerate(skip_startend):  # Skip date and time cells
+        for colno, cell in enumerate(row):  # Skip date and time cells
             if isinstance(cell, list):
                 if groupnumber in cell:
                     # pass
 
                     # print (rowno, cellno)
-                    # TODO lookup top row activities
-                    activity = self.programtables[cellno]
+                    activity = self.programtables[colno]
                     return activity
             elif isinstance(cell, str):  # The cell is a string, so all groups have that activity now.
                 # print (rowno, cellno), cell
@@ -185,7 +190,7 @@ class ExcelScheduleFragment(ScheduleFragment, ExcelFile):
 
     def parse_cells(self, array):
         for rowno, row in enumerate(array):
-            for collno, cell in enumerate(row):
+            for collno, cell in enumerate(row[2:]):
                 try:
                     numberlist = self.parse_intlist(cell)
                     if numberlist:
@@ -195,59 +200,57 @@ class ExcelScheduleFragment(ScheduleFragment, ExcelFile):
                     continue
         return array
 
-    @staticmethod
-    def find_above(array, row, col):
-        if not array[row - 1][col]:
-            ExcelScheduleFragment.find_above(array, row - 1, col)
-        else:
-            return array[row - 1][col]
+    # @staticmethod
+    # def find_above(array, row, col):
+    #     if not array[row - 1][col]:
+    #         ExcelScheduleFragment.find_above(array, row - 1, col)
+    #     else:
+    #         return array[row - 1][col]
 
-    @staticmethod
-    def fill_blanks(array, start_yx=(0, 0), end_yx=(65536, 65536)):
-        for rowno, line in enumerate(array):
-            if start_yx[1] < rowno < end_yx[1]:
-                for cellno, cell in enumerate(line):
-                    if start_yx[0] < cellno < end_yx[0]:
-                        try:
-                            if not cell:
-                                # Cell is empty, so get value from ABOVE
-                                backup = ExcelScheduleFragment.find_above(array, rowno, cellno)
-                                # TODO: store backup
-                                array[rowno][cellno] = backup
-                        except ValueError:
-                            # The cell did not contain only numbers.
-                            pass
-        return array
+    # @staticmethod
+    # def fill_blanks(array, start_yx=(0, 0), end_yx=(65536, 65536)):
+    #     for rowno, line in enumerate(array):
+    #         if start_yx[1] < rowno < end_yx[1]:
+    #             for cellno, cell in enumerate(line):
+    #                 if start_yx[0] < cellno < end_yx[0]:
+    #                     try:
+    #                         if not cell:
+    #                             # Cell is empty, so get value from ABOVE
+    #                             backup = ExcelScheduleFragment.find_above(array, rowno, cellno)
+    #                             # TODO: store backup
+    #                             array[rowno][cellno] = backup
+    #                     except ValueError:
+    #                         # The cell did not contain only numbers.
+    #                         pass
+    #     return array
 
-    @staticmethod
-    def crop(array, start_yx, end_yx):
-        """The cell as indicated by start_yx will move to [0][0] in the array.
-        Everything outside the range, limited by end_yx will not be in the resulting array. """
-        orig_width = len(array[0])
-        assert all([len(row) == orig_width for row in array])
-        orig_height = len(array)
+    # @staticmethod
+    # def crop(array, start_yx, end_yx):
+    #     """The cell as indicated by start_yx will move to [0][0] in the array.
+    #     Everything outside the range, limited by end_yx will not be in the resulting array. """
+    #     orig_width = len(array[0])
+    #     assert all([len(row) == orig_width for row in array])
+    #     orig_height = len(array)
+    #
+    #     new_height = end_yx[0] - start_yx[0]
+    #     new_width = end_yx[1] - start_yx[1]
+    #     y_shift = start_yx[0]
+    #     x_shift = start_yx[1]
+    #
+    #     new = [row[start_yx[1]:end_yx[1]] for row in array[start_yx[0]:end_yx[0]]]
+    #     return new
 
-        new_height = end_yx[0] - start_yx[0]
-        new_width = end_yx[1] - start_yx[1]
-        y_shift = start_yx[0]
-        x_shift = start_yx[1]
-
-        new = [row[start_yx[1]:end_yx[1]] for row in array[start_yx[0]:end_yx[0]]]
-        return new
-
-    def find_row_for_time(self, querytime, format="%d-%m-%Y %H:%M"):
+    def find_row_for_time(self, querytime):
         for rowno, row in enumerate(self._database):  # Skip the van/tot rows
             # print row
             # import pdb; pdb.set_trace()
             starttime_cell = row[0]
             endtime_cell = row[1]
             if starttime_cell and endtime_cell:
-                start = self.base_day + " " + starttime_cell
-                end = self.base_day + " " + endtime_cell
                 # print start, end
                 try:
-                    starttime = parse_time(start)
-                    endtime = parse_time(end)
+                    starttime = parse_time(starttime_cell)
+                    endtime = parse_time(endtime_cell)
 
                     # if querytime == parse_time("19-10-2013 23:29") and starttime == parse_time("19-10-2013 23:30"): import ipdb;ipdb.set_trace()
                     # if rowno in [28]: import ipdb;ipdb.set_trace()
@@ -260,25 +263,24 @@ class ExcelScheduleFragment(ScheduleFragment, ExcelFile):
                             # print "time={0}, rowno={1}, limits={2}".format(querytime, rowno, self.datacells_area[1])
                             return rowno
                         else:
-                            import pdb;
-                            pdb.set_trace()
+                            import pdb; pdb.set_trace()
                 except ValueError:
                     # Could not parse cells to times, so move to the next row.
                     # print "Could not parse {0} and {1} to datetimes".format(start, end)
                     pass
         raise RowNotFoundException("No row found for querytime {0}".format(querytime))
 
-    @staticmethod
-    def find_key_by_time(dic, querytime, format="%d-%m-%Y %H:%M"):
-        # dic is a dictionary with a (starttime,endtime)-tuple for its keys
-        for key, value in dic.iteritems():
-            # print row
-
-            starttime = key[0]
-            endtime = key[1]
-
-            if starttime < querytime < endtime:
-                return value
+    # @staticmethod
+    # def find_key_by_time(dic, querytime, format="%d-%m-%Y %H:%M"):
+    #     # dic is a dictionary with a (starttime,endtime)-tuple for its keys
+    #     for key, value in dic.iteritems():
+    #         # print row
+    #
+    #         starttime = key[0]
+    #         endtime = key[1]
+    #
+    #         if starttime < querytime < endtime:
+    #             return value
 
 
 class ExcelSchedule(Schedule):
@@ -300,6 +302,9 @@ class ExcelSchedule(Schedule):
             import ipdb; ipdb.set_trace()
             return {}
 
+    def __repr__(self):
+        return "ExcelSchedule({})".format(self.fragments)
+
 
 def build_interface():
     confpath = "configuration.yaml"
@@ -307,16 +312,31 @@ def build_interface():
     config = yaml.load(conffile)
 
     schedules = [item for item in config if "schedule" in item.keys()]
-    # import ipdb; ipdb.set_trace()
 
-    schedule_config = {item['schedule']['age']: item['schedule']['path'] for item in schedules}
-    path_klein = schedule_config['klein']
-    path_groot = schedule_config['groot']
+    schedule_config = {item['schedule']['age']: item['schedule'] for item in schedules}
 
-    # klein = SimpleCsvSchedule(path_klein)
-    # groot = SimpleCsvSchedule(path_groot)
+    excelfilenames = set([frag['path'] for frag in schedule_config['klein']['fragments']])
+    excelfiles = {name: ExcelFile(name) for name in excelfilenames}
 
-    return klein, groot
+    schedules = {}
+    for age in ['klein']:#, 'groot']:
+        age_fragments = []
+        for frag_conf in schedule_config[age]['fragments']:
+            mainfile = excelfiles[frag_conf['path']]  # type: ExcelFile
+            age_fragments += [ExcelScheduleFragment(excelfile=mainfile,
+                                                    header_area=frag_conf['header'],
+                                                    content_area=frag_conf['data'])]
+        sched = ExcelSchedule(*age_fragments)
+        schedules[age] = sched
+
+        # DEBUG
+        dt = parse_time('20-10-2019 11:30')
+        import ipdb; ipdb.set_trace()
+        # break 252
+        row = sched[dt]
+
+
+    return schedules['klein']#, schedules['groot']
 
 
 if __name__ == "__main__":
