@@ -496,4 +496,4 @@
 - activity:
     name: 'estafettespel/krattenrace'
     image: images/estafette.jpeg
-- timeformat: "%d-%m-%Y %H:%M"
+- timeformat: "%d-%m-%Y %H:%M"  # DD-MM-JJJJ UU:MM in Excel and LibreOffice
