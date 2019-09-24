@@ -1,0 +1,12 @@
+[Unit]
+Description=JOTARI server daemon
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/jotiadmin/pyQrJotari/
+ExecStart=/usr/bin/python webinterface.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
