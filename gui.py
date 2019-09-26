@@ -125,7 +125,7 @@ class QrJotariGui(object):
 
     def set_backgrounds(self, color):
         for item in [self.frame, self.groupLabel,self.dateframe,self.goto_firstLabel,
-                     self.currentActivityFrame,self.activity_firstLabel,self.goto_secondLabel,self.activity_secondLabel]:
+                     self.activity_firstLabel,self.goto_secondLabel,self.activity_secondLabel]:
             item.config(background=color)
 
     def update(self, age, group, group_activity, current_time, image, next_activity=None, next_start=0):

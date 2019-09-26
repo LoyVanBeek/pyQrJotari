@@ -12,7 +12,7 @@ class JotariQrBackend(object):
         self.onScannedCB = onScannedCB
         self.datetimeOverrule = datetimeOverrule
         
-    def lookup(self, code, camera_image=None):
+    def lookup(self, code):
         code = code.lower().strip()
         age = code[:5]
         group = int(code[5:])
@@ -50,8 +50,7 @@ class JotariQrBackend(object):
             
             #print age, group, group_activity, time, None
             self.onScannedCB(age, group, group_activity, current_time, None,
-                             next_activity=next_activity, next_start=time_gap,
-                             camera_image=camera_image) #age, group, activity, time, image
+                             next_activity=next_activity, next_start=time_gap) #age, group, activity, time, image
         except KeyError, ke:
             print ke
             print "Haal Loy even, iets is er misgegaan!"
@@ -60,8 +59,8 @@ class JotariQrBackend(object):
         except TypeError, te:
             print te
             print "Is het wel JOTARI? Er is geen programma op {0}.".format(current_time)
-        except Exception, ex:
-            print ex
+        # except Exception, ex:
+        #     print ex
 
 
 def main(config):

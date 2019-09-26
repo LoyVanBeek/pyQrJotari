@@ -62,10 +62,10 @@ class CvInterface(object):
 
                 code = symbol.data.replace("http://www.scoutingboxtel.nl/qr.asp?groep=", "")
                 if self.callback:
-                    try:
-                        self.callback(code)
-                    except Exception as e:
-                        print e
+                    # try:
+                    self.callback(code)
+                    # except Exception as e:
+                    #     print e
                 break
 
         if self.video_callback:
