@@ -156,7 +156,7 @@ class QrJotariGui(object):
                 print "No image defined for %s" % group_activity
         else:
             self.activity_firstText.set(str(next_activity.capitalize()))
-            self.activity_secondText.set("(Begint over {0} minuten)".format(minutes))
+            self.activity_secondText.set("(Begint over {0} minuten, \n NA {1})".format(minutes, group_activity))
 
             if self.act2img.has_key(next_activity):
                 img = self.act2img[next_activity]
