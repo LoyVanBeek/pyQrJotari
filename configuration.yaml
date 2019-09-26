@@ -24,8 +24,8 @@
         data: [A10, K17]
       - avond:
         path: data/klein_2019_zaterdag.csv
-        header: [A18, K33]
-        data: [A18, K33]
+        header: [A18, K24]
+        data: [A18, K24]
 - schedule:
     age: groot
     path: data/groot_2019.csv

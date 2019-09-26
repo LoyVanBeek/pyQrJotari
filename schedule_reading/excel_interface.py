@@ -11,7 +11,7 @@ import csv, time, datetime
 from dateutil import parser
 import yaml
 
-from schedule import memoize, parse_time, RowNotFoundException, ScheduleFragment, Schedule
+from schedule import memoize, parse_time, RowNotFoundException, ScheduleFragment, Schedule, export_program
 
 
 class CellCoordParser(object):
@@ -155,6 +155,18 @@ class ExcelScheduleFragment(ScheduleFragment):
 
         self.format = format
 
+        try:
+            self.times = []
+            for i, row in enumerate(content_data):
+                try:
+                    self.times += [(parse_time(row[0]), parse_time(row[1]))]
+                except Exception as e:
+                    print "Cannot parse row no. {} of {}: {}. {}".format(i, self, e, row)
+                    raise
+        except Exception as e:
+            print self
+            raise
+
         skip_start_end = header_data[2:]  # The row starts with the start, end columns
         self.programtables = {col: act for col, act in enumerate(skip_start_end)}  # type: Mapping[int, str]
 
@@ -166,6 +178,7 @@ class ExcelScheduleFragment(ScheduleFragment):
     def query(self, querytime, groupnumber):
         # programtables is a dict mapping a (start, end)-tuple to an array of programnames
         rowno = self.find_row_for_time(querytime)
+        print "{} is in row {} of {}".format(querytime, rowno, self)
         row = self._database[rowno]  # because row_for_time should skip the Skip the van/tot rows
         # print row
         for colno, cell in enumerate(row):  # Skip date and time cells
@@ -190,7 +203,7 @@ class ExcelScheduleFragment(ScheduleFragment):
 
     def parse_cells(self, array):
         for rowno, row in enumerate(array):
-            for collno, cell in enumerate(row[2:]):
+            for collno, cell in enumerate(row[2:]): # Skip first two columns that contain the times
                 try:
                     numberlist = self.parse_intlist(cell)
                     if numberlist:
@@ -200,74 +213,45 @@ class ExcelScheduleFragment(ScheduleFragment):
                     continue
         return array
 
-    # @staticmethod
-    # def find_above(array, row, col):
-    #     if not array[row - 1][col]:
-    #         ExcelScheduleFragment.find_above(array, row - 1, col)
-    #     else:
-    #         return array[row - 1][col]
-
-    # @staticmethod
-    # def fill_blanks(array, start_yx=(0, 0), end_yx=(65536, 65536)):
-    #     for rowno, line in enumerate(array):
-    #         if start_yx[1] < rowno < end_yx[1]:
-    #             for cellno, cell in enumerate(line):
-    #                 if start_yx[0] < cellno < end_yx[0]:
-    #                     try:
-    #                         if not cell:
-    #                             # Cell is empty, so get value from ABOVE
-    #                             backup = ExcelScheduleFragment.find_above(array, rowno, cellno)
-    #                             # TODO: store backup
-    #                             array[rowno][cellno] = backup
-    #                     except ValueError:
-    #                         # The cell did not contain only numbers.
-    #                         pass
-    #     return array
-
-    # @staticmethod
-    # def crop(array, start_yx, end_yx):
-    #     """The cell as indicated by start_yx will move to [0][0] in the array.
-    #     Everything outside the range, limited by end_yx will not be in the resulting array. """
-    #     orig_width = len(array[0])
-    #     assert all([len(row) == orig_width for row in array])
-    #     orig_height = len(array)
+    # def find_row_for_time(self, querytime):
+    #     for rowno, row in enumerate(self._database):  # Skip the van/tot rows
+    #         # print row
+    #         # import pdb; pdb.set_trace()
+    #         starttime_cell = row[0]
+    #         endtime_cell = row[1]
+    #         if starttime_cell and endtime_cell:
+    #             # print start, end
+    #             try:
+    #                 starttime = parse_time(starttime_cell)
+    #                 endtime = parse_time(endtime_cell)
     #
-    #     new_height = end_yx[0] - start_yx[0]
-    #     new_width = end_yx[1] - start_yx[1]
-    #     y_shift = start_yx[0]
-    #     x_shift = start_yx[1]
+    #                 # if querytime == parse_time("19-10-2013 23:29") and starttime == parse_time("19-10-2013 23:30"): import ipdb;ipdb.set_trace()
+    #                 # if rowno in [28]: import ipdb;ipdb.set_trace()
     #
-    #     new = [row[start_yx[1]:end_yx[1]] for row in array[start_yx[0]:end_yx[0]]]
-    #     return new
+    #                 # import pdb; pdb.set_trace()
+    #                 # Only return a row when it is in our datarange
+    #                 if starttime <= querytime < endtime:
+    #                     if True:  # rowno < self.datacells_area[1][1]:
+    #                         # import pdb; pdb.set_trace()
+    #                         # print "time={0}, rowno={1}, limits={2}".format(querytime, rowno, self.datacells_area[1])
+    #                         return rowno
+    #                     else:
+    #                         import pdb; pdb.set_trace()
+    #             except ValueError:
+    #                 # Could not parse cells to times, so move to the next row.
+    #                 # print "Could not parse {0} and {1} to datetimes".format(start, end)
+    #                 pass
+    #     raise RowNotFoundException("No row found for querytime {0}".format(querytime))
 
     def find_row_for_time(self, querytime):
-        for rowno, row in enumerate(self._database):  # Skip the van/tot rows
-            # print row
-            # import pdb; pdb.set_trace()
-            starttime_cell = row[0]
-            endtime_cell = row[1]
-            if starttime_cell and endtime_cell:
-                # print start, end
-                try:
-                    starttime = parse_time(starttime_cell)
-                    endtime = parse_time(endtime_cell)
-
-                    # if querytime == parse_time("19-10-2013 23:29") and starttime == parse_time("19-10-2013 23:30"): import ipdb;ipdb.set_trace()
-                    # if rowno in [28]: import ipdb;ipdb.set_trace()
-
-                    # import pdb; pdb.set_trace()
-                    # Only return a row when it is in our datarange
-                    if starttime <= querytime < endtime:
-                        if True:  # rowno < self.datacells_area[1][1]:
-                            # import pdb; pdb.set_trace()
-                            # print "time={0}, rowno={1}, limits={2}".format(querytime, rowno, self.datacells_area[1])
-                            return rowno
-                        else:
-                            import pdb; pdb.set_trace()
-                except ValueError:
-                    # Could not parse cells to times, so move to the next row.
-                    # print "Could not parse {0} and {1} to datetimes".format(start, end)
-                    pass
+        # type: (datetime.datetime) -> int
+        assert isinstance(querytime, datetime.datetime)
+        for i, (starttime, endtime) in enumerate(self.times):
+            try:
+                if starttime <= querytime < endtime:
+                    return i
+            except TypeError:
+                import ipdb; ipdb.set_trace()
         raise RowNotFoundException("No row found for querytime {0}".format(querytime))
 
     # @staticmethod
@@ -282,6 +266,12 @@ class ExcelScheduleFragment(ScheduleFragment):
     #         if starttime < querytime < endtime:
     #             return value
 
+    def has_key(self, querytime):
+        try:
+            self.find_row_for_time(querytime)
+            return True
+        except RowNotFoundException:
+            return False
 
 class ExcelSchedule(Schedule):
     """Hosts a set of ExcelScheduleFragments to become one large, complete Schedule"""
@@ -292,15 +282,18 @@ class ExcelSchedule(Schedule):
 
     def __getitem__(self, querytime):
         # type: (datetime.datetime) -> dict
+        assert isinstance(querytime, datetime.datetime)
         try:
             for fragment in self.fragments:
-                try:
-                    return fragment[querytime]
-                except KeyError:
-                    pass
+                if fragment.has_key(querytime):
+                    try:
+                        return fragment[querytime]
+                    except KeyError:
+                        pass
         except KeyError, ke:
             import ipdb; ipdb.set_trace()
             return {}
+        return {}
 
     def __repr__(self):
         return "ExcelSchedule({})".format(self.fragments)
@@ -332,11 +325,10 @@ def build_interface():
         # DEBUG
         dt = parse_time('20-10-2019 11:30')
         import ipdb; ipdb.set_trace()
-        # break 252
         row = sched[dt]
+        print row
 
-
-    return schedules['klein']#, schedules['groot']
+    return schedules['klein'], schedules['groot']
 
 
 if __name__ == "__main__":
@@ -354,10 +346,10 @@ if __name__ == "__main__":
 
     # import ipdb; ipdb.set_trace()
     # print klein[parse_time("19-10-2013 13:05")]
-
-    export_program(klein, "klein_export.csv")
-    # print "#"*20
-    export_program(groot, "groot_export.csv")
+    #
+    # export_program(klein, "klein_export.csv")
+    # # print "#"*20
+    # export_program(groot, "groot_export.csv")
 
 
 
