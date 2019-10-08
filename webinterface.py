@@ -11,7 +11,7 @@ from collections import OrderedDict
 klein, groot = build_interface()
 schedules = {"klein":klein,
              "groot":groot}
-leiding_planning = leiding_interface()
+# leiding_planning = leiding_interface()
 
 @route('/qr/<code>/')
 @route('/qr/<code>')
@@ -99,14 +99,14 @@ def leiding(code, time):
 def schedule(time):
     time = parser.parse(time)
 
-    leiding_at_time = OrderedDict(leiding_planning[time])
-    leiding_at_time = OrderedDict(sorted(leiding_at_time.iteritems()))
+    # leiding_at_time = OrderedDict(leiding_planning[time])
+    # leiding_at_time = OrderedDict(sorted(leiding_at_time.iteritems()))
 
     k = {group:act for group,act in schedules['klein'][time].iteritems() if isinstance(group, int)}
     g = {group:act for group,act in schedules['groot'][time].iteritems() if isinstance(group, int)}
-    l = leiding_at_time
+    # l = leiding_at_time
 
-    return template('schedule', klein=k, groot=g, leiding=l, time=time)
+    return template('schedule', klein=k, groot=g, time=time)
 
 
 @post('/qr/reload')

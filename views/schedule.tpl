@@ -117,15 +117,15 @@
           % end
       </table>
     </div>
-    <div style="float: right; width: 500px">
-      <table id='leiding'>
-        <tr><th>Speltak</th><th>Naam</th><th>Programma</th></tr>
-         % for group, activity in leiding.iteritems():
-            <tr>
-              <td>{{group[0]}}</td><td>{{group[1]}}</td><td>{{activity}}</td>
-            </tr>
-          % end
-      </table>
-    </div>
+    <!--<div style="float: right; width: 500px">-->
+      <!--<table id='leiding'>-->
+        <!--<tr><th>Speltak</th><th>Naam</th><th>Programma</th></tr>-->
+         <!--% for group, activity in leiding.iteritems():-->
+            <!--<tr>-->
+              <!--<td>{{group[0]}}</td><td>{{group[1]}}</td><td>{{activity}}</td>-->
+            <!--</tr>-->
+          <!--% end-->
+      <!--</table>-->
+    <!--</div>-->
   </body>
 </html>
