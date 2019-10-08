@@ -207,7 +207,8 @@ def main(config, datetimeOverrule=None):
     activities = dict([(item['activity']['name'], item['activity']) for item in config if item.has_key("activity")])
 
     #print activities
-    print check_images(activities, klein) | check_images(activities, groot)
+    missing_images = check_images(activities, klein) | check_images(activities, groot)
+    print "There is no image defined for activities" + ",\n".join(missing_images)
 
     def update(*args):
         print args
