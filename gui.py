@@ -208,7 +208,7 @@ def main(config, datetimeOverrule=None):
 
     #print activities
     missing_images = check_images(activities, klein) | check_images(activities, groot)
-    print "There is no image defined for activities" + ",\n".join(missing_images)
+    print "There is no image defined for activities" + "\n".join(missing_images)
 
     def update(*args):
         print args

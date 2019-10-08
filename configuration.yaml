@@ -1,7 +1,7 @@
 - zbarcommand:
     Linux: "zbarcam /dev/video0"
     Windows: C:\Program Files\ZBar\bin\zbarcam
-
+- timeformat: "%d-%m-%Y %H:%M"
 - schedule:
     age: klein
     path: data/klein_2019.csv
@@ -455,9 +455,6 @@
     name: 'mini bbq maken'
     image: images/mini_bbq_maken.jpg
 - activity:
-    name: 'hologramprojector maken'
-    image: images/hologram.jpg
-- activity:
     name: 'levend zeeslag'
     image: images/levend_zeeslag.jpg
 - activity:
@@ -496,4 +493,26 @@
 - activity:
     name: 'estafettespel/krattenrace'
     image: images/estafette.jpeg
-- timeformat: "%d-%m-%Y %H:%M"
+- activity:
+    name: 'stopmotion filmpjes'
+    image: images/stopmotion.jpeg
+- activity:
+    name: 'slaapspullen in tenten leggen'
+    image: images/spullen klaarleggen.jpg
+- activity:
+    name: 'explorerprogramma'
+    image: 'images/sherrow programma.gif'
+- activity:
+    name: 'belegeringsstratego'
+    image: 'images/stratego.jpg'
+- activity:
+    name: 'krattenrace'
+    image: 'images/krat.png'
+- activity:
+    name: 'hologram-projector'
+    image: 'images/hologramprojector.jpeg'
+- activity:
+    name: 'slaapspullen opruimen'
+    image: 'images/inpakken.jpeg'
+
+
