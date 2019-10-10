@@ -3,8 +3,8 @@ import Tkinter as tk
 import tkFont
 import yaml
 import pyQRjotari
-import csv_interface
-import cv_scanner
+from schedule_reading import csv_interface
+from qr_reading import cv_scanner
 import cv2
 
 
@@ -136,31 +136,42 @@ class QrJotariGui(object):
 
         logging.info("\t{0}:{1} scanned at {3} for activity '{2}'".format(age, group, group_activity, current_time))
 
-        self.activity_firstImLbl.bell()
-
-        self.groupText.set("Groep "+str(group))
-        self.activity_firstText.set(str(group_activity.capitalize()))
-
         hours = next_start // 60
         minutes = next_start - (hours * 60)
         next_start_str = "{h} uur en {m} minuten".format(h=hours, m=minutes)
 
-        self.activity_secondText.set("(over {1}:\n {0})".format(str(next_activity).capitalize(), next_start_str))
+        self.activity_firstImLbl.bell()
 
-        #import pdb; pdb.set_trace()
-        if self.act2img.has_key(group_activity):
-            img = self.act2img[group_activity]
-            print img
-            self.activity_firstImLbl.configure(image=img)
-        else: 
-            print "No image defined for %s" % group_activity
+        self.groupText.set("Groep "+str(group))
+
+        if hours == 0 and minutes > 5:
+            self.activity_firstText.set(str(group_activity.capitalize()))
+            self.activity_secondText.set("(over {1}:\n {0})".format(str(next_activity).capitalize(), next_start_str))
+
+            if self.act2img.has_key(group_activity):
+                img = self.act2img[group_activity]
+                print img
+                self.activity_firstImLbl.configure(image=img)
+            else:
+                print "No image defined for %s" % group_activity
+        else:
+            self.activity_firstText.set(str(next_activity.capitalize()))
+            self.activity_secondText.set("(Begint over {0} minuten, \n NA {1})".format(minutes, group_activity))
+
+            if self.act2img.has_key(next_activity):
+                img = self.act2img[next_activity]
+                print img
+                self.activity_firstImLbl.configure(image=img)
+            else:
+                print "No image defined for %s" % next_activity
+
 
         time.sleep(0.3)
         self.set_backgrounds('white')
         print "END update"
 
     def update_camera(self, cv_bgr_img):
-        print "Got image: {}".format(cv_bgr_img.shape)
+        # print "Got image: {}".format(cv_bgr_img.shape)
         cv_bgr_flipped_img = cv2.flip(cv_bgr_img, 1)
         cv_rgba_flipped_img = cv2.cvtColor(cv_bgr_flipped_img, cv2.COLOR_BGR2RGBA)
 
@@ -196,7 +207,8 @@ def main(config, datetimeOverrule=None):
     activities = dict([(item['activity']['name'], item['activity']) for item in config if item.has_key("activity")])
 
     #print activities
-    print check_images(activities, klein) | check_images(activities, groot)
+    missing_images = check_images(activities, klein) | check_images(activities, groot)
+    print "There is no image defined for activities" + "\n".join(missing_images)
 
     def update(*args):
         print args

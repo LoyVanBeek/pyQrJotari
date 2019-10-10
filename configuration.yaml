@@ -1,16 +1,16 @@
 - zbarcommand:
     Linux: "zbarcam /dev/video0"
     Windows: C:\Program Files\ZBar\bin\zbarcam
-
+- timeformat: "%d-%m-%Y %H:%M"
 - schedule:
     age: klein
-    path: data/klein_2018.csv
+    path: data/klein_2019.csv
 - schedule:
     age: groot
-    path: data/groot_2018.csv
+    path: data/groot_2019.csv
 - leiding_schedule:
-    path_zaterdag: "data/Leidingplanning QR 2018 zaterdag.csv"
-    path_zondag: "data/Leidingplanning QR 2018 zondag.csv"
+    path_zaterdag: "data/Leidingplanning QR 2019 zaterdag.csv"
+    path_zondag: "data/Leidingplanning QR 2019 zondag.csv"
 
 - activity:
     name: "scotland yard"
@@ -417,16 +417,16 @@
     image: images/kinetische_bom.jpeg
 - activity:
     name: 'bosgolf'
-    image: images/Bosgolf.jpg
+    image: images/bosgolf.jpg
 - activity:
     name: 'trefbalvaganza'
-    image: images/Trefbalvaganza.jpg
+    image: images/trefbalvaganza.jpg
 - activity:
     name: 'bamboepionieren'
-    image: images/Bamboe pionieren.jpg
+    image: images/bamboe pionieren.jpg
 - activity:
     name: "rowans + sherpa's"
-    image: images/explorers.png
+    image: images/Explorers.png
 - activity:
     name: 'slaapspullen klaarleggen'
     image: 'images/tent inrichten.jpg'
@@ -445,6 +445,74 @@
 - activity:
     name: 'ticketactiviteit 4'
     image: 'images/ticket.gif'
+- activity:
+    name: 'klimtoren'
+    image: images/klimtoren.jpg
+- activity:
+    name: 'smokkelspel'
+    image: images/smokkelspel.jpg
+- activity:
+    name: 'mini bbq maken'
+    image: images/mini_bbq_maken.jpg
+- activity:
+    name: 'levend zeeslag'
+    image: images/levend_zeeslag.jpg
+- activity:
+    name: 'pollepels versieren'
+    image: images/pollepel.png
+- activity:
+    name: 'hotelspel'
+    image: images/hotel.jpg
+- activity:
+    name: 'spooktocht + laserpistolen om spoken af te schieten'
+    image: images/lasergame.jpeg
+- activity:
+    name: 'koken op kampvuur'
+    image: images/kampvuur.jpg
+- activity:
+    name: 'rope-course laag'
+    image: images/ropecourse_laag.jpeg
+- activity:
+    name: 'knikkerbaan'
+    image: images/knikkerbaan.jpg
+- activity:
+    name: 'slagbal'
+    image: images/slagbal.jpg
+- activity:
+    name: 'techniekworkshop'
+    image: images/elektronica.png
+- activity:
+    name: 'extreme kookbattle'
+    image: images/keuken.jpg
+- activity:
+    name: 'Iets met vuur'
+    image: images/kampvuur.gif
+- activity:
+    name: 'rugby'
+    image: images/rugby.png
+- activity:
+    name: 'estafettespel/krattenrace'
+    image: images/estafette.jpeg
+- activity:
+    name: 'stopmotion filmpjes'
+    image: images/stopmotion.jpeg
+- activity:
+    name: 'slaapspullen in tenten leggen'
+    image: images/spullen klaarleggen.jpg
+- activity:
+    name: 'explorerprogramma'
+    image: 'images/sherrow programma.gif'
+- activity:
+    name: 'belegeringsstratego'
+    image: 'images/stratego.jpg'
+- activity:
+    name: 'krattenrace'
+    image: 'images/krat.png'
+- activity:
+    name: 'hologram-projector'
+    image: 'images/hologramprojector.jpeg'
+- activity:
+    name: 'slaapspullen opruimen'
+    image: 'images/inpakken.jpeg'
 
-- timeformat: "%d-%m-%Y %H:%M"
 

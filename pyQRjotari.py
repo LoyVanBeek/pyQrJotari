@@ -51,6 +51,7 @@ class JotariQrBackend(object):
             #print age, group, group_activity, time, None
             self.onScannedCB(age, group, group_activity, current_time, None,
                              next_activity=next_activity, next_start=time_gap) #age, group, activity, time, image
+            return group_activity
         except KeyError, ke:
             print ke
             print "Haal Loy even, iets is er misgegaan!"
@@ -64,9 +65,9 @@ class JotariQrBackend(object):
 
 
 def main(config):
-    from csv_interface import build_interface
-    from cv_scanner import CvInterface
-    from process_interface import ZBarInterface
+    from schedule_reading.csv_interface import build_interface
+    from qr_reading.cv_scanner import CvInterface
+    from qr_reading.process_interface import ZBarInterface
     klein, groot = build_interface()
 
     schedules = {'klein':klein, "groot":groot}
