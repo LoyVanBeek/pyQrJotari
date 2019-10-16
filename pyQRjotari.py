@@ -66,7 +66,7 @@ class JotariQrBackend(object):
 
 def main(config):
     from schedule_reading.csv_interface import build_interface
-    from qr_reading.cv_scanner import CvInterface
+    # from qr_reading.cv_scanner import CvInterface
     from qr_reading.process_interface import ZBarInterface
     klein, groot = build_interface()
 
@@ -76,8 +76,8 @@ def main(config):
         print args
 
     backend = JotariQrBackend(schedules, update)
-    scanner = CvInterface(data_callback=backend.lookup)
-    # scanner = ZBarInterface(callback=backend.lookup, command='zbarcam')
+    # scanner = CvInterface(data_callback=backend.lookup)
+    scanner = ZBarInterface(callback=backend.lookup, command='zbarcam')
 
     scanner.start()
     scanner.wait_stop()
