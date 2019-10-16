@@ -6,7 +6,7 @@ import pyQRjotari
 from schedule_reading import csv_interface
 from qr_reading import process_interface
 # from qr_reading import cv_scanner
-import cv2
+# import cv2
 
 
 try:
