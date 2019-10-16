@@ -223,7 +223,7 @@ def main(config, datetimeOverrule=None):
 
     backend = pyQRjotari.JotariQrBackend(schedules, app.update, datetimeOverrule=datetimeOverrule)
     # scanner = cv_scanner.CvInterface(data_callback=backend.lookup)
-    scanner = process_interface.ZBarInterface(callback=backend.lookup)
+    scanner = process_interface.ZBarInterface(command=zbarcommand, callback=backend.lookup)
     # scanner.video_callback = app.update_camera
     scanner.start()
 
