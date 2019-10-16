@@ -4,7 +4,8 @@ import tkFont
 import yaml
 import pyQRjotari
 from schedule_reading import csv_interface
-from qr_reading import cv_scanner
+from qr_reading import process_interface
+# from qr_reading import cv_scanner
 import cv2
 
 
@@ -221,14 +222,15 @@ def main(config, datetimeOverrule=None):
     app = QrJotariGui(root, activities)
 
     backend = pyQRjotari.JotariQrBackend(schedules, app.update, datetimeOverrule=datetimeOverrule)
-    scanner = cv_scanner.CvInterface(data_callback=backend.lookup)
-    scanner.video_callback = app.update_camera
+    # scanner = cv_scanner.CvInterface(data_callback=backend.lookup)
+    scanner = process_interface.ZBarInterface(callback=backend.lookup)
+    # scanner.video_callback = app.update_camera
     scanner.start()
 
-    def scan_update():
-        scanner.tick()
-        root.after(30, scan_update)
-    root.after(10, scan_update)
+    # def scan_update():
+    #     scanner.tick()
+    #     root.after(30, scan_update)
+    # root.after(10, scan_update)
 
     root.mainloop()
     print "Mainloop ended"
