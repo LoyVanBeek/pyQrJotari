@@ -132,6 +132,7 @@ class QrJotariGui(object):
     def update(self, age, group, group_activity, current_time, image, next_activity=None, next_start=0):
         print "START update"
         print age, group, group_activity, current_time, image
+        print "Next activity starts in {} minutes".format(next_start)
 
         self.set_backgrounds('black')
 
@@ -146,6 +147,7 @@ class QrJotariGui(object):
         self.groupText.set("Groep "+str(group))
 
         if hours == 0 and minutes > 5:
+            print "Less than 5 minutes till next activity"
             self.activity_firstText.set(str(group_activity.capitalize()))
             self.activity_secondText.set("(over {1}:\n {0})".format(str(next_activity).capitalize(), next_start_str))
 
@@ -156,8 +158,9 @@ class QrJotariGui(object):
             else:
                 print "No image defined for %s" % group_activity
         else:
+            print "More than 5 minutes till next activity"
             self.activity_firstText.set(str(next_activity.capitalize()))
-            self.activity_secondText.set("(Begint over {0} minuten, \n NA {1})".format(minutes, group_activity))
+            self.activity_secondText.set("(Begint over {o} minuten, \n NA {a})".format(o=next_start_str, a=group_activity))
 
             if self.act2img.has_key(next_activity):
                 img = self.act2img[next_activity]
