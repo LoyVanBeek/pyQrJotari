@@ -1,4 +1,4 @@
-bottle==0.12.8
+bottle==0.12.19
 BottleDaemon==0.1.1
 Pillow==6.2.0
 python-dateutil==1.5
